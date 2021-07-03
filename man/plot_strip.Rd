@@ -54,7 +54,7 @@ Plot a design of an experiment with an Strip Plot design from \code{agricolae} d
 library(agricolaeplotr)
 library(agricolae)
 T1<-c('a','b','c','d')
-T2<-c('v','w','x','y','z','z')
+T2<-c('v','w','x','y','z')
 r = 3
 outdesign <- design.strip(trt1=T1, trt2=T2, r=r,serie = 2,
  seed = 0, kinds = 'Super-Duper',randomization=TRUE)
