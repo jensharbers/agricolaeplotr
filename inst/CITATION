@@ -1,0 +1,12 @@
+citHeader("To cite agricolaeplotr in publications use:")
+
+citEntry(
+  entry    = "Manual",
+  title    = "agricolaeplotr:  a package for visualization of design of experiments",
+  author   = "Jens Harbers",
+  year     = "2021",
+  version  = "0.1.0",
+  textVersion = paste(
+
+  )
+)
