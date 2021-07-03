@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ---
 output: github_document
 ---
@@ -49,18 +48,8 @@ head(outdesign$book,10)
 plot_design.factorial_crd(outdesign,ncols=6,nrows=3, width = 1, height = 1)
 
 ```
-![factorial design](C:\Users\Jens Harbers\Documents\RPlot.jpeg)
-
-
 
 ## Planed features for future versions
 
 - match size of subplot to those to mainplots for all split plot designs
 - 
-=======
-# agricolaeplotr
-A repository for agricolaeplotr package.
-
-This repo contains all parts from the R package agricolaeplotr.
-
->>>>>>> 511d7f22df82b68aab9046b3c395f584e53efb7e
