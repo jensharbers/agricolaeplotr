@@ -1,5 +1,5 @@
-## ----setup, include = FALSE---------------------------------------------------
-# install.packages("agricolaeplotr")
+## ----setup, eval = FALSE------------------------------------------------------
+#  install.packages("agricolaeplotr")
 
 ## ----load_package-------------------------------------------------------------
 library("agricolaeplotr")

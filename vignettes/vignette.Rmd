@@ -5,9 +5,7 @@ date: "`r Sys.Date()`"
 output:
   rmarkdown::html_vignette:
     fig_width: 6 
-    fig_height: 4 
-  md_document:
-    variant: markdown_github
+    fig_height: 4
 vignette: >
   %\VignetteIndexEntry{agricolaeplotr: a package for visualization of design of experiments}
   %\VignetteEngine{knitr::rmarkdown}
@@ -17,8 +15,8 @@ vignette: >
 ---
 ## Installation of the package
 Use the following command to install the package from CRAN:
-```{r setup, include = FALSE}
-# install.packages("agricolaeplotr")
+```{r setup, eval = FALSE}
+install.packages("agricolaeplotr")
 ```
 
 # Usage of the package
@@ -60,6 +58,7 @@ plot_design.factorial_crd(outdesign,ncols=6,nrows=3, width = 1, height = 1)
 
 # Change Axis and orientation of the design
 The user can change the order of both axis. Although it is a standard to enumerate plots from left to right, increasing from bottom, there is no restriction to enumerate in other ways. The following change reverts the y axis. Reverting y axis causes to have same orientation as agricolae packages shows in some sketches. If the user wants to have same orientation, one must set reverse_y=TRUE.
+
 ## revert the y axis
 
 ```{r, echo=TRUE, results='asis'}
@@ -181,9 +180,6 @@ plot_design.factorial_lsd(outdesign,factor_name = "yield") + scale_fill_viridis_
 
 The missing yields are easily to be seen.
 
-
-
-
 ## Plotting of exogenous variables from foreign tables
 Sometimes, experiment data are in data frames, that must be merged with the outdesign object.
 Therefore, a second data frame will be merged with the outdesign and the merged data frame will be stored in the outdesign$book.
@@ -291,9 +287,10 @@ plot_split_rcbd(outdesign2,width = 5,height = 5,labels = "splots",
 ## Referring to other packages
 
 If the user can provide a table containing all necessary infromation about the coordinates of each plot, the user can choose the \code{desplot} package.
+
 There is a functions \code{ggdesplot} that has some other features. However, the user cannot swap the x and y coordinates that easy as here and there is no way to adjust for height and length of a plot (preferable in meter).
 
 ## Planed features for future versions
 
-- match size of subpolot to those to mainplots for all split plot designs
-- 
+- match size of subplot to those to mainplots for all split plot designs
+- create own function for user specific experiment designs with same API 
