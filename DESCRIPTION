@@ -22,7 +22,7 @@ Suggests:
     testthat (>= 3.0.0),
     knitr
 Config/testthat/edition: 3
-BugReports: https://github.com
-URL: https://github.com
+BugReports: https://github.com/jensharbers/agricolaeplotr/issues
+URL: https://github.com/jensharbers/agricolaeplotr
 Depends: R (>= 3.3)
 VignetteBuilder: knitr
