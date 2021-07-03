@@ -17,47 +17,50 @@ head(outdesign$book,10)
 plot_design.factorial_crd(outdesign,ncols=6,nrows=3, width = 1, height = 1)
 
 
-## ---- echo=FALSE, results='asis'----------------------------------------------
+## ---- echo=TRUE, results='asis'-----------------------------------------------
 plot_design.factorial_crd(outdesign,ncols=6,nrows=3, width = 1, height = 1, reverse_y = TRUE)
 
-## ---- echo=FALSE, results='asis'----------------------------------------------
+## ---- echo=TRUE, results='asis'-----------------------------------------------
 plot_design.factorial_crd(outdesign,ncols=6,nrows=3, width = 1, height = 1, reverse_x = TRUE)
 
-## ---- echo=FALSE, results='asis'----------------------------------------------
+## ---- results='asis'----------------------------------------------------------
 plot_design.factorial_crd(outdesign,ncols=6,nrows=3, width = 1, height = 1, reverse_x = TRUE,reverse_y = TRUE)
 
-## ---- echo=FALSE, results='asis'----------------------------------------------
-plot_design.factorial_crd(outdesign,ncols=6,nrows=3, width = 4, height = 2.5 , reverse_x = FALSE,reverse_y = TRUE)
+## ---- echo = TRUE, results='asis'---------------------------------------------
+plot_design.factorial_crd(outdesign,ncols=6,nrows=3, width = 1, height = 2.5 , reverse_x = FALSE,reverse_y = TRUE)
 
-## ---- echo=FALSE, results='asis'----------------------------------------------
-plot_design.factorial_crd(outdesign,ncols=6,nrows=3, width = 4, height = 2.5 , reverse_x = FALSE,reverse_y = TRUE,space_width = 1,space_height = 1)
+## ---- echo = TRUE, results='asis'---------------------------------------------
+plot_design.factorial_crd(outdesign,ncols=6,nrows=3, width = 1, height = 2.5 , reverse_x = FALSE,reverse_y = TRUE,space_width = 1,space_height = 1)
 
-## ---- echo=FALSE, results='asis'----------------------------------------------
-plot_design.factorial_crd(outdesign,ncols=6,nrows=3, width = 4, height = 2.5 , reverse_x = FALSE,reverse_y = TRUE,space_width = 0.7,space_height = 0.8)
+## ---- echo = TRUE, results='asis'---------------------------------------------
+plot_design.factorial_crd(outdesign,ncols=6,nrows=3, width = 1, height = 2.5 , reverse_x = FALSE,reverse_y = TRUE,space_width = 0.7,space_height = 0.8)
 
-## ---- echo=FALSE, results='asis'----------------------------------------------
-plot_design.factorial_crd(outdesign,ncols=6,nrows=3, width = 4, height = 2.5 , reverse_x = FALSE,reverse_y = TRUE, factor_name = "B")
+## ---- echo = TRUE, results='asis'---------------------------------------------
+plot_design.factorial_crd(outdesign,ncols=6,nrows=3, width = 1, height = 2.5 , reverse_x = FALSE,reverse_y = TRUE, factor_name = "B")
 
-## ---- echo=FALSE, results='asis'----------------------------------------------
+## ---- echo = TRUE, results='asis'---------------------------------------------
+set.seed(129984)
 trt<-c(3,2) # factorial 3x2
 outdesign <- design.ab(trt, r=3, serie=2,design = 'crd')
-plot_design.factorial_crd(outdesign,ncols=3,nrows=6, width = 4, height = 2.5 , reverse_x = FALSE,reverse_y = TRUE, factor_name = "B")
+plot_design.factorial_crd(outdesign,ncols=3,nrows=6, width = 1, height = 2.5 , reverse_x = FALSE,reverse_y = TRUE, factor_name = "B")
 
-## ---- echo=FALSE, results='asis'----------------------------------------------
+## ---- echo = TRUE, results='asis'---------------------------------------------
+set.seed(129866478)
 trt<-c(3,2) # factorial 3x2
 outdesign <- design.ab(trt, r=3, serie=2,design = 'crd')
-plot_design.factorial_crd(outdesign,ncols=3,nrows=6, width = 4, height = 2.5 , reverse_x = FALSE,reverse_y = TRUE, factor_name = "B") + theme_poster()
+plot_design.factorial_crd(outdesign,ncols=3,nrows=6, width = 1, height = 2.5 , reverse_x = FALSE,reverse_y = TRUE, factor_name = "B") + theme_poster()
 
-## ---- echo=FALSE, results='asis'----------------------------------------------
+## ---- echo = TRUE, results='asis'---------------------------------------------
+set.seed(12986)
 trt<-c(3,2) # factorial 3x2
 outdesign <- design.ab(trt, r=3, serie=2,design = 'crd')
 
-plot_design.factorial_crd(outdesign,ncols=3,nrows=6, width = 4, height = 2.5 , reverse_x = FALSE,reverse_y = TRUE, factor_name = "B") + theme_pres()
+plot_design.factorial_crd(outdesign,ncols=3,nrows=6, width = 1, height = 2.5 , reverse_x = FALSE,reverse_y = TRUE, factor_name = "B") + theme_pres()
 
-## ---- echo=FALSE, results='asis'----------------------------------------------
+## ---- echo = TRUE, results='asis'---------------------------------------------
 trt<-c(3,2) # factorial 3x2
 outdesign <- design.ab(trt, r=3, serie=2,design = 'crd')
-plot_design.factorial_crd(outdesign,ncols=3,nrows=6, width = 4, height = 2.5 , reverse_x = FALSE,reverse_y = TRUE, factor_name = "B") + theme_pres() + scale_fill_viridis_d()
+plot_design.factorial_crd(outdesign,ncols=3,nrows=6, width = 1, height = 2.5 , reverse_x = FALSE,reverse_y = TRUE, factor_name = "B") + theme_pres() + scale_fill_viridis_d()
 
 ## -----------------------------------------------------------------------------
 set.seed(23488833)
@@ -104,6 +107,7 @@ plot_design.factorial_rcbd(experiment_design,factor_name = "outcome")
 
 
 ## -----------------------------------------------------------------------------
+set.seed(1298664)
 t1<-c('a','b','c','d','e',"f","g","h")
 t2<-c("u",'v','w','x','y',"z")
 outdesign2 <- design.split(trt1=t1, trt2=t2, r=r,serie = 2,
@@ -117,6 +121,7 @@ plot_split_lsd(outdesign2,width = 2,height = 2, subplots = TRUE, labels = "splot
 
 
 ## -----------------------------------------------------------------------------
+set.seed(1298664)
 t1<-c('a','b','c','d','e','f','g')
 t2<-c('v','w','x','y','z')
 r <- 4
@@ -129,6 +134,7 @@ plot_split_crd(outdesign2,ncols = 5,nrows=6, subplots = TRUE, labels="splots",fa
 
 
 ## -----------------------------------------------------------------------------
+set.seed(1298664)
 T1<-c('a','b','c','d','e',"f","g")
 T2<-c("we",'v','w','x','y','z',"d")
 r = 3

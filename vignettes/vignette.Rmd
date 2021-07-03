@@ -6,11 +6,13 @@ output:
   rmarkdown::html_vignette:
     fig_width: 6 
     fig_height: 4 
+  md_document:
+    variant: markdown_github
 vignette: >
   %\VignetteIndexEntry{agricolaeplotr: a package for visualization of design of experiments}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-  
+
   
 ---
 ## Installation of the package
@@ -286,7 +288,7 @@ plot_split_rcbd(outdesign2,width = 5,height = 5,labels = "splots",
 
 ```
 
-## Refreiing to other packages
+## Referring to other packages
 
 If the user can provide a table containing all necessary infromation about the coordinates of each plot, the user can choose the \code{desplot} package.
 There is a functions \code{ggdesplot} that has some other features. However, the user cannot swap the x and y coordinates that easy as here and there is no way to adjust for height and length of a plot (preferable in meter).
