@@ -922,9 +922,25 @@ plot_strip <- function(design,
     test_name_in_column(labels, design)
 
     table <- as.data.frame(design$book)
+     #########
+    # if blocks are horizontal:
+    table[, x] <- as.numeric(table[, factor_name_1]) +
+      (max(as.numeric(table[, factor_name_1]))*as.numeric(table$block)-1) -
+      (max(as.numeric(table[, factor_name_1])))+1
 
-    table[, x]  <- as.numeric(table[, factor_name_1]) * width
+    table[, x]  <- table[, x] * width
     table[, y] <- as.numeric(table[, factor_name_2]) * height
+        #########
+
+  # if block are not horizontal
+  # table[, y]  <- as.numeric(table[, factor_name_2]) +
+  #    (max(as.numeric(table[, factor_name_2]))*as.numeric(table$block)-1) -
+  #    (max(as.numeric(table[, factor_name_2])))+1
+  # table[, y] <- table[,y] * height
+  # table[, x] <- as.numeric(table[, factor_name_1]) * width
+
+
+
 
     if (reverse_y == TRUE) {
       table[, y] <- abs(table[, y] - max(table[, y])) +
@@ -940,7 +956,6 @@ plot_strip <- function(design,
                   space_height) + theme_bw() + theme(line = element_blank()) +
       geom_text(aes_string(label = labels), colour = "black")
 
-    plt <- plt + facet_wrap(~as.factor(block))
 
     return(plt)
 
