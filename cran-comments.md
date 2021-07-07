@@ -5,6 +5,12 @@
 
 ## R CMD check results
 
-0 errors | 0 warnings | 1 note
+0 errors | 0 warnings | 0 note
 
-* This is a new release.
+* This is a reattempt for the first release.
+
+LICENSE error fixed
+
+replaced outdesign with experiment design
+ggplot is a name of a class of a ggplot2 generated plot
+agricolae is a name of a package
