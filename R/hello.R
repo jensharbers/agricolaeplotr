@@ -212,7 +212,7 @@ test_names_design <- function(design) {
 }
 
 #### plot factorial_rcbd ####
-#' Plot Factorial Designs with rcdb Design
+#' Plot Factorial Designs with rcbd Design
 #'
 #' Plot a design of a factorial  experiment with randomized complete block design (rcbd) from design.ab
 #' @param design outdesign from \code{agricolae} package

@@ -286,7 +286,7 @@ plot_split_rcbd(outdesign2,width = 5,height = 5,labels = "splots",
 
 ## Referring to other packages
 
-If the user can provide a table containing all necessary infromation about the coordinates of each plot, the user can choose the \code{desplot} package.
+If the user can provide a table containing all necessary information about the coordinates of each plot, the user can choose the \code{desplot} package.
 
 There is a functions \code{ggdesplot} that has some other features. However, the user cannot swap the x and y coordinates that easy as here and there is no way to adjust for height and length of a plot (preferable in meter).
 

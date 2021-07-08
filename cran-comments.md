@@ -9,8 +9,8 @@
 
 * This is a reattempt for the first release.
 
-LICENSE error fixed
 
-replaced outdesign with experiment design
-ggplot is a name of a class of a ggplot2 generated plot
-agricolae is a name of a package
+'ggplot' is a name of a class of a ggplot2 generated plot
+'agricolae' is a name of a package
+
+all package names are put in single quotes
