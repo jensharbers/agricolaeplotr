@@ -1,15 +1,15 @@
 Package: agricolaeplotr
 Type: Package
-Title: Visualization of Design of Experiments from the \code{agricolae} Package
+Title: Visualization of Design of Experiments from the 'agricolae' Package
 Version: 0.2.0
 Authors@R: 
     person(family="Harbers", given="Jens", email="jensharbers@gmail.com", role=c("aut","cre"),
            comment = c(ORCID = "0000-0001-6634-623X"))
 Maintainer: Jens Harbers <jensharbers@gmail.com>
-Description: Visualization of Design of Experiments from the \code{agricolae} package with \code{ggplot2} framework
-    The user provides an experiment design from the \code{agricolae} package, calls the corresponding function and will receive a 
-    visualization with \code{ggplot2} based functions that are specific for each design. As there are many different designs, each design is tested on its type.
-    The output can be modified with standard \code{ggplot2} commands or with other packages with \code{ggplot2} function extensions.
+Description: Visualization of Design of Experiments from the 'agricolae' package with 'ggplot2' framework
+    The user provides an experiment design from the 'agricolae' package, calls the corresponding function and will receive a 
+    visualization with 'ggplot2' based functions that are specific for each design. As there are many different designs, each design is tested on its type.
+    The output can be modified with standard 'ggplot2' commands or with other packages with 'ggplot2' function extensions.
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: False
@@ -26,3 +26,4 @@ BugReports: https://github.com/jensharbers/agricolaeplotr/issues
 URL: https://github.com/jensharbers/agricolaeplotr
 Depends: R (>= 3.3)
 VignetteBuilder: knitr
+Note: 
