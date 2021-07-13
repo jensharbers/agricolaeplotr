@@ -316,7 +316,7 @@ plot_design.factorial_rcbd <- function(design,
 }
 
 #### plot design crd ####
-#' #' Plot Completely Randomized Design
+#' Plot Complete Randomized Design
 #'
 #' Plot a design of a factorial experiment with randomized complete block design from \code{agricolae} design.ab
 #' @param design outdesign from \code{agricolae} package
@@ -552,10 +552,13 @@ plot_lattice_triple <- function(design,
     test_name_in_column(labels, design)
 
     table <- design$book
-    table$part <- rep(1:max(table(table[, y])),
-                      times = length(unique(table[, factor_name])))
+    max_b <- max(table(table[, y]))
+
+    table$part <- rep(1:max_b,
+                      times = length(table[, y])/max_b)
     table[, y] <- as.numeric(table[, y]) * height
     table$part <- table$part * width
+
     if (reverse_y == TRUE) {
       table$part <- abs(table$part - max(table$part)) +
         min(table$part)
