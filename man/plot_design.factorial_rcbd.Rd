@@ -2,7 +2,7 @@
 % Please edit documentation in R/hello.R
 \name{plot_design.factorial_rcbd}
 \alias{plot_design.factorial_rcbd}
-\title{Plot Factorial Designs with rcdb Design}
+\title{Plot Factorial Designs with rcbd Design}
 \usage{
 plot_design.factorial_rcbd(
   design,

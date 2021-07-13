@@ -14,3 +14,5 @@
 'agricolae' is a name of a package
 
 all package names are put in single quotes
+
+two typos in vignette.Rmd are corrected
