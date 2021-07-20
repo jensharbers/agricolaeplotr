@@ -14,7 +14,7 @@ outdesign <- design.ab(trt, r=3, serie=2,design = 'crd')
 
 head(outdesign$book,10)
 
-plot_design.factorial_crd(outdesign,ncols=6,nrows=3, width = 1, height = 1)
+plot_design.factorial_crd(outdesign,ncols=7,nrows=3, width = 1, height = 1)
 
 
 ## ---- echo=TRUE, results='asis'-----------------------------------------------

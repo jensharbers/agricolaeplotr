@@ -2,7 +2,7 @@
 % Please edit documentation in R/hello.R
 \name{plot_design_crd}
 \alias{plot_design_crd}
-\title{#' Plot Completely Randomized Design}
+\title{Plot Complete Randomized Design}
 \usage{
 plot_design_crd(
   design,

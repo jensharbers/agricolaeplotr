@@ -52,12 +52,12 @@ outdesign <- design.ab(trt, r=3, serie=2,design = 'crd')
 
 head(outdesign$book,10)
 
-plot_design.factorial_crd(outdesign,ncols=6,nrows=3, width = 1, height = 1)
+plot_design.factorial_crd(outdesign,ncols=7,nrows=3, width = 1, height = 1)
 
 ```
 
 # Change Axis and orientation of the design
-The user can change the order of both axis. Although it is a standard to enumerate plots from left to right, increasing from bottom, there is no restriction to enumerate in other ways. The following change reverts the y axis. Reverting y axis causes to have same orientation as agricolae packages shows in some sketches. If the user wants to have same orientation, one must set reverse_y=TRUE.
+The user can change the order of both axis. Although it is a standard to enumerate plots from left to right, increasing from bottom, there is no restriction to enumerate in other ways. The following change reverts the y axis. Reverting y axis causes to have same orientation as 'agricolae' packages shows in some sketches. If the user wants to have same orientation, one must set reverse_y=TRUE.
 
 ## revert the y axis
 
@@ -286,9 +286,9 @@ plot_split_rcbd(outdesign2,width = 5,height = 5,labels = "splots",
 
 ## Referring to other packages
 
-If the user can provide a table containing all necessary information about the coordinates of each plot, the user can choose the \code{desplot} package.
+If the user can provide a table containing all necessary information about the coordinates of each plot, the user can choose the 'desplot' package.
 
-There is a functions \code{ggdesplot} that has some other features. However, the user cannot swap the x and y coordinates that easy as here and there is no way to adjust for height and length of a plot (preferable in meter).
+There are two functions namely 'ggdesplot' and 'ggdesplot' from the 'desplot' package, that has some other features. However, the user cannot swap the x and y coordinates that easy as here and there is no way to adjust for height and length of a plot (preferable in meter). The user needs to provide x and y coordinates to be able to use 'desplot' and 'ggdesplot'.
 
 ## Planed features for future versions
 

@@ -16,3 +16,8 @@
 all package names are put in single quotes
 
 two typos in vignette.Rmd are corrected
+
+## Bug Fixes:
+
+bug fixed in plot_lattice triple.
+All valid combinations are able to be plot now

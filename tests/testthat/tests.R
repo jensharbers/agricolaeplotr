@@ -729,3 +729,44 @@ test_that("plot a split plot design lsd for main plots", {
   p
   expect_identical(p$labels$y, "row")
 })
+
+test_that("plot a split plot design lsd for main plots", {
+trt<-LETTERS[1:9]
+outdesign<-design.lattice(trt,r=3,serie=2)
+p <- plot_lattice_triple(outdesign)
+
+p
+expect_identical(p$labels$y, "block")
+
+})
+
+
+test_that("plot a split plot design lsd for main plots", {
+  trt<-LETTERS[1:16]
+  outdesign<-design.lattice(trt,r=3,serie=2)
+  p <- plot_lattice_triple(outdesign)
+
+  p
+  expect_identical(p$labels$y, "block")
+
+})
+
+test_that("plot a split plot design lsd for main plots", {
+  trt<-LETTERS[1:25]
+  outdesign<-design.lattice(trt,r=3,serie=2)
+  p <- plot_lattice_triple(outdesign)
+
+  p
+  expect_identical(p$labels$y, "block")
+
+})
+
+test_that("plot a split plot design lsd for main plots", {
+  trt<-LETTERS[1:4]
+  outdesign<-design.lattice(trt,r=3,serie=2)
+  p <- plot_lattice_triple(outdesign)
+
+  p
+  expect_identical(p$labels$y, "block")
+
+})
