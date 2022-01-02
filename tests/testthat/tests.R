@@ -770,3 +770,15 @@ test_that("plot a split plot design lsd for main plots", {
   expect_identical(p$labels$y, "block")
 
 })
+
+
+test_that("plot has an area of 2800 ", {
+  trt<-LETTERS[1:4]
+  outdesign<-design.lattice(trt,r=3,serie=2)
+  p <- plot_lattice_triple(outdesign)
+
+  p
+  stats <- DOE_stats(p)
+  expect_identical(stats$, "block")
+
+})
