@@ -2129,6 +2129,120 @@ plot_youden <- function(design, x = "col", y = "row",
 
 }
 
+plot_fieldhub <- function(design,
+                          x = "COLUMN",
+                          y = "ROW",
+                          labels = "PLOT",
+                          factor_name = "TREATMENT",
+                          width = 1,
+                          height = 1,
+                          space_width = 0.95,
+                          space_height = 0.85,
+                          reverse_y = FALSE,
+                          reverse_x = FALSE) {
+  if (design$infoDesign$idDesign %in% c(9,13,14,15,16)) {
+    design$book <- design$fieldBook
+    test_string(x)
+    test_string(y)
+
+    test_input_reverse_x(reverse_x)
+    test_input_reverse_y(reverse_y)
+
+    test_input_height(height)
+    test_input_width(width)
+
+    test_input_height(space_height)
+    test_input_width(space_width)
+
+    #
+    # replication_name = "REPLICATION",
+    # location_name = "LOCATION",
+    # test_name_in_column(factor_name, design)
+    # test_name_in_column(replication_name, design)
+    # test_name_in_column(location_name, design)
+    test_name_in_column(labels, design)
+
+    table <- as.data.frame(design$book)
+    table[, x]  <- as.numeric(table[, x] ) * width
+    table[, y] <- as.numeric(table[, y]) * height
+    if (reverse_y == TRUE) {
+      table[, y] <- abs(table[, y] - max(table[, y])) +
+        min(table[, y])
+    }
+    if (reverse_x == TRUE) {
+      table[, x]  <- abs(table[, x]  - max(table[, x] )) +
+        min(table[, x] )
+    }
+    plt <- ggplot(table, aes_string(x = x, y = y)) +
+      geom_tile(aes_string(fill = factor_name),
+                width = width * space_width, height = height *
+                  space_height) + theme_bw() + theme(line = element_blank()) +
+      geom_text(aes_string(label = labels), colour = "black")# +
+    # + facet_grid(reformulate(replication_name,location_name))
+
+    plt
+
+    return(plt)
+
+  } else {
+    stop(paste0("This is not the correct function for your experiment design."))
+  }
+
+}
+
+DOE_stats <- function(p){
+
+  #trt = c(2,3,4,5,6)
+  #outdesign1 <-design.crd(trt,r=5,serie=2,2543,'Mersenne-Twister')
+  #p <- plot_design_crd(outdesign1,ncols = 7,nrows = 4, width = 10, height = 10, reverse_y = TRUE)
+  #p
+  #stats <- DOE_stats(p)
+
+
+  res <- list()
+  dat <- layer_data(p)
+
+  res$eff_width <- diff(range(dat$xmin,dat$xmax)) # nettoweite versuch
+  res$eff_height <- diff(range(dat$ymin,dat$ymax)) # nettohoehe versuch
+  res$eff_area_total <- res$eff_height * res$eff_width
+
+  res$eff_width_plot <- dat$width[1] # netto weite parzelle
+  res$eff_height_plot <- dat$height[1] # netto hoehe parzelle
+  res$eff_plot_size <- res$eff_width_plot * res$eff_height_plot # netto groesse je parzelle
+  res$eff_total_area <- res$eff_plot_size * dim(dat)[1] # netto Nutzfl?che unter Parzelle
+
+  res$gross_width_plot <- min(dat$x) # bruttobreite Parzelle
+  res$gross_height_plot <- min(dat$y) # bruttohoehe parzelle
+  res$total_area_plot <- res$gross_width_plot * res$gross_height_plot # bruttoflaeche parzelle
+  res$outer_area <- diff(range(c(dat$xmin,dat$xmax))) * diff(range(c(dat$ymin,dat$ymax)))
+
+  res$rel_space_width <- 1 - ((res$gross_width_plot - res$eff_width_plot) / (res$gross_width_plot))
+  res$rel_space_height <- 1 - ((res$gross_height_plot - res$eff_height_plot) / (res$gross_height_plot))
+
+  res$n_plots <- dim(dat)[1]
+  res$n_cols <- length(unique(dat$x))
+  res$n_rows <- length(unique(dat$y))
+  res$total_area <- res$total_area_plot * res$n_rows * res$n_cols# bruttofl?che versuch
+  res$space_between <- res$total_area - res$eff_total_area
+
+  res$share_eff_plot <- res$eff_plot_size / res$total_area_plot
+  res$share_space_plot <- 1 - res$share_eff_plot
+
+  res$abs_space_height <- res$gross_height_plot - res$eff_height_plot
+  res$abs_space_width <- res$gross_width_plot - res$eff_width_plot
+
+  res$net_plot_diagonal <- signif(sqrt(res$eff_height_plot^2 + res$eff_width_plot^2),3)
+  res$gross_plot_diagonal <- signif(sqrt(res$gross_height_plot^2 + res$gross_width_plot^2),3)
+  res$experiment_diagonal <- signif(sqrt(res$eff_width^2 + res$eff_width^2),3)
+  res$outer_diagonal <- signif(sqrt(diff(range(c(dat$xmin,dat$xmax)))^2 + diff(range(c(dat$ymin,dat$ymax)))^2),3)
+
+  res$xmin <- min(dat$xmin)
+  res$xmax <- max(dat$xmax)
+  res$ymin <- min(dat$ymin)
+  res$ymax <- max(dat$ymax)
+  res$n_fac <- length(unique(dat$fill))
+  return(res)
+}
 
 summary.agricolaeplotr <- function(x, unit="m", part="net_plot"){
 #' @examples
