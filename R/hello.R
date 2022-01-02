@@ -2129,7 +2129,71 @@ plot_youden <- function(design, x = "col", y = "row",
 
 }
 
-# example("plot_split_lsd")
-# table$t1 und table$t2 mit  factor_name_1 und factor_name_2 austauschen
-# table$trt durch factor_name
-# table$TRT
+
+summary.agricolaeplotr <- function(x, unit="m", part="net_plot"){
+#' @examples
+#' library(agricolaeplotr)
+#' library(agricolae)
+#' varieties<-c('perricholi','yungay','maria bonita','tomasa')
+#' outdesign <-design.youden(varieties,r=2,serie=2,seed=23)
+#' plot_youden(outdesign, labels = 'varieties')
+#print("Net plot measures \n")
+  if(!(part  %in% c("net_plot","gross_plot","field","experiment","all"))){
+    stop(paste("part parameter needs to be one of the following: net_plot, gross_plot, field, all. You have typed",part))
+  }
+  if(part %in% c("net_plot","all")){
+
+    print(paste("net plot height:",x$eff_height_plot, unit))
+    print(paste("net plot width:",x$eff_width_plot, unit))
+    print(paste("net plot diagonal:",x$net_plot_diagonal, unit))
+    print(paste("net plot area:",x$eff_plot_size, paste0(unit,"^2")))
+    print(paste("share used plot area:",x$share_eff_plot))
+    print(paste("share space between plots:",x$share_space_plot))
+    print(paste("abs_space_width:",x$abs_space_height, unit))
+    print(paste("abs_space_height:",x$abs_space_width, unit))
+  }
+
+  #print("gross plot measures\n")
+  if(part %in% c("gross_plot","all")){
+
+    print(paste("gross plot height:",x$gross_height_plot, unit))
+    print(paste("gross plot width:",x$gross_width_plot, unit))
+    print(paste("gross plot diagonal:",x$gross_plot_diagonal, unit))
+    print(paste("gross plot area:",x$total_area_plot,paste0(unit,"^2")))
+    print(paste("gross space area:",x$space_between, paste0(unit,"^2")))
+
+    print(paste("share used plot area:",x$share_eff_plot))
+    print(paste("share space between plots:",x$share_space_plot))
+    print(paste("abs_space_width:",x$abs_space_height, unit))
+    print(paste("abs_space_height:",x$abs_space_width, unit))
+  }
+
+  if(part %in% c("field","all")){
+
+    print(paste("relative design height:",x$rel_space_height))
+    print(paste("relative design width:",x$rel_space_width))
+    print(paste("net experiment diagonal:",x$experiment_diagonal, unit))
+    print(paste("net experiment width:",x$eff_width, unit))
+    print(paste("net experiment height:",x$eff_height, unit))
+    print(paste("used plot area:",x$eff_total_area,paste0(unit,"^2")))
+    print(paste("used area DOE:",x$outer_area,paste0(unit,"^2")))
+    print(paste("used outer area:",x$total_area,paste0(unit,"^2")))
+    print(paste("outer field diagonal:",x$outer_diagonal, unit))
+  }
+  if(part %in% c("experiment","all")){
+
+    print(paste("xmin:", x$xmin))
+    print(paste("xmax:", x$xmax))
+    print(paste("ymin:", x$ymin))
+    print(paste("ymax:", x$ymax))
+    print(paste("number columns:",x$n_cols))
+    print(paste("number rows:",x$n_rows))
+    print(paste("number of plots:",x$n_plots))
+    print(paste("number of factors:",x$n_fac))
+  }
+}
+summary.agricolaeplotr(stats, part = "net_plot")
+summary.agricolaeplotr(stats, part = "gross_plot")
+summary.agricolaeplotr(stats, part = "field")
+summary.agricolaeplotr(stats, part = "experiment")
+summary.agricolaeplotr(stats, part = "all")
