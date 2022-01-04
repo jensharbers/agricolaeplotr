@@ -772,13 +772,49 @@ test_that("plot a split plot design lsd for main plots", {
 })
 
 
-test_that("plot has an area of 2800 ", {
-  trt<-LETTERS[1:4]
-  outdesign<-design.lattice(trt,r=3,serie=2)
-  p <- plot_lattice_triple(outdesign)
+test_that("plot has correct properties", {
+  trt<-LETTERS[1:5]
+  outdesign<- design.lsd(trt,serie=2)
 
-  p
-  stats <- DOE_stats(p)
-  expect_identical(stats$, "block")
+  p <- plot_latin_square(outdesign, space_width = 0.9, width = 3, height = 5,space_height = 0.9)
+  stats <- DOE_obj(p)
+  expect_equal(stats$total_area, 375)
+  expect_equal(stats$space_between, 71.25)
+  expect_equal(stats$eff_total_area, 303.75)
+  expect_equal(stats$eff_area_total, 360.15)
+  expect_equal(stats$outer_area, 360.15)
+  expect_equal(stats$outer_area, stats$eff_area_total)
+
+
+  expect_equal(stats$rel_space_width, 0.9)
+  expect_equal(stats$rel_space_height, 0.9)
+  expect_equal(stats$share_eff_plot, 0.81)
+  expect_equal(stats$share_space_plot, 0.19)
+
+  expect_equal(stats$gross_width_plot, 3)
+  expect_equal(stats$gross_height_plot, 5)
+  expect_equal(stats$total_area_plot, 15)
+  expect_equal(stats$eff_plot_size, 12.15)
+
+  expect_equal(stats$eff_width, 14.7)
+  expect_equal(stats$eff_height, 24.5)
+  expect_equal(stats$eff_width_plot, 2.7)
+  expect_equal(stats$eff_height_plot, 4.5)
+  expect_equal(stats$abs_space_height, 0.5)
+  expect_equal(stats$abs_space_width, 0.3)
+
+  expect_equal(stats$net_plot_diagonal, 5.25)
+  expect_equal(stats$gross_plot_diagonal, 5.83)
+  expect_equal(stats$experiment_diagonal, 20.8)
+  expect_equal(stats$outer_diagonal, 28.6)
+
+  expect_equal(stats$xmin, 1.65)
+  expect_equal(stats$xmax, 16.35)
+  expect_equal(stats$ymin, 2.75)
+  expect_equal(stats$ymax, 27.25)
+  expect_equal(stats$n_cols, 5)
+  expect_equal(stats$n_rows, 5)
+  expect_equal(stats$n_plots, 25)
+  expect_equal(stats$n_fac, 5)
 
 })

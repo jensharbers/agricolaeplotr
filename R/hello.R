@@ -2128,7 +2128,66 @@ plot_youden <- function(design, x = "col", y = "row",
   }
 
 }
-
+#' Plot FielDHub Design
+#'
+#' Plots designs from \code{FielDHub} package
+#' @param design outdesign from \code{FielDHub} package with on of the following IDs: c(9,13,14,15,16)
+#' @param x Describes the x coordinates of a experiment design
+#' @param y Describes the y coordinates of a experiment design
+#' @param width numeric value, describes the width of a plot in an experiment
+#' @param height numeric value, describes the height of a plot in an experiment
+#' @param space_width numeric value, describes the share of the space of the plots. 0=only space, 1=no space between plots in term of width
+#' @param space_height numeric value, describes the share of the space of the plots. 0=only space, 1=no space between plots in term of height
+#' @param reverse_y boolean, should the plots of the experiment be changed in reverse order in Row direction? use reverse_y=TRUE to have same sketch as in agricolae. default:reverse_y=FALSE
+#' @param reverse_x boolean, should the plots of the experiment be changed in reverse order in column direction? default:reverse_x=FALSE
+#' @param factor_name string Which factor should be used for plotting, needs to be a column in outdesign$book
+#' @param labels string Describes the column from that the plots are taken to display them
+#'
+#' @return \code{ggplot} graphic that can be modified, if wished
+#' @export
+#' @import ggplot2
+#' @import FielDHub
+#' @examples
+#' library(agricolaeplotr)
+#' library(FielDHub)
+#' SpatpREP1 <- partially_replicated(nrows = 25,
+#'                                   ncols = 18,
+#'                                   repGens = c(280,50,10,1,1),
+#'                                   repUnits = c(1,2,3,20,20),
+#'                                   planter = "cartesian",
+#'                                   plotNumber = 101,
+#'                                   seed = 77)
+#' SpatpREP1$infoDesign
+#'
+#' plot_fieldhub(SpatpREP1,
+#' labels = "PLOT",
+#' factor_name = "PLOT",
+#' width = 12,
+#' height = 10,
+#' reverse_y = TRUE,
+#' reverse_x = TRUE)
+#'
+#' NAME <- paste("G", 1:492, sep = "")
+#' repGens = c(108, 384);repUnits = c(2,1)
+#' REPS <- rep(repUnits, repGens)
+#' treatment_list <- data.frame(list(ENTRY = 1:492, NAME = NAME, REPS = REPS))
+#'
+#' SpatpREP2 <- partially_replicated(nrows = 30,
+#'                                   ncols = 20,
+#'                                   planter = "serpentine",
+#'                                   plotNumber = 101,
+#'                                   seed = 41,
+#'                                   data = treatment_list)
+#' SpatpREP2$infoDesign
+#'
+#' plot_fieldhub(SpatpREP2,
+#' labels = "PLOT",
+#' factor_name = "PLOT",
+#' width = 12,
+#' height = 10,
+#' reverse_y = TRUE,
+#' reverse_x = TRUE)
+#'
 plot_fieldhub <- function(design,
                           x = "COLUMN",
                           y = "ROW",
@@ -2190,14 +2249,30 @@ plot_fieldhub <- function(design,
 
 }
 
-DOE_stats <- function(p){
-
-  #trt = c(2,3,4,5,6)
-  #outdesign1 <-design.crd(trt,r=5,serie=2,2543,'Mersenne-Twister')
-  #p <- plot_design_crd(outdesign1,ncols = 7,nrows = 4, width = 10, height = 10, reverse_y = TRUE)
-  #p
-  #stats <- DOE_stats(p)
-
+#' Measures of a Field Design
+#'
+#' Returns a list with several useful information about the experiment
+#'
+#' @param p \code{ggplot} object containing the data of the plot
+#'
+#' @return a list with several useful information about the experiment and the field
+#' @export
+#'
+#' @examples
+#' library(agricolae)
+#' library(agricolaeplotr)
+#' trt = c(2,3,4,5,6)
+#' outdesign1 <-design.crd(trt,r=5,serie=2,2543,'Mersenne-Twister')
+#' p <- plot_design_crd(outdesign1,
+#'              ncols = 7,
+#'              nrows = 4,
+#'              width = 10,
+#'              height = 10,
+#'              reverse_y = TRUE)
+#' stats <- DOE_obj(p)
+#' stats
+#FieldLayout <- function(x,...) UseMethod("FieldLayout")
+DOE_obj <- function(p){
 
   res <- list()
   dat <- layer_data(p)
@@ -2241,17 +2316,38 @@ DOE_stats <- function(p){
   res$ymin <- min(dat$ymin)
   res$ymax <- max(dat$ymax)
   res$n_fac <- length(unique(dat$fill))
+  #class(res) <- "FieldLayout"
   return(res)
 }
-
-summary.agricolaeplotr <- function(x, unit="m", part="net_plot"){
+#' summary of a field Layout
+#'
+#' print a summary of a field jayout
+#' @param x an object, created by DOE_obj
+#' @param unit a string that corresponds to measure unit (default is m)
+#' @param part which part of the summary are you interested?
+#'
+#' @return
+#' @export
+#'
 #' @examples
 #' library(agricolaeplotr)
 #' library(agricolae)
 #' varieties<-c('perricholi','yungay','maria bonita','tomasa')
 #' outdesign <-design.youden(varieties,r=2,serie=2,seed=23)
-#' plot_youden(outdesign, labels = 'varieties')
-#print("Net plot measures \n")
+#' p <- plot_youden(outdesign, labels = 'varieties')
+#' stats <- DOE_obj(p)
+#' # print plot summary for net plot (plots without space)
+#' summary(stats, part = "net_plot")
+#' # print plot summary for gross plot (plots with space)
+#' summary(stats, part = "gross_plot")
+#' # print plot summary for entire field
+#' summary(stats, part = "field")
+#' # print plot summary for design summary
+#' summary(stats, part = "experiment")
+#' # print plot summary for all information shown above in one output
+#' summary(stats, part = "all")
+summary <- function(x, unit="m", part="net_plot"){
+
   if(!(part  %in% c("net_plot","gross_plot","field","experiment","all"))){
     stop(paste("part parameter needs to be one of the following: net_plot, gross_plot, field, all. You have typed",part))
   }
@@ -2306,8 +2402,4 @@ summary.agricolaeplotr <- function(x, unit="m", part="net_plot"){
     print(paste("number of factors:",x$n_fac))
   }
 }
-summary.agricolaeplotr(stats, part = "net_plot")
-summary.agricolaeplotr(stats, part = "gross_plot")
-summary.agricolaeplotr(stats, part = "field")
-summary.agricolaeplotr(stats, part = "experiment")
-summary.agricolaeplotr(stats, part = "all")
+
