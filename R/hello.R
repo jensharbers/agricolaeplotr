@@ -2271,7 +2271,6 @@ plot_fieldhub <- function(design,
 #'              reverse_y = TRUE)
 #' stats <- DOE_obj(p)
 #' stats
-#FieldLayout <- function(x,...) UseMethod("FieldLayout")
 DOE_obj <- function(p){
 
   res <- list()
@@ -2316,17 +2315,18 @@ DOE_obj <- function(p){
   res$ymin <- min(dat$ymin)
   res$ymax <- max(dat$ymax)
   res$n_fac <- length(unique(dat$fill))
-  #class(res) <- "FieldLayout"
-  return(res)
+  class(res) <- "FieldLayout"
+  res
 }
+
 #' summary of a field Layout
 #'
 #' print a summary of a field jayout
-#' @param x an object, created by DOE_obj
+#' @param object an object, created by DOE_obj
 #' @param unit a string that corresponds to measure unit (default is m)
 #' @param part which part of the summary are you interested?
+#' @param ... further arguments passed to or from other methods
 #'
-#' @return
 #' @export
 #'
 #' @examples
@@ -2346,8 +2346,12 @@ DOE_obj <- function(p){
 #' summary(stats, part = "experiment")
 #' # print plot summary for all information shown above in one output
 #' summary(stats, part = "all")
-summary <- function(x, unit="m", part="net_plot"){
-
+###FieldLayout <- function(object,unit,part,...) UseMethod("FieldLayout")
+summary.FieldLayout <- function(object, unit="m", part="net_plot",...){
+  if(class(object) != "FieldLayout"){
+    stop("This is not the right class for this kind of summary. You need to use an object from a class \"FieldLayout\".")
+  }
+  x <- object
   if(!(part  %in% c("net_plot","gross_plot","field","experiment","all"))){
     stop(paste("part parameter needs to be one of the following: net_plot, gross_plot, field, all. You have typed",part))
   }
@@ -2363,7 +2367,6 @@ summary <- function(x, unit="m", part="net_plot"){
     print(paste("abs_space_height:",x$abs_space_width, unit))
   }
 
-  #print("gross plot measures\n")
   if(part %in% c("gross_plot","all")){
 
     print(paste("gross plot height:",x$gross_height_plot, unit))
