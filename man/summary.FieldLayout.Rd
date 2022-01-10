@@ -7,16 +7,17 @@
 \method{summary}{FieldLayout}(object, unit = "m", part = "net_plot", ...)
 }
 \arguments{
-\item{object}{an object, created by DOE_obj}
+\item{object}{an object, created by DOE_obj with a FieldLayout class}
 
 \item{unit}{a string that corresponds to measure unit (default is m)}
 
-\item{part}{which part of the summary are you interested?}
+\item{part}{which part of the summary are you interested?
+Choose one of the following: "net_plot","gross_plot","field","experiment","all"}
 
 \item{...}{further arguments passed to or from other methods}
 }
 \description{
-print a summary of a field jayout
+print a summary of a FieldLayout object
 }
 \examples{
 library(agricolaeplotr)

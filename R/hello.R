@@ -2321,10 +2321,11 @@ DOE_obj <- function(p){
 
 #' summary of a field Layout
 #'
-#' print a summary of a field jayout
-#' @param object an object, created by DOE_obj
+#' print a summary of a FieldLayout object
+#' @param object an object, created by DOE_obj with a FieldLayout class
 #' @param unit a string that corresponds to measure unit (default is m)
 #' @param part which part of the summary are you interested?
+#' Choose one of the following: "net_plot","gross_plot","field","experiment","all"
 #' @param ... further arguments passed to or from other methods
 #'
 #' @export
@@ -2406,13 +2407,42 @@ summary.FieldLayout <- function(object, unit="m", part="net_plot",...){
   }
 }
 
-to_table <- function(object,part="all",unit="m",digits=3,...){
+#' to_table
+#'
+#' Write field experiment information to a dataframe.
+#' @param object an object, created by DOE_obj with a FieldLayout class
+#' @param unit a string that corresponds to measure unit (default is m)
+#' @param part which part of the summary are you interested?
+#' Choose one of the following: "net_plot","gross_plot","field","experiment"
+#' @param digits integer indicating the number of decimal places (round)
+#' or significant digits (signif) to be used. Negative values are allowed
+#' @param ... further arguments passed to or from other methods
+#'
+#' @return dataframe with corresponding information about the experiment
+#' @export
+#'
+#' @examples
+#' library(agricolaeplotr)
+#' library(agricolae)
+#' varieties<-c('perricholi','yungay','maria bonita','tomasa')
+#' outdesign <-design.youden(varieties,r=2,serie=2,seed=23)
+#' p <- plot_youden(outdesign, labels = 'varieties')
+#' stats <- DOE_obj(p)
+#' r <- to_table(stats,part = "net_plot", digits = 2)
+#' r
+#' r <- to_table(stats,part = "gross_plot", digits = 2)
+#' r
+#' r <- to_table(stats,part = "field", digits = 2)
+#' r
+#' r <- to_table(stats,part = "experiment", digits = 2)
+#' r
+to_table <- function(object,part="net_plot",unit="m",digits=3,...){
   if (class(object) != "FieldLayout"){
     stop("The object needs to be from the class 'agricolaeplotr'")
   }
   x <- unclass(object)
-  if(!(part  %in% c("net_plot","gross_plot","field","experiment","all"))){
-    stop(paste("part parameter needs to be one of the following: net_plot, gross_plot, field, all. You have typed",part))
+  if(!(part  %in% c("net_plot","gross_plot","field","experiment"))){
+    stop(paste("part parameter needs to be one of the following: net_plot, gross_plot, field, experiment. You have typed",part))
   }
   if(part %in% c("net_plot")){
     df <- data.frame(names=rep(0,8))
@@ -2506,11 +2536,3 @@ to_table <- function(object,part="all",unit="m",digits=3,...){
   }
 }
 
-r <- to_table(stats,part = "net_plot", digits = 2)
-r
-r <- to_table(stats,part = "gross_plot", digits = 2)
-r
-r <- to_table(stats,part = "field", digits = 2)
-r
-r <- to_table(stats,part = "experiment", digits = 2)
-r
