@@ -1,11 +1,11 @@
-agricolaeplotr 0.2.2
+agricolaeplotr 0.2.4
 
-* Added a `NEWS.md` file to track changes to the package.
+* Added an additional theme for plotting
+* Added a function to export designs as a SpatialPolygonDataFrame
+* Added a summary function
 
 NEWS.md: 
  
 ### Bugfixes
-- plot_lattice_triple works for all valid cases
-- updated error message for ncols parameter
 - single quoting of all mentioned packages in vignette
 ---

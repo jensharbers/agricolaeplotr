@@ -7,7 +7,7 @@
 
 0 errors | 0 warnings | 0 note
 
-* This is a reattempt for the first release.
+* Added a few more function to plot designs and reduce the effort of exporting experimental designs
 
 
 'ggplot' is a name of a class of a ggplot2 generated plot

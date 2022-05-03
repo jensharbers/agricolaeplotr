@@ -2418,18 +2418,18 @@ to_table <- function(object,part="net_plot",unit="m",digits=3,...){
 
 #' make_polygons
 #'
-#' This function coerces all rectangels
-#' from a 'ggplot' object to 'spatialPolygonDataframe'.
+#' This function coerces all rectangles
+#' from a 'ggplot' object to 'SpatialPolygonDataframe'.
 #' @param ggplot_object saved ggplot object, containing the
-#' coordinates of the rectables of a 'ggplot' object of the first two layers
+#' coordinates of the rectangles of a 'ggplot' object of the first two layers
 #' @param north float added to the rows
 #'  to have a northing ordinate
 #' @param east float added to the rows
 #'  to have a easting ordinate
 #' @param projection_output string defines
-#'  in which EPSG projectionthe SpatialPolygonDataFrame shoul be
+#'  in which EPSG projection the SpatialPolygonDataFrame should be
 #' @export
-#' @return a spatialPolygonDataframe object
+#' @return a SpatialPolygonDataframe object
 #'
 #' @examples
 #' library(agricolaeplotr)
