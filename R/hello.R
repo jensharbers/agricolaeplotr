@@ -2128,126 +2128,6 @@ plot_youden <- function(design, x = "col", y = "row",
   }
 
 }
-#' Plot FielDHub Design
-#'
-#' Plots designs from \code{FielDHub} package
-#' @param design outdesign from \code{FielDHub} package with on of the following IDs: c(9,13,14,15,16)
-#' @param x Describes the x coordinates of a experiment design
-#' @param y Describes the y coordinates of a experiment design
-#' @param width numeric value, describes the width of a plot in an experiment
-#' @param height numeric value, describes the height of a plot in an experiment
-#' @param space_width numeric value, describes the share of the space of the plots. 0=only space, 1=no space between plots in term of width
-#' @param space_height numeric value, describes the share of the space of the plots. 0=only space, 1=no space between plots in term of height
-#' @param reverse_y boolean, should the plots of the experiment be changed in reverse order in Row direction? use reverse_y=TRUE to have same sketch as in agricolae. default:reverse_y=FALSE
-#' @param reverse_x boolean, should the plots of the experiment be changed in reverse order in column direction? default:reverse_x=FALSE
-#' @param factor_name string Which factor should be used for plotting, needs to be a column in outdesign$book
-#' @param labels string Describes the column from that the plots are taken to display them
-#'
-#' @return \code{ggplot} graphic that can be modified, if wished
-#' @export
-#' @import ggplot2
-#' @import FielDHub
-#' @examples
-#' library(agricolaeplotr)
-#' library(FielDHub)
-#' SpatpREP1 <- partially_replicated(nrows = 25,
-#'                                   ncols = 18,
-#'                                   repGens = c(280,50,10,1,1),
-#'                                   repUnits = c(1,2,3,20,20),
-#'                                   planter = "cartesian",
-#'                                   plotNumber = 101,
-#'                                   seed = 77)
-#' SpatpREP1$infoDesign
-#'
-#' plot_fieldhub(SpatpREP1,
-#' labels = "PLOT",
-#' factor_name = "PLOT",
-#' width = 12,
-#' height = 10,
-#' reverse_y = TRUE,
-#' reverse_x = TRUE)
-#'
-#' NAME <- paste("G", 1:492, sep = "")
-#' repGens = c(108, 384);repUnits = c(2,1)
-#' REPS <- rep(repUnits, repGens)
-#' treatment_list <- data.frame(list(ENTRY = 1:492, NAME = NAME, REPS = REPS))
-#'
-#' SpatpREP2 <- partially_replicated(nrows = 30,
-#'                                   ncols = 20,
-#'                                   planter = "serpentine",
-#'                                   plotNumber = 101,
-#'                                   seed = 41,
-#'                                   data = treatment_list)
-#' SpatpREP2$infoDesign
-#'
-#' plot_fieldhub(SpatpREP2,
-#' labels = "PLOT",
-#' factor_name = "PLOT",
-#' width = 12,
-#' height = 10,
-#' reverse_y = TRUE,
-#' reverse_x = TRUE)
-#'
-plot_fieldhub <- function(design,
-                          x = "COLUMN",
-                          y = "ROW",
-                          labels = "PLOT",
-                          factor_name = "TREATMENT",
-                          width = 1,
-                          height = 1,
-                          space_width = 0.95,
-                          space_height = 0.85,
-                          reverse_y = FALSE,
-                          reverse_x = FALSE) {
-  if (design$infoDesign$idDesign %in% c(9,13,14,15,16)) {
-    design$book <- design$fieldBook
-    test_string(x)
-    test_string(y)
-
-    test_input_reverse_x(reverse_x)
-    test_input_reverse_y(reverse_y)
-
-    test_input_height(height)
-    test_input_width(width)
-
-    test_input_height(space_height)
-    test_input_width(space_width)
-
-    #
-    # replication_name = "REPLICATION",
-    # location_name = "LOCATION",
-    # test_name_in_column(factor_name, design)
-    # test_name_in_column(replication_name, design)
-    # test_name_in_column(location_name, design)
-    test_name_in_column(labels, design)
-
-    table <- as.data.frame(design$book)
-    table[, x]  <- as.numeric(table[, x] ) * width
-    table[, y] <- as.numeric(table[, y]) * height
-    if (reverse_y == TRUE) {
-      table[, y] <- abs(table[, y] - max(table[, y])) +
-        min(table[, y])
-    }
-    if (reverse_x == TRUE) {
-      table[, x]  <- abs(table[, x]  - max(table[, x] )) +
-        min(table[, x] )
-    }
-    plt <- ggplot(table, aes_string(x = x, y = y)) +
-      geom_tile(aes_string(fill = factor_name),
-                width = width * space_width, height = height *
-                  space_height) + theme_bw() + theme(line = element_blank()) +
-      geom_text(aes_string(label = labels), colour = "black")# +
-    # + facet_grid(reformulate(replication_name,location_name))
-
-    plt
-
-    return(plt)
-
-  } else {
-    stop(paste0("This is not the correct function for your experiment design."))
-  }
-
-}
 
 #' Measures of a Field Design
 #'
@@ -2535,4 +2415,87 @@ to_table <- function(object,part="net_plot",unit="m",digits=3,...){
     return(df)
   }
 }
+
+#' make_polygons
+#'
+#' This function coerces all rectangels
+#' from a 'ggplot' object to 'spatialPolygonDataframe'.
+#' @param ggplot_object saved ggplot object, containing the
+#' coordinates of the rectables of a 'ggplot' object of the first two layers
+#' @param north float added to the rows
+#'  to have a northing ordinate
+#' @param east float added to the rows
+#'  to have a easting ordinate
+#' @param projection_output string defines
+#'  in which EPSG projectionthe SpatialPolygonDataFrame shoul be
+#' @export
+#' @return a spatialPolygonDataframe object
+#'
+#' @examples
+#' library(agricolaeplotr)
+#' library(agricolae)
+#' trt = c(2,3,4,5,6)
+#' outdesign1 <-design.crd(trt,r=5,serie=2,2543,'Mersenne-Twister')
+#' plt <- plot_design_crd(outdesign1,ncols = 13,nrows = 3)
+#' spat_df <- make_polygons(plt)
+#' spat_df
+make_polygons <- function(ggplot_object, north = 3454206.89, east = 5939183.21, projection_output = "+init=epsg:4326") {
+  table_object <- merge(ggplot2::layer_data(ggplot_object,1),
+                        ggplot2::layer_data(ggplot_object,2),
+                        by.x=c("x","y"), by.y=c("x","y"))
+  bounds = table_object[, c(7, 6, 9, 8)]
+  bounds$xmax <- bounds$xmax + north
+  bounds$xmin <- bounds$xmin + north
+
+  bounds$ymax <- bounds$ymax + east
+  bounds$ymin <- bounds$ymin + east
+
+
+  polygons_list = apply(bounds, 1, function(x) {
+    out = raster::extent(x[c(2, 1, 4, 3)])
+    out = methods::as(out, 'SpatialPolygons')
+    out = methods::as(out, 'SpatialPolygonsDataFrame')
+    raster::crs(out) <- sp::CRS("+init=epsg:31467")
+    out
+  })
+
+
+  polygons_list = do.call(rbind, polygons_list)
+
+  polygons_list@data <- table_object
+
+  polygons_list <- sp::spTransform(polygons_list, sp::CRS(projection_output))
+  return(polygons_list)
+}
+
+#' theme_gil
+#'
+#' Creates a theme for 'ggplot' based graphics to ensure
+#' to meet formal requirements for conferences of the
+#' Gesellschaft fuer Informatik in der Land-, Forst,- und Ern?hrungswirtschaft e.V. (GIL).
+#'
+#' @return a 'ggplot' graph with a modified theme
+#' @export
+#'
+#' @examples
+#' library(ggplot2)
+#' library(extrafont)
+#' font_import()
+#' loadfonts(device="win")
+#'
+#' # example borrowed from ggplot2
+#' df <- data.frame(
+#' gp = factor(rep(letters[1:3], each = 10)),
+#' y = rnorm(30))
+#'
+#' p <- ggplot() +
+#' geom_point(data = df, aes(gp, y))
+#' p <- p + theme_gil()
+theme_gil <- function(){
+  theme_bw() +
+    theme(text=element_text(family="Times New Roman"))+
+    theme(axis.text = element_text(colour = "black", size=9))+
+    theme(axis.title = element_text(size = 10, angle = 0,hjust = 0.5))
+}
+
 

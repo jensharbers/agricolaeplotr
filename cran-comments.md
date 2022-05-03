@@ -18,6 +18,9 @@ all package names are put in single quotes
 two typos in vignette.Rmd are corrected
 
 ## Bug Fixes:
+Non bugs found, If You find a bug, just ask me on github or you may mail me.
 
-bug fixed in plot_lattice triple.
-All valid combinations are able to be plot now
+## features:
+export ggplot plots to SpatialPolygonDataFrames to use them in GIS.
+
+

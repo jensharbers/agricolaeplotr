@@ -1,7 +1,7 @@
 Package: agricolaeplotr
 Type: Package
 Title: Visualization of Design of Experiments from the 'agricolae' Package
-Version: 0.2.3
+Version: 0.2.4
 Authors@R: 
     person(family="Harbers", given="Jens", email="jensharbers@gmail.com", role=c("aut","cre"),
            comment = c(ORCID = "0000-0001-6634-623X"))
@@ -15,7 +15,12 @@ Encoding: UTF-8
 LazyData: False
 Imports: ggplot2,
          agricolae,
-         FielDHub
+         raster,
+         sp,
+         FielDHub,
+         rgdal,
+         methods,
+         extrafont
 RoxygenNote: 7.1.1
 Language: en-US
 Suggests: 
@@ -29,4 +34,3 @@ Depends: R (>= 3.6)
 VignetteBuilder: knitr
 Note: 'agricolae' is a package name
       'ggplot2' is a package name
-      'FielDHub' is a package name
