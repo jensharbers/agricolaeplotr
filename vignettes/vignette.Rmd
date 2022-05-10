@@ -29,9 +29,10 @@ use the following command to load the package after installation. The two packag
 
 ```{r load_package}
 library("agricolaeplotr")
-
 library("ggplot2")
 library("agricolae")
+library("rgdal")
+library("leaflet")
 ```
 
 ## Example: factorial ab design with complete randomization
@@ -294,3 +295,257 @@ There are two functions namely 'ggdesplot' and 'ggdesplot' from the 'desplot' pa
 
 - match size of subplot to those to mainplots for all split plot designs
 - create own function for user specific experiment designs with same API 
+
+## Plot trials from FielDHub package
+
+There are a few designs, that can be plotted directly as they have coordinates in x and y.
+
+I show an example for each supported design:
+
+### partially_replicated design
+
+```{r}
+require(FielDHub)
+SpatpREP1 <- partially_replicated(nrows = 25,
+                                  ncols = 18,
+                                  repGens = c(280,50,10,1,1),
+                                  repUnits = c(1,2,3,20,20),
+                                  planter = "cartesian",
+                                  plotNumber = 101,
+                                  seed = 77)
+
+p <- plot_fieldhub(SpatpREP1,
+labels = "PLOT",
+factor_name = "PLOT",
+width = 12,
+height = 10,
+reverse_y = TRUE,
+reverse_x = TRUE)
+```
+
+```{r}
+NAME <- paste("G", 1:492, sep = "")
+repGens = c(108, 384);repUnits = c(2,1)
+REPS <- rep(repUnits, repGens)
+treatment_list <- data.frame(list(ENTRY = 1:492, 
+                                   NAME = NAME, 
+                                   REPS = REPS))
+
+SpatpREP2 <- partially_replicated(nrows = 30,
+                                   ncols = 20,
+                                   planter = "serpentine",
+                                   plotNumber = 101,
+                                   seed = 41,
+                                   data = treatment_list)
+
+SpatpREP2$infoDesign
+
+plot_fieldhub(SpatpREP2,
+labels = "PLOT",
+factor_name = "PLOT",
+width = 12,
+height = 10,
+reverse_y = TRUE,
+reverse_x = TRUE)
+
+```
+### diagonal_arrangement design
+
+```{r}
+spatd <- diagonal_arrangement(nrows = 15, ncols = 20, lines = 270, 
+                              checks = 4, 
+                              plotNumber = 101, 
+                              kindExpt = "SUDC", 
+                              planter = "serpentine", 
+                              seed = 1987,
+                              exptName = "20WRY1", 
+                              locationNames = "MINOT")
+
+plot_fieldhub(spatd,
+labels = "PLOT",
+factor_name = "PLOT",
+width = 12,
+height = 10,
+reverse_y = TRUE,
+reverse_x = TRUE)
+
+
+```
+### optimized_arrangement design
+
+```{r}
+OptimAd1 <- optimized_arrangement(nrows = 20, ncols = 20, lines = 362, 
+                                  amountChecks = 38, 
+                                  checks = 1:5,
+                                  planter = "cartesian", 
+                                  plotNumber = 101,
+                                  seed = 14,
+                                  exptName = "20RW1",
+                                  locationNames = "CASSELTON")
+OptimAd1$infoDesign
+
+plot_fieldhub(OptimAd1,
+labels = "PLOT",
+factor_name = "PLOT",
+width = 12,
+height = 10,
+reverse_y = FALSE,
+reverse_x = FALSE)
+
+
+```
+### rectangular_lattice design
+```{r}
+
+
+rectangularLattice1 <- rectangular_lattice(t = 20, k = 4, r = 6, l = 1, 
+                                           plotNumber = 101,
+                                           locationNames = "FARGO", 
+                                           seed = 126)
+rectangularLattice1$infoDesign
+
+
+plot_fieldhub(rectangularLattice1,
+x = "REP",
+y = "ENTRY",
+labels = "PLOT",
+factor_name = "PLOT",
+width = 12,
+height = 10,
+reverse_y = FALSE,
+reverse_x = FALSE)
+
+```
+
+### rectangular_lattice design
+```{r}
+
+
+squareLattice1 <- square_lattice(t = 64, k = 8, r = 5, l = 2, 
+                                 plotNumber = c(1001, 2001),
+                                 locationNames = c("FARGO", "MINOT"), 
+                                 seed = 1986)
+squareLattice1$infoDesign
+
+
+plot_fieldhub(squareLattice1,
+x = "REP",
+y = "ENTRY",
+labels = "PLOT",
+factor_name = "PLOT",
+width = 12,
+height = 10,
+reverse_y = FALSE,
+reverse_x = FALSE)
+
+```
+### square_lattice design
+```{r}
+squareLattice1 <- square_lattice(t = 64, k = 8, r = 5, l = 2, 
+                                 plotNumber = c(1001, 2001),
+                                 locationNames = c("FARGO", "MINOT"), 
+                                 seed = 1986)
+squareLattice1$infoDesign
+
+
+
+plot_fieldhub(squareLattice1,
+x = "REP",
+y = "ENTRY",
+labels = "PLOT",
+factor_name = "PLOT",
+width = 12,
+height = 10,
+reverse_y = FALSE,
+reverse_x = FALSE)
+
+```
+
+### RCBD_augmented design
+
+You may plot also these type of design, please note that a field design is produced for one ocation at a time.
+
+
+```{r}
+ARCBD1 <- RCBD_augmented(lines = 50, checks = 3, b = 6, l = 1, 
+                         planter = "cartesian", 
+                         plotNumber = c(1,1001),
+                         seed = 23, 
+                         locationNames = c("FARGO"))
+ARCBD1$infoDesign
+
+
+plot_fieldhub(ARCBD1,
+x = "ROW",
+y = "COLUMN",
+labels = "PLOT",
+factor_name = "PLOT",
+width = 12,
+height = 10,
+reverse_y = FALSE,
+reverse_x = FALSE)
+
+```
+### incomplete_blocks design
+
+```{r}
+
+ibd1 <- incomplete_blocks(t = 12,
+                          k = 4,
+                          r = 2,
+                          seed = 1984)
+ibd1$infoDesign
+
+plot_fieldhub(ibd1,
+x = "ENTRY",
+y = "REP",
+labels = "PLOT",
+factor_name = "PLOT",
+width = 12,
+height = 10,
+reverse_y = FALSE,
+reverse_x = FALSE)
+
+```
+
+## Export a Design to GIS applications
+It is often useful to export an DoE as a file, that can be processed somewhere else.
+
+We create a .shp, .shx and .dbf file using maptools.
+
+```{r}
+
+trt = c(2,3,4,5,6)
+outdesign1 <-design.crd(trt,r=5,serie=2,2543,'Mersenne-Twister')
+plt <- plot_design_crd(outdesign1,ncols = 13,nrows = 3)
+spat_df <- make_polygons(plt)
+spat_df
+
+maptools::writeSpatialShape(spat_df, "MyAwesomeExperiment")
+
+```
+
+
+
+```{r}
+
+trt<-c(3,2) # factorial 3x2
+outdesign <- design.ab(trt, r=3, serie=2,design = 'crd')
+plt <- plot_design.factorial_crd(outdesign,ncols=3,nrows=6, width = 5, height = 7.5 , reverse_x = FALSE,reverse_y = TRUE, factor_name = "B") + theme_pres() + scale_fill_viridis_d()
+
+spat_df <- make_polygons(plt,east = 3454800, north = 5938650 ,projection_output = '+init=EPSG:4326')
+
+plot(spat_df, col=spat_df$fill)
+
+# this part does not work well in a vignette
+
+# leaflet(spat_df) %>% addPolygons(
+#   fillColor = spat_df$fill,
+#   opacity=1,
+#   color="black",
+#   fillOpacity = 1) %>% addProviderTiles(provider = "OpenStreetMap.DE") # %>%
+#    setView(lng = (spat_df@bbox[1,1] + spat_df@bbox[1,2])/2,
+#            lat = (spat_df@bbox[2,1] + spat_df@bbox[2,2])/2,
+#         zoom = 28
+#       )
+```
