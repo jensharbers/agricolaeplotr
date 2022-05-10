@@ -14,18 +14,3 @@ Creates a theme for 'ggplot' based graphics to ensure
 to meet formal requirements for conferences of the
 Gesellschaft fuer Informatik in der Land-, Forst,- und Ern?hrungswirtschaft e.V. (GIL).
 }
-\examples{
-library(ggplot2)
-library(extrafont)
-font_import()
-loadfonts(device="win")
-
-# example borrowed from ggplot2
-df <- data.frame(
-gp = factor(rep(letters[1:3], each = 10)),
-y = rnorm(30))
-
-p <- ggplot() +
-geom_point(data = df, aes(gp, y))
-p <- p + theme_gil()
-}

@@ -819,44 +819,44 @@ test_that("plot has correct properties", {
 
 })
 
-#test_that("plot a plot design from FielDHub package shows ROW as y axis", {
-#SpatpREP1 <- partially_replicated(nrows = 25,
-#                                  ncols = 18,
-#                                  repGens = c(280,50,10,1,1),
-#                                  repUnits = c(1,2,3,20,20),
-#                                  planter = "cartesian",
-#                                  plotNumber = 101,
-#                                  seed = 77)
-#
-#p <- plot_fieldhub(SpatpREP1,
-#labels = "PLOT",
-#factor_name = "PLOT",
-#width = 12,
-#height = 10,
-#reverse_y = TRUE,
-#reverse_x = TRUE)
-#  expect_identical(p$labels$y, "ROW")
-#
-#})
-#
-#test_that("plot a plot design from FielDHub package shows COLUMN as x axis", {
-#  SpatpREP1 <- partially_replicated(nrows = 25,
-#                                    ncols = 18,
-#                                    repGens = c(280,50,10,1,1),
-#                                    repUnits = c(1,2,3,20,20),
-#                                    planter = "cartesian",
-#                                    plotNumber = 101,
-#                                    seed = 77)
-#
-#  p <- plot_fieldhub(SpatpREP1,
-#                     labels = "PLOT",
-#                     factor_name = "TREATMENT",
-#                     width = 12,
-#                     height = 10,
-#                     reverse_y = TRUE,
-#                     reverse_x = TRUE)
-#  p <- p + theme(legend.position = "none")
-#
-#  expect_identical(p$labels$x, "COLUMN")
+test_that("plot a plot design from FielDHub package shows ROW as y axis", {
+SpatpREP1 <- partially_replicated(nrows = 25,
+                                  ncols = 18,
+                                  repGens = c(280,50,10,1,1),
+                                  repUnits = c(1,2,3,20,20),
+                                  planter = "cartesian",
+                                  plotNumber = 101,
+                                  seed = 77)
 
-# })
+p <- plot_fieldhub(SpatpREP1,
+labels = "PLOT",
+factor_name = "PLOT",
+width = 12,
+height = 10,
+reverse_y = TRUE,
+reverse_x = TRUE)
+  expect_identical(p$labels$y, "ROW")
+
+})
+
+test_that("plot a plot design from FielDHub package shows COLUMN as x axis", {
+  SpatpREP1 <- partially_replicated(nrows = 25,
+                                    ncols = 18,
+                                    repGens = c(280,50,10,1,1),
+                                    repUnits = c(1,2,3,20,20),
+                                    planter = "cartesian",
+                                    plotNumber = 101,
+                                    seed = 77)
+
+  p <- plot_fieldhub(SpatpREP1,
+                     labels = "PLOT",
+                     factor_name = "TREATMENT",
+                     width = 12,
+                     height = 10,
+                     reverse_y = TRUE,
+                     reverse_x = TRUE)
+  p <- p + theme(legend.position = "none")
+
+  expect_identical(p$labels$x, "COLUMN")
+
+})

@@ -8,12 +8,13 @@ make_polygons(
   ggplot_object,
   north = 3454206.89,
   east = 5939183.21,
+  projection_input = "+init=epsg:31467",
   projection_output = "+init=epsg:4326"
 )
 }
 \arguments{
 \item{ggplot_object}{saved ggplot object, containing the
-coordinates of the rectables of a 'ggplot' object of the first two layers}
+coordinates of the rectangles of a 'ggplot' object of the first two layers}
 
 \item{north}{float added to the rows
 to have a northing ordinate}
@@ -21,15 +22,19 @@ to have a northing ordinate}
 \item{east}{float added to the rows
 to have a easting ordinate}
 
+\item{projection_input}{string defines
+in which EPSG projection the ggplot object should be converted to a raster object?
+a projection with a metric unit is highly recommended}
+
 \item{projection_output}{string defines
-in which EPSG projectionthe SpatialPolygonDataFrame shoul be}
+in which EPSG projection the SpatialPolygonDataFrame should be exported.}
 }
 \value{
-a spatialPolygonDataframe object
+a SpatialPolygonDataframe object
 }
 \description{
-This function coerces all rectangels
-from a 'ggplot' object to 'spatialPolygonDataframe'.
+This function coerces all rectangles
+from a 'ggplot' object to 'SpatialPolygonDataframe'.
 }
 \examples{
 library(agricolaeplotr)

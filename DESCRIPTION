@@ -17,16 +17,18 @@ Imports: ggplot2,
          agricolae,
          raster,
          sp,
-         FielDHub,
          rgdal,
          methods,
-         extrafont
+         maptools,
+         FielDHub
 RoxygenNote: 7.1.1
 Language: en-US
 Suggests: 
     testthat (>= 3.0.0),
     knitr,
-    rmarkdown
+    rmarkdown,
+    extrafont,
+    leaflet
 Config/testthat/edition: 3
 BugReports: https://github.com/jensharbers/agricolaeplotr/issues
 URL: https://github.com/jensharbers/agricolaeplotr
