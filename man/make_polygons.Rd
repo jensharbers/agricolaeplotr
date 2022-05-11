@@ -39,7 +39,7 @@ from a 'ggplot' object to 'SpatialPolygonDataframe'.
 \examples{
 library(agricolaeplotr)
 library(agricolae)
-trt = c(2,3,4,5,6)
+trt = c(2,3,4)
 outdesign1 <-design.crd(trt,r=5,serie=2,2543,'Mersenne-Twister')
 plt <- plot_design_crd(outdesign1,ncols = 13,nrows = 3)
 spat_df <- make_polygons(plt)

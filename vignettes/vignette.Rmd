@@ -27,7 +27,7 @@ factorial ab-design will be used as an example. Although some parameters are wor
 ## Load the package
 use the following command to load the package after installation. The two packages below agricolaeplotr are only needed for the examples.
 
-```{r load_package include=False}
+```{r message=TRUE, warning=FALSE}
 library("agricolaeplotr")
 library("ggplot2")
 library("agricolae")
@@ -266,7 +266,6 @@ plot_split_crd(outdesign2,ncols = 5,nrows=6, subplots = TRUE, labels="splots",fa
 ```
 
 
-
 ```{r}
 set.seed(1298664)
 T1<-c('a','b','c','d','e',"f","g")
@@ -294,7 +293,8 @@ There are two functions namely 'ggdesplot' and 'ggdesplot' from the 'desplot' pa
 ## Planed features for future versions
 
 - match size of subplot to those to mainplots for all split plot designs
-- create own function for user specific experiment designs with same API 
+- create own function for user specific experiment designs with same API
+- add field designs for replicated experiments made in 'FielDHub'
 
 ## Plot trials from FielDHub package
 
@@ -511,17 +511,13 @@ reverse_x = FALSE)
 ## Export a Design to GIS applications
 It is often useful to export an DoE as a file, that can be processed somewhere else.
 
-We create a .shp, .shx and .dbf file using maptools.
-
-```{r}
+```{r warning=FALSE}
 
 trt = c(2,3,4,5,6)
 outdesign1 <-design.crd(trt,r=5,serie=2,2543,'Mersenne-Twister')
 plt <- plot_design_crd(outdesign1,ncols = 13,nrows = 3)
 spat_df <- make_polygons(plt)
 spat_df
-
-maptools::writeSpatialShape(spat_df, "MyAwesomeExperiment")
 
 ```
 

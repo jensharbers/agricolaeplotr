@@ -2437,7 +2437,7 @@ to_table <- function(object,part="net_plot",unit="m",digits=3,...){
 #' @examples
 #' library(agricolaeplotr)
 #' library(agricolae)
-#' trt = c(2,3,4,5,6)
+#' trt = c(2,3,4)
 #' outdesign1 <-design.crd(trt,r=5,serie=2,2543,'Mersenne-Twister')
 #' plt <- plot_design_crd(outdesign1,ncols = 13,nrows = 3)
 #' spat_df <- make_polygons(plt)
@@ -2479,28 +2479,23 @@ make_polygons <- function(ggplot_object,
 #'
 #' Creates a theme for 'ggplot' based graphics to ensure
 #' to meet formal requirements for conferences of the
-#' Gesellschaft fuer Informatik in der Land-, Forst,- und Ern?hrungswirtschaft e.V. (GIL).
+#' Gesellschaft fuer Informatik in der
+#'  Land-, Forst,- und Ernaehrungswirtschaft e.V. (GIL).
 #'
 #' @return a 'ggplot' graph with a modified theme
 #' @export
 #'
 #' @examples
-#library(ggplot2)
-#library(extrafont)
-#font_import()
-#loadfonts(device="win")
-
-## example borrowed from ggplot2
-#df <- data.frame(
-#gp = factor(rep(letters[1:3], each = 10)),
-#y = rnorm(30))
-
-#p <- ggplot() +
-#geom_point(data = df, aes(gp, y))
-#p <- p + theme_gil()
+#' # example borrowed from ggplot2
+#' library(ggplot2)
+#' df <- data.frame(
+#' gp = factor(rep(letters[1:3], each = 10)),
+#' y = rnorm(30))
+#' p <- ggplot() +
+#' geom_point(data = df, aes(gp, y))
+#' p <- p + theme_gil();p
 theme_gil <- function(){
   theme_bw() +
-    theme(text=element_text(family="Times New Roman"))+
     theme(axis.text = element_text(colour = "black", size=9))+
     theme(axis.title = element_text(size = 10, angle = 0,hjust = 0.5))
 }

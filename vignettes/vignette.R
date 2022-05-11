@@ -1,11 +1,12 @@
 ## ----setup, eval = FALSE------------------------------------------------------
 #  install.packages("agricolaeplotr")
 
-## ----load_package-------------------------------------------------------------
+## ----message=TRUE, warning=FALSE----------------------------------------------
 library("agricolaeplotr")
-
 library("ggplot2")
 library("agricolae")
+library("rgdal")
+library("leaflet")
 
 ## -----------------------------------------------------------------------------
 library(agricolae) # origin of the needed design object
@@ -335,4 +336,172 @@ height = 10,
 reverse_y = FALSE,
 reverse_x = FALSE)
 
+
+## -----------------------------------------------------------------------------
+
+trt = c(2,3,4,5,6)
+outdesign1 <-design.crd(trt,r=5,serie=2,2543,'Mersenne-Twister')
+plt <- plot_design_crd(outdesign1,ncols = 13,nrows = 3)
+spat_df <- make_polygons(plt)
+spat_df
+
+maptools::writeSpatialShape(spat_df, "MyAwesomeExperiment")
+
+
+## -----------------------------------------------------------------------------
+
+trt<-c(3,2) # factorial 3x2
+outdesign <- design.ab(trt, r=3, serie=2,design = 'crd')
+plt <- plot_design.factorial_crd(outdesign,ncols=3,nrows=6, width = 5, height = 7.5 , reverse_x = FALSE,reverse_y = TRUE, factor_name = "B") + theme_pres() + scale_fill_viridis_d()
+
+spat_df <- make_polygons(plt,east = 3454800, north = 5938650 ,projection_output = '+init=EPSG:4326')
+
+plot(spat_df, col=spat_df$fill)
+
+# this part does not work well in a vignette
+
+# leaflet(spat_df) %>% addPolygons(
+#   fillColor = spat_df$fill,
+#   opacity=1,
+#   color="black",
+#   fillOpacity = 1) %>% addProviderTiles(provider = "OpenStreetMap.DE") # %>%
+#    setView(lng = (spat_df@bbox[1,1] + spat_df@bbox[1,2])/2,
+#            lat = (spat_df@bbox[2,1] + spat_df@bbox[2,2])/2,
+#         zoom = 28
+#       )
+
+## -----------------------------------------------------------------------------
+
+H <- paste("H", 1:4, sep = "")
+V <- paste("V", 1:5, sep = "")
+
+strip1 <- strip_plot(Hplots = H,
+                     Vplots = V,
+                     b = 1,
+                     l = 1,
+                     plotNumber = 101,
+                     planter = "serpentine",
+                     locationNames = "A",
+                     seed = 333)
+
+strip1$infoDesign                 
+
+strip1$fieldBook$ROW <- as.numeric(ordered(strip1$fieldBook$VSTRIP, levels = unique(strip1$fieldBook$VSTRIP)))
+
+strip1$fieldBook$COLUMN <- as.numeric(ordered(strip1$fieldBook$HSTRIP, levels = unique(strip1$fieldBook$HSTRIP)))
+
+plot_fieldhub(strip1,
+x = "ROW",
+y = "COLUMN",
+labels = "HSTRIP",
+factor_name = "HSTRIP",
+width = 12,
+height = 10,
+reverse_y = FALSE,
+reverse_x = FALSE)
+
+
+plot_fieldhub(strip1,
+x = "ROW",
+y = "COLUMN",
+labels = "VSTRIP",
+factor_name = "VSTRIP",
+width = 12,
+height = 10,
+reverse_y = FALSE,
+reverse_x = FALSE)
+
+## -----------------------------------------------------------------------------
+latinSq1 <- latin_square(t = 4,
+                         reps = 2,
+                         plotNumber = 101,
+                         planter = "cartesian",
+                         seed = 1980)
+
+latinSq1$infoDesign
+
+latinSq1$fieldBook$ROW <- as.numeric(ordered(latinSq1$fieldBook$ROW, levels = unique(latinSq1$fieldBook$ROW)))
+
+latinSq1$fieldBook$COLUMN <- as.numeric(ordered(latinSq1$fieldBook$COLUMN, levels = unique(latinSq1$fieldBook$COLUMN)))
+
+# Unitl now: plotting only one replication at a time (here a SQUARE)
+latinSq1$fieldBook <- latinSq1$fieldBook[latinSq1$fieldBook$SQUARE==1,]
+
+plot_fieldhub(latinSq1,
+x = "ROW",
+y = "COLUMN",
+labels = "PLOT",
+factor_name = "PLOT",
+width = 12,
+height = 10,
+reverse_y = FALSE,
+reverse_x = FALSE)
+
+
+## -----------------------------------------------------------------------------
+
+rowcold1 <- row_column(t = 36, nrows = 6, r = 3, l = 1,
+                       plotNumber= 101,
+                       locationNames = "Loc1",
+                       seed = 21)
+
+rowcold1$infoDesign
+rowcold1$resolvableBlocks
+
+# Unitl now: plotting only one replication
+rowcold1$fieldBook <- rowcold1$fieldBook[rowcold1$fieldBook$REP==1,]
+
+
+plot_fieldhub(rowcold1,
+x = "ROW",
+y = "COLUMN",
+labels = "PLOT",
+factor_name = "PLOT",
+width = 12,
+height = 10,
+reverse_y = FALSE,
+reverse_x = FALSE)
+
+## -----------------------------------------------------------------------------
+rcbd1 <- RCBD(t = LETTERS[1:20], reps = 5, l = 3,
+              plotNumber = c(101,1001, 2001),
+              continuous = TRUE,
+              planter = "serpentine",
+              seed = 1020,
+              locationNames = c("FARGO", "MINOT", "CASSELTON"))
+rcbd1$infoDesign                 
+rcbd1$fieldBook$ROW <- rep(1:15,each=20)
+rcbd1$fieldBook$COLUMN <- serpentine(n=20,times = 15)
+
+plot_fieldhub(rcbd1,
+x = "ROW",
+y = "COLUMN",
+labels = "PLOT",
+factor_name = "PLOT",
+width = 12,
+height = 10,
+reverse_y = TRUE,
+reverse_x = FALSE)
+
+rcbd1 <- RCBD(t = LETTERS[1:20], reps = 5, l = 3,
+              plotNumber = c(101,1001, 2001),
+              continuous = TRUE,
+              planter = "cartesian",
+              seed = 1020,
+              locationNames = c("FARGO", "MINOT", "CASSELTON"))
+
+rcbd1$infoDesign                 
+
+rcbd1$fieldBook$ROW <- rep(1:20,times=15)
+rcbd1$fieldBook$COLUMN <- rep(1:15,each=20)
+
+plot_fieldhub(rcbd1,
+x = "ROW",
+y = "COLUMN",
+labels = "PLOT",
+factor_name = "PLOT",
+width = 12,
+height = 10,
+reverse_y = TRUE,
+reverse_x = FALSE)
 

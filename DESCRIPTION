@@ -17,9 +17,7 @@ Imports: ggplot2,
          agricolae,
          raster,
          sp,
-         rgdal,
          methods,
-         maptools,
          FielDHub
 RoxygenNote: 7.1.1
 Language: en-US
@@ -27,8 +25,8 @@ Suggests:
     testthat (>= 3.0.0),
     knitr,
     rmarkdown,
-    extrafont,
-    leaflet
+    leaflet,
+    rgdal
 Config/testthat/edition: 3
 BugReports: https://github.com/jensharbers/agricolaeplotr/issues
 URL: https://github.com/jensharbers/agricolaeplotr
