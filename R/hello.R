@@ -2578,7 +2578,7 @@ plot_fieldhub <- function(design,
                           space_height = 0.85,
                           reverse_y = FALSE,
                           reverse_x = FALSE) {
-  if (design$infoDesign$idDesign %in% c(8,10,11,12,13,14,15,16)) {
+  if (design$infoDesign$idDesign %in% c(2,3,7,8,9,10,11,12,13,14,15,16)) {
     design$book <- design$fieldBook
     test_string(x)
     test_string(y)
@@ -2620,4 +2620,32 @@ plot_fieldhub <- function(design,
     stop(paste0("This is not the correct function for your experiment design."))
   }
 
+}
+
+#' Serpentine
+#'
+#' This function produces a serpentine array of integers beginning by one
+#'
+#' @param n integer value indicating the upper cap of a numeric sequence
+#' @param times integer number of replications
+#' @param m integer value indicating the lower
+#' cap of a numeric sequence
+#'
+#' @return vector containing the serpentine sequence
+#' @export
+#'
+#' @examples
+#' serpentine(n=20,times = 15)
+#' serpentine(n=20,times = 15,m=4)
+serpentine <- function(n,times,m=1){
+  vec= vector()
+  for(i in 1:times){
+    if(i %% 2 == 1){
+      vec <- cbind(vec,m:n)
+    }
+    else{
+      vec <- cbind(vec,n:m)
+    }
+  }
+  return(as.vector(vec))
 }

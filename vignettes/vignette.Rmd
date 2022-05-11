@@ -27,7 +27,7 @@ factorial ab-design will be used as an example. Although some parameters are wor
 ## Load the package
 use the following command to load the package after installation. The two packages below agricolaeplotr are only needed for the examples.
 
-```{r load_package}
+```{r load_package include=False}
 library("agricolaeplotr")
 library("ggplot2")
 library("agricolae")
@@ -548,4 +548,159 @@ plot(spat_df, col=spat_df$fill)
 #            lat = (spat_df@bbox[2,1] + spat_df@bbox[2,2])/2,
 #         zoom = 28
 #       )
+```
+
+Beginning here, some designs are only partly supported, as there are sometimes no definition from the authors of 'FielDHub' how to plot their designs.
+
+#### strip_plot
+
+```{r}
+
+H <- paste("H", 1:4, sep = "")
+V <- paste("V", 1:5, sep = "")
+
+strip1 <- strip_plot(Hplots = H,
+                     Vplots = V,
+                     b = 1,
+                     l = 1,
+                     plotNumber = 101,
+                     planter = "serpentine",
+                     locationNames = "A",
+                     seed = 333)
+
+strip1$infoDesign                 
+
+strip1$fieldBook$ROW <- as.numeric(ordered(strip1$fieldBook$VSTRIP, levels = unique(strip1$fieldBook$VSTRIP)))
+
+strip1$fieldBook$COLUMN <- as.numeric(ordered(strip1$fieldBook$HSTRIP, levels = unique(strip1$fieldBook$HSTRIP)))
+
+plot_fieldhub(strip1,
+x = "ROW",
+y = "COLUMN",
+labels = "HSTRIP",
+factor_name = "HSTRIP",
+width = 12,
+height = 10,
+reverse_y = FALSE,
+reverse_x = FALSE)
+
+
+plot_fieldhub(strip1,
+x = "ROW",
+y = "COLUMN",
+labels = "VSTRIP",
+factor_name = "VSTRIP",
+width = 12,
+height = 10,
+reverse_y = FALSE,
+reverse_x = FALSE)
+```
+ 
+###  latin_square design
+
+```{r}
+latinSq1 <- latin_square(t = 4,
+                         reps = 2,
+                         plotNumber = 101,
+                         planter = "cartesian",
+                         seed = 1980)
+
+latinSq1$infoDesign
+
+latinSq1$fieldBook$ROW <- as.numeric(ordered(latinSq1$fieldBook$ROW, levels = unique(latinSq1$fieldBook$ROW)))
+
+latinSq1$fieldBook$COLUMN <- as.numeric(ordered(latinSq1$fieldBook$COLUMN, levels = unique(latinSq1$fieldBook$COLUMN)))
+
+# Unitl now: plotting only one replication at a time (here a SQUARE)
+latinSq1$fieldBook <- latinSq1$fieldBook[latinSq1$fieldBook$SQUARE==1,]
+
+plot_fieldhub(latinSq1,
+x = "ROW",
+y = "COLUMN",
+labels = "PLOT",
+factor_name = "PLOT",
+width = 12,
+height = 10,
+reverse_y = FALSE,
+reverse_x = FALSE)
+
+```
+
+
+ 
+
+#### rowcolum  design
+
+
+
+```{r}
+
+rowcold1 <- row_column(t = 36, nrows = 6, r = 3, l = 1,
+                       plotNumber= 101,
+                       locationNames = "Loc1",
+                       seed = 21)
+
+rowcold1$infoDesign
+rowcold1$resolvableBlocks
+
+# Unitl now: plotting only one replication
+rowcold1$fieldBook <- rowcold1$fieldBook[rowcold1$fieldBook$REP==1,]
+
+
+plot_fieldhub(rowcold1,
+x = "ROW",
+y = "COLUMN",
+labels = "PLOT",
+factor_name = "PLOT",
+width = 12,
+height = 10,
+reverse_y = FALSE,
+reverse_x = FALSE)
+```
+
+#### rcbd design # (only for serpentine)
+
+
+```{r}
+rcbd1 <- RCBD(t = LETTERS[1:20], reps = 5, l = 3,
+              plotNumber = c(101,1001, 2001),
+              continuous = TRUE,
+              planter = "serpentine",
+              seed = 1020,
+              locationNames = c("FARGO", "MINOT", "CASSELTON"))
+rcbd1$infoDesign                 
+rcbd1$fieldBook$ROW <- rep(1:15,each=20)
+rcbd1$fieldBook$COLUMN <- serpentine(n=20,times = 15)
+
+plot_fieldhub(rcbd1,
+x = "ROW",
+y = "COLUMN",
+labels = "PLOT",
+factor_name = "PLOT",
+width = 12,
+height = 10,
+reverse_y = TRUE,
+reverse_x = FALSE)
+
+rcbd1 <- RCBD(t = LETTERS[1:20], reps = 5, l = 3,
+              plotNumber = c(101,1001, 2001),
+              continuous = TRUE,
+              planter = "cartesian",
+              seed = 1020,
+              locationNames = c("FARGO", "MINOT", "CASSELTON"))
+
+rcbd1$infoDesign                 
+
+rcbd1$fieldBook$ROW <- rep(1:20,times=15)
+rcbd1$fieldBook$COLUMN <- rep(1:15,each=20)
+
+plot_fieldhub(rcbd1,
+x = "ROW",
+y = "COLUMN",
+labels = "PLOT",
+factor_name = "PLOT",
+width = 12,
+height = 10,
+reverse_y = TRUE,
+reverse_x = FALSE)
 ```
