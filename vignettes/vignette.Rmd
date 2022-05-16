@@ -700,3 +700,65 @@ height = 10,
 reverse_y = TRUE,
 reverse_x = FALSE)
 ```
+
+
+# Output of central properties of a design of experiment
+
+The user can choose some outputs to have deeper insights of the experiment.
+
+1. The net plot is more or less the actually used plot, without the borders on  a plot level.
+
+2. The gross plot is the sum of the net plot and the border of a plot.
+
+3. The sum of all gross plots with the respective space in between is named the field.
+
+4. The experiment shows some properties that are unrelated to the plots on a field.
+
+5. The user also can choose the combined output listed from the elements by typing part = 'all'.
+
+The DOE_obj function uses the ggplot object and extract relevant field information. This is required, as the summary cannot use the ggplot object. The user also my use a different unit than meter (default).
+
+The user may extract the actual values, as they are separated from the descriptors using normal data.frame related command and operations.
+
+```{r}
+varieties<-c('perricholi','yungay','maria bonita','tomasa')
+outdesign <-design.youden(varieties,r=2,serie=2,seed=23)
+p <- plot_youden(outdesign, labels = 'varieties', width=4, height=3)
+stats <- DOE_obj(p)
+r <- to_table(stats,part = "net_plot", digits = 2)
+r
+r <- to_table(stats,part = "gross_plot", digits = 2)
+r
+r <- to_table(stats,part = "field", digits = 2)
+r
+r <- to_table(stats,part = "experiment", digits = 2)
+r
+r <- to_table(stats,part = "all", digits = 2)
+r
+```
+
+# full command of a plot
+
+Sometime it it useful to use same plotting function with a known behaviour for plotting purposes. the user may choose the origin (0|0) being in the lower left corner of the net plot. The field design needs to be a data.frame, and not a list like usually used in 'agricolae'.
+```{r}
+
+varieties<-c('perricholi','yungay','maria bonita','tomasa')
+outdesign <-design.youden(varieties,r=2,serie=2,seed=23)
+design <- outdesign$book
+design
+
+p <- full_control_positions(design,"col","row","varieties","plots",
+                       width=3,height=4.5,
+                       space_width=1,space_height=1,
+                       shift_x=-0.5*3,shift_y=-0.5*4.5)
+p
+
+p <- full_control_positions(design,"col","row","varieties","plots",
+                       width=3,height=4.5,
+                       space_width=0.93,space_height=0.945,
+                       start_origin = TRUE)
+                       p
+```
+
+
+
