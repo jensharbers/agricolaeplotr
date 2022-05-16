@@ -2704,3 +2704,115 @@ serpentine <- function(n,times,m=1){
   }
   return(as.vector(vec))
 }
+
+#' full_control_positions
+#'
+#' This function provides full control about the plotting. The user also may shift the coordinates as liked.
+#'
+#' @param design data.frame containing the row and columns of an experiment
+#' @param x Describes the x coordinates of a experiment design
+#' @param y Describes the y coordinates of a experiment design
+#' @param width numeric value, describes the width of a plot in an experiment
+#' @param height numeric value, describes the height of a plot in an experiment
+#' @param space_width numeric value, describes the share of the space of the plots. 0=only space, 1=no space between plots in term of width
+#' @param space_height numeric value, describes the share of the space of the plots. 0=only space, 1=no space between plots in term of height
+#' @param reverse_y boolean, should the plots of the experiment be changed in reverse order in Row direction? use reverse_y=TRUE to have same sketch as in agricolae. default:reverse_y=FALSE
+#' @param reverse_x boolean, should the plots of the experiment be changed in reverse order in column direction? default:reverse_x=FALSE
+#' @param factor_name string Which factor should be used for plotting, needs to be a column in outdesign$book
+#' @param labels string Describes the column from that the plots are taken to display them
+#' @param shift_x indicates the shift in units in x-axis.
+#' @param shift_y indicates the shift in units for the y-axis.
+#' @param start_origin boolean. Should the design start at the origin (0|0)?
+#'
+#' @return \code{ggplot} graphic that can be modified, if wished
+#' @export
+#' @import ggplot2
+#' @import agricolae
+#' @examples
+#' library(agricolaeplotr)
+#' library(agricolae)
+#' varieties<-c('perricholi','yungay','maria bonita','tomasa')
+#' outdesign <-design.youden(varieties,r=2,serie=2,seed=23)
+#' design <- outdesign$book
+#' design
+#' p <- full_control_positions(design,"col","row","varieties","plots",
+#'                        width=3,height=4.5,
+#'                        space_width=0.5,space_height=0.5,
+#'                        shift_x=(-0.5*3) + (-0.5*3*0.5),shift_y=-0.5*4.5 + (-0.5*4.5*0.5))
+#' p
+#' p <- full_control_positions(design,"col","row","varieties","plots",
+#'                        width=3,height=4.5,
+#'                        space_width=0.13,space_height=0.445,
+#'                        shift_x=(-0.5*3) + (-0.5*3*(1-0.13)),shift_y=-0.5*4.5 + (-0.5*4.5*(1-0.445)))
+#'                        p
+#'
+#' p <- full_control_positions(design,"col","row","varieties","plots",
+#'                        width=3,height=4.5,
+#'                        space_width=1,space_height=1,
+#'                        shift_x=-0.5*3,shift_y=-0.5*4.5)
+#' p
+#'
+#' p <- full_control_positions(design,"col","row","varieties","plots",
+#'                        width=3,height=4.5,
+#'                        space_width=0.93,space_height=0.945,
+#'                        start_origin = TRUE)
+#'                        p
+full_control_positions <- function(design,
+                                   x = "col",
+                                   y = "row",
+                                   factor_name = "trt",
+                                   labels = "plots",
+                                   width = 1,
+                                   height = 1,
+                                   space_width = 0.95,
+                                   space_height = 0.85,
+                                   reverse_y = FALSE,
+                                   reverse_x = FALSE,
+                                   shift_x=0,
+                                   shift_y=0,
+                                   start_origin=FALSE) {
+
+  test_string(x)
+  test_string(y)
+
+  test_input_reverse_x(reverse_x)
+  test_input_reverse_y(reverse_y)
+
+  test_input_height(height)
+  test_input_width(width)
+
+  test_input_height(space_height)
+  test_input_width(space_width)
+
+  table <- design
+
+  if(start_origin == TRUE){
+    shift_x <- width * -0.5 + (width * -0.5 * (1-space_width)) ## makes zero
+    shift_y <- height * -0.5 + (height * -0.5 * (1-space_height)) ## makes zero
+
+    table[, x]  <- as.numeric(table[, x] ) * width + shift_x
+    table[, y] <- as.numeric(table[, y]) * height + shift_y
+  }
+  else{
+  table[, x]  <- as.numeric(table[, x] ) * width + shift_x
+  table[, y] <- as.numeric(table[, y]) * height + shift_y
+  }
+  if (reverse_y == TRUE) {
+    table[, y] <- abs(table[, y] - max(table[, y])) +
+      min(table[, y])
+  }
+  if (reverse_x == TRUE) {
+    table[, x]  <- abs(table[, x]  - max(table[, x] )) +
+      min(table[, x] )
+  }
+  plt <- ggplot(table, aes_string(x = x, y = y)) +
+    geom_tile(aes_string(fill = factor_name),
+              width = width * space_width, height = height *
+                space_height) + theme_bw() + theme(line = element_blank()) +
+    geom_text(aes_string(label = labels), colour = "black")
+
+  plt
+
+  return(plt)
+}
+
