@@ -30,7 +30,7 @@ library(agricolaeplotr)
 library(agricolae)
 varieties<-c('perricholi','yungay','maria bonita','tomasa')
 outdesign <-design.youden(varieties,r=2,serie=2,seed=23)
-p <- plot_youden(outdesign, labels = 'varieties')
+p <- plot_youden(outdesign, labels = 'varieties', width=4, height=3)
 stats <- DOE_obj(p)
 r <- to_table(stats,part = "net_plot", digits = 2)
 r
@@ -39,5 +39,7 @@ r
 r <- to_table(stats,part = "field", digits = 2)
 r
 r <- to_table(stats,part = "experiment", digits = 2)
+r
+r <- to_table(stats,part = "all", digits = 2)
 r
 }

@@ -2229,7 +2229,7 @@ DOE_obj <- function(p){
 #' summary(stats, part = "all")
 ###FieldLayout <- function(object,unit,part,...) UseMethod("FieldLayout")
 summary.FieldLayout <- function(object, unit="m", part="net_plot",...){
-  if(class(object) != "FieldLayout"){
+  if(!inherits(object,"FieldLayout")){
     stop("This is not the right class for this kind of summary. You need to use an object from a class \"FieldLayout\".")
   }
   x <- object
@@ -2254,12 +2254,12 @@ summary.FieldLayout <- function(object, unit="m", part="net_plot",...){
     print(paste("gross plot width:",x$gross_width_plot, unit))
     print(paste("gross plot diagonal:",x$gross_plot_diagonal, unit))
     print(paste("gross plot area:",x$total_area_plot,paste0(unit,"^2")))
-    print(paste("gross space area:",x$space_between, paste0(unit,"^2")))
 
     print(paste("share used plot area:",x$share_eff_plot))
     print(paste("share space between plots:",x$share_space_plot))
     print(paste("space_width:",x$abs_space_height, unit))
     print(paste("space_height:",x$abs_space_width, unit))
+    print(paste("gross space area:",x$space_between, paste0(unit,"^2")))
   }
 
   if(part %in% c("field","all")){
@@ -2306,7 +2306,7 @@ summary.FieldLayout <- function(object, unit="m", part="net_plot",...){
 #' library(agricolae)
 #' varieties<-c('perricholi','yungay','maria bonita','tomasa')
 #' outdesign <-design.youden(varieties,r=2,serie=2,seed=23)
-#' p <- plot_youden(outdesign, labels = 'varieties')
+#' p <- plot_youden(outdesign, labels = 'varieties', width=4, height=3)
 #' stats <- DOE_obj(p)
 #' r <- to_table(stats,part = "net_plot", digits = 2)
 #' r
@@ -2316,62 +2316,63 @@ summary.FieldLayout <- function(object, unit="m", part="net_plot",...){
 #' r
 #' r <- to_table(stats,part = "experiment", digits = 2)
 #' r
+#' r <- to_table(stats,part = "all", digits = 2)
+#' r
 to_table <- function(object,part="net_plot",unit="m",digits=3,...){
-  if (class(object) != "FieldLayout"){
+  if (!inherits(object,"FieldLayout")){
     stop("The object needs to be from the class 'agricolaeplotr'")
   }
   x <- unclass(object)
-  if(!(part  %in% c("net_plot","gross_plot","field","experiment"))){
+  if(!(part  %in% c("net_plot","gross_plot","field","experiment","all"))){
     stop(paste("part parameter needs to be one of the following: net_plot, gross_plot, field, experiment. You have typed",part))
   }
   if(part %in% c("net_plot")){
-    df <- data.frame(names=rep(0,8))
-    df$names <- c(paste("net plot height:", unit),
+    df1 <- data.frame(names=rep(0,8))
+    df1$names <- c(paste("net plot height:", unit),
                   paste("net plot width:", unit),
                   paste("net plot diagonal:", unit),
                   paste("net plot area:",paste0(unit,"^2")),
-
                   paste("share used plot area:"),
                   paste("share space between plots:"),
                   paste("space_width:", unit),
                   paste("space_height:",unit))
 
-    df$vals <- c(x$eff_height_plot,x$eff_width_plot,x$net_plot_diagonal,
+    df1$vals <- c(x$eff_height_plot,x$eff_width_plot,x$net_plot_diagonal,
                  x$eff_plot_size,x$share_eff_plot,x$share_space_plot,
                  x$abs_space_height,x$abs_space_width)
 
-    df$vals <- signif(df$vals,digits=digits)
-    return(df)
+    df1$vals <- signif(df1$vals,digits=digits)
+    return(df1)
   }
   if(part %in% c("gross_plot")){
 
-    df <- data.frame(names=rep(0,9))
+    df2 <- data.frame(names=rep(0,9))
 
-    df$names <- c(paste("gross plot height:",x$gross_height_plot, unit),
-                  paste("gross plot width:",x$gross_width_plot, unit),
-                  paste("gross plot diagonal:",x$gross_plot_diagonal, unit),
-                  paste("gross plot area:",x$total_area_plot,paste0(unit,"^2")),
-                  paste("gross space area:",x$space_between, paste0(unit,"^2")),
+    df2$names <- c(paste("gross plot height:", unit),
+                  paste("gross plot width:", unit),
+                  paste("gross plot diagonal:", unit),
+                  paste("gross plot area:",paste0(unit,"^2")),
+                  paste("gross space area:", paste0(unit,"^2")),
 
-                  paste("share used plot area:",x$share_eff_plot),
-                  paste("share space between plots:",x$share_space_plot),
-                  paste("space_width:",x$abs_space_height, unit),
-                  paste("space_height:",x$abs_space_width, unit))
+                  paste("share used plot area: %/100"),
+                  paste("share space between plots: %/100"),
+                  paste("space_width:", unit),
+                  paste("space_height:", unit))
 
-    df$vals <- c(x$gross_height_plot,x$gross_width_plot,x$gross_plot_diagonal,
+    df2$vals <- c(x$gross_height_plot,x$gross_width_plot,x$gross_plot_diagonal,
                  x$total_area_plot,x$space_between,x$share_eff_plot,x$share_space_plot,
                  x$abs_space_height,x$abs_space_width)
 
-    df$vals <- signif(df$vals,digits=digits)
-    return(df)
+    df2$vals <- signif(df2$vals,digits=digits)
+    return(df2)
   }
 
 
-  if(part %in% c("field","all")){
+  if(part %in% c("field")){
 
-    df <- data.frame(names=rep(0,9))
+    df3 <- data.frame(names=rep(0,9))
 
-    df$names <- c(paste("relative design height:"),
+    df3$names <- c(paste("relative design height:"),
                   paste("relative design width:"),
                   paste("net experiment diagonal:", unit),
                   paste("net experiment width:", unit),
@@ -2382,18 +2383,18 @@ to_table <- function(object,part="net_plot",unit="m",digits=3,...){
                   paste("outer field diagonal:", unit))
 
 
-    df$vals <- c(x$rel_space_height,x$rel_space_width,x$experiment_diagonal,x$eff_width,
+    df3$vals <- c(x$rel_space_height,x$rel_space_width,x$experiment_diagonal,x$eff_width,
                  x$eff_height,x$eff_total_area,x$outer_area,x$total_area,x$outer_diagonal)
 
-    df$vals <- signif(df$vals,digits=digits)
-    return(df)
+    df3$vals <- signif(df3$vals,digits=digits)
+    return(df3)
   }
-  if(part %in% c("experiment","all")){
+  if(part %in% c("experiment")){
 
 
-    df <- data.frame(names=rep(0,8))
+    df4 <- data.frame(names=rep(0,8))
 
-    df$names <-c("xmin:",
+    df4$names <-c("xmin:",
                  "xmax:",
                  "ymin:",
                  "ymax:",
@@ -2402,7 +2403,7 @@ to_table <- function(object,part="net_plot",unit="m",digits=3,...){
                  "number of plots:",
                  "number of factors:")
 
-    df$vals <- c(x$xmin,
+    df4$vals <- c(x$xmin,
                  x$xmax,
                  x$ymin,
                  x$ymax,
@@ -2411,10 +2412,69 @@ to_table <- function(object,part="net_plot",unit="m",digits=3,...){
                  x$n_plots,
                  x$n_fac)
 
-    df$vals <- signif(df$vals,digits=digits)
-    return(df)
+    df4$vals <- signif(df4$vals,digits=digits)
+    return(df4)
   }
-}
+  if(part %in% c("all")){
+    df5 <- data.frame(names=rep(0,30))
+    df5$names <- c(paste("net plot height:", unit),
+                   paste("net plot width:", unit),
+                   paste("net plot diagonal:", unit),
+                   paste("net plot area:",paste0(unit,"^2")),
+                   paste("share used plot area:"),
+                   paste("share space between plots:"),
+                   paste("space_width:", unit),
+                   paste("space_height:",unit),
+                   paste("gross plot height:", unit),
+                   paste("gross plot width:", unit),
+                   paste("gross plot diagonal:", unit),
+                   paste("gross plot area:",paste0(unit,"^2")),
+                   paste("gross space area:", paste0(unit,"^2")),
+                   paste("relative design height:"),
+                   paste("relative design width:"),
+                   paste("net experiment diagonal:", unit),
+                   paste("net experiment width:", unit),
+                   paste("net experiment height:", unit),
+                   paste("used plot area:",paste0(unit,"^2")),
+                   paste("used area DOE:",paste0(unit,"^2")),
+                   paste("used outer area:",paste0(unit,"^2")),
+                   paste("outer field diagonal:", unit),
+                   "xmin:",
+                   "xmax:",
+                   "ymin:",
+                   "ymax:",
+                   "number columns:",
+                   "number rows:",
+                   "number of plots:",
+                   "number of factors:")
+
+
+    df5$vals <- c(x$eff_height_plot,x$eff_width_plot,x$net_plot_diagonal,
+                  x$eff_plot_size,x$share_eff_plot,x$share_space_plot,
+                  x$abs_space_height,x$abs_space_width,
+                  x$gross_height_plot,x$gross_width_plot,x$gross_plot_diagonal,
+                  x$total_area_plot,x$space_between,
+
+                  x$rel_space_height,x$rel_space_width,x$experiment_diagonal,x$eff_width,
+                  x$eff_height,x$eff_total_area,x$outer_area,x$total_area,x$outer_diagonal,
+                  x$xmin,
+                  x$xmax,
+                  x$ymin,
+                  x$ymax,
+                  x$n_cols,
+                  x$n_rows,
+                  x$n_plots,
+                  x$n_fac)
+    df5$vals <- signif(df5$vals,digits=digits)
+    return(df5)
+
+  }
+
+
+
+
+   }
+
 
 #' make_polygons
 #'
