@@ -1,80 +1,67 @@
 test_that("throws error if data type is not an integer but a string", {
-  expect_error(test_input_width("3"))
+  expect_error(test_input_extend("3"))
 })
 test_that("throws error if data type is not an integer but a float", {
-  expect_error(test_input_width(-2.5))
+  expect_error(test_input_extend(-2.5))
 })
 test_that("throws error if data type is not an integer but a boolean", {
-  expect_error(test_input_width(TRUE))
+  expect_error(test_input_extend(TRUE))
 })
 sd <- "cat2"
 test_that("throws error if data type is not an integer
           but an object containg string", {
-  expect_error(test_input_width(sd))
+  expect_error(test_input_extend(sd))
 })
 
 test_that("throws error if data type is not an integer but an float", {
-  expect_silent(test_input_width(2.5))
+  expect_silent(test_input_extend(2.5))
 })
 test_that("keeps silent if data type is correct integer ", {
-  expect_silent(test_input_width(2))
+  expect_silent(test_input_extend(2))
 })
 sd <- 10.5
 test_that("throws error if data type is not an integer
           but an object containing float ", {
-  expect_silent(test_input_width(sd))
+  expect_silent(test_input_extend(sd))
 })
 
 test_that("throws error if data type is not an integer but a string", {
-  expect_error(test_input_height("3"))
+  expect_error(test_input_extend("3"))
 })
 test_that("throws error if data type is not an integer but float", {
-  expect_error(test_input_height(-2.5))
+  expect_error(test_input_extend(-2.5))
 })
 test_that("throws error if data type is not an integer but boolean", {
-  expect_error(test_input_height(TRUE))
+  expect_error(test_input_extend(TRUE))
 })
 sd <- "cat2"
 test_that("throws error if data type is not an
           integer but an object containg a string", {
-  expect_error(test_input_height(sd))
+  expect_error(test_input_extend(sd))
 })
 
 test_that("throws error if data type is not an integer but ", {
-  expect_silent(test_input_height(2.5))
+  expect_silent(test_input_extend(2.5))
 })
 test_that("throws error if data type is not an integer but ", {
-  expect_silent(test_input_height(2))
+  expect_silent(test_input_extend(2))
 })
 sd <- 10.5
 test_that("throws error if data type is not an integer but ", {
-  expect_silent(test_input_height(sd))
+  expect_silent(test_input_extend(sd))
 })
 
 test_that("keeps silent if data type is a boolean", {
-  expect_silent(test_input_reverse_x(TRUE))
+  expect_silent(test_input_reverse(TRUE))
 })  # no messages if success
 test_that("throws error if data type is not an boolean but a string", {
-  expect_error(test_input_reverse_x("TRUE"))
+  expect_error(test_input_reverse("TRUE"))
 })
 test_that("throws error if data type is not an boolean but an integer", {
-  expect_error(test_input_reverse_x(2))
+  expect_error(test_input_reverse(2))
 })
 test_that("throws error if length is greater than 1", {
-  expect_error(test_input_reverse_x(c(2, 3, 4)))
-})
-
-test_that("keeps silent if data type is a boolean", {
-  expect_silent(test_input_reverse_y(TRUE))
-})  # no messages if success
-test_that("throws error if data type is not an boolean but a string", {
-  expect_error(test_input_reverse_y("TRUE"))
-})
-test_that("throws error if data type is not an boolean but an integer", {
-  expect_error(test_input_reverse_y(2))
-})
-test_that("throws error if length is greater than 1", {
-  expect_error(test_input_reverse_y(c(2, 3, 4)))
+  expect_error(test_input_reverse(c(2, 3, 4)))
 })
 
 test_that("unkown treatment", {

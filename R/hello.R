@@ -55,17 +55,17 @@ test_input_nrows <- function(x) {
 }
 
 
-#' Test if input for width is numeric
+#' Test if input for width and height is numeric
 #'
-#' Test if input is numeric for field width
+#' Test if input is numeric for field width and height
 #' @param x input to be tested
 #'
 #' @return error
 #' @export
 #' @examples
 #' library(agricolaeplotr)
-#' test_input_width(3)
-test_input_width <- function(x) {
+#' test_input_extend(3)
+test_input_extend <- function(x) {
 
   if (is.numeric(x) == FALSE) {
     stop(paste0("Value is not numeric. It is from class ",
@@ -78,27 +78,6 @@ test_input_width <- function(x) {
   }
 }
 
-#' Test if input for height is numeric
-#'
-#' Test if input is numeric for field height
-#' @param x input to be tested
-#' @export
-#' @return error
-#' @examples
-#' library(agricolaeplotr)
-#' test_input_height(5)
-test_input_height <- function(x) {
-
-  if (is.numeric(x) == FALSE) {
-    stop(paste0("Value is not numeric. It is from class ",
-                class(x), "."))
-  } else {
-    if (x <= 0) {
-      stop("Integer value is smaller or equal than zero.
-           The value needs to be greater than zero.")
-    }
-  }
-}
 
 #' Test if input for shift parameter is numeric
 #'
@@ -109,7 +88,6 @@ test_input_height <- function(x) {
 #' @examples
 #' library(agricolaeplotr)
 #' test_input_shift(0.5)
-#' test_input_shift("5.34")
 test_input_shift <- function(x) {
 
   if (is.numeric(x) == FALSE) {
@@ -128,28 +106,8 @@ test_input_shift <- function(x) {
 #' @export
 #' @examples
 #' library(agricolaeplotr)
-#' test_input_reverse_x(TRUE)
-test_input_reverse_x <- function(x) {
-  if ((length(x)) > 1) {
-    stop("The length of one boolean value needs to be exact 1.")
-  }
-  if (is.logical(x) == FALSE) {
-    stop(paste0("Value is not logical. Only TRUE and FALSE are allowed.
-                Your value is from class ",
-                class(x), "."))
-  }
-}
-#' Test if input is a logical
-#'
-#' Test if input is a logical
-#' @param x input to be tested
-#'
-#' @return error
-#' @export
-#' @examples
-#' library(agricolaeplotr)
-#' test_input_reverse_y(TRUE)
-test_input_reverse_y <- function(x) {
+#' test_input_reverse(TRUE)
+test_input_reverse <- function(x) {
   if ((length(x)) > 1) {
     stop("The length of one boolean value needs to be exact 1.")
   }
@@ -270,14 +228,14 @@ plot_design.factorial_rcbd <- function(design,
 
     test_string(y)
 
-    test_input_reverse_x(reverse_x)
-    test_input_reverse_y(reverse_y)
+    test_input_reverse(reverse_x)
+    test_input_reverse(reverse_y)
 
-    test_input_height(height)
-    test_input_width(width)
+    test_input_extend(height)
+    test_input_extend(width)
 
-    test_input_height(space_height)
-    test_input_width(space_width)
+    test_input_extend(space_height)
+    test_input_extend(space_width)
 
     test_name_in_column(factor_name, design)
     plots <- as.numeric(design$book[, 1])
@@ -472,14 +430,14 @@ plot_alpha <- function(design, x = "cols", y = "block",
     test_string(x)
     test_string(y)
 
-    test_input_reverse_x(reverse_x)
-    test_input_reverse_y(reverse_y)
+    test_input_reverse(reverse_x)
+    test_input_reverse(reverse_y)
 
-    test_input_height(height)
-    test_input_width(width)
+    test_input_extend(height)
+    test_input_extend(width)
 
-    test_input_height(space_height)
-    test_input_width(space_width)
+    test_input_extend(space_height)
+    test_input_extend(space_width)
 
     test_name_in_column(labels, design)
     test_name_in_column(factor_name, design)
@@ -562,14 +520,14 @@ plot_lattice_triple <- function(design,
 
     test_string(y)
 
-    test_input_reverse_x(reverse_x)
-    test_input_reverse_y(reverse_y)
+    test_input_reverse(reverse_x)
+    test_input_reverse(reverse_y)
 
-    test_input_height(height)
-    test_input_width(width)
+    test_input_extend(height)
+    test_input_extend(width)
 
-    test_input_height(space_height)
-    test_input_width(space_width)
+    test_input_extend(space_height)
+    test_input_extend(space_width)
 
     test_name_in_column(factor_name, design)
     test_name_in_column(labels, design)
@@ -656,14 +614,14 @@ plot_lattice_simple <- function(design,
 
     test_string(y)
 
-    test_input_reverse_x(reverse_x)
-    test_input_reverse_y(reverse_y)
+    test_input_reverse(reverse_x)
+    test_input_reverse(reverse_y)
 
-    test_input_height(height)
-    test_input_width(width)
+    test_input_extend(height)
+    test_input_extend(width)
 
-    test_input_height(space_height)
-    test_input_width(space_width)
+    test_input_extend(space_height)
+    test_input_extend(space_width)
 
     test_name_in_column(factor_name, design)
     test_name_in_column(labels, design)
@@ -751,14 +709,14 @@ plot_latin_square <- function(design,
     test_string(x)
     test_string(y)
 
-    test_input_reverse_x(reverse_x)
-    test_input_reverse_y(reverse_y)
+    test_input_reverse(reverse_x)
+    test_input_reverse(reverse_y)
 
-    test_input_height(height)
-    test_input_width(width)
+    test_input_extend(height)
+    test_input_extend(width)
 
-    test_input_height(space_height)
-    test_input_width(space_width)
+    test_input_extend(space_height)
+    test_input_extend(space_width)
 
     test_name_in_column(factor_name, design)
     test_name_in_column(labels, design)
@@ -839,14 +797,14 @@ plot_graeco <- function(design,
     test_string(x)
     test_string(y)
 
-    test_input_reverse_x(reverse_x)
-    test_input_reverse_y(reverse_y)
+    test_input_reverse(reverse_x)
+    test_input_reverse(reverse_y)
 
-    test_input_height(height)
-    test_input_width(width)
+    test_input_extend(height)
+    test_input_extend(width)
 
-    test_input_height(space_height)
-    test_input_width(space_width)
+    test_input_extend(space_height)
+    test_input_extend(space_width)
 
     test_name_in_column(factor_name, design)
     test_name_in_column(labels, design)
@@ -934,14 +892,14 @@ plot_strip <- function(design,
     test_string(x)
     test_string(y)
 
-    test_input_reverse_x(reverse_x)
-    test_input_reverse_y(reverse_y)
+    test_input_reverse(reverse_x)
+    test_input_reverse(reverse_y)
 
-    test_input_height(height)
-    test_input_width(width)
+    test_input_extend(height)
+    test_input_extend(width)
 
-    test_input_height(space_height)
-    test_input_width(space_width)
+    test_input_extend(space_height)
+    test_input_extend(space_width)
 
     test_name_in_column(factor_name_1, design)
     test_name_in_column(factor_name_2, design)
@@ -1042,14 +1000,14 @@ plot_bib <- function(design,
 
     test_string(y)
 
-    test_input_reverse_x(reverse_x)
-    test_input_reverse_y(reverse_y)
+    test_input_reverse(reverse_x)
+    test_input_reverse(reverse_y)
 
-    test_input_height(height)
-    test_input_width(width)
+    test_input_extend(height)
+    test_input_extend(width)
 
-    test_input_height(space_height)
-    test_input_width(space_width)
+    test_input_extend(space_height)
+    test_input_extend(space_width)
 
     test_name_in_column(factor_name, design)
     test_name_in_column(labels, design)
@@ -1132,14 +1090,14 @@ plot_cyclic <- function(design,
 
     test_string(y)
 
-    test_input_reverse_x(reverse_x)
-    test_input_reverse_y(reverse_y)
+    test_input_reverse(reverse_x)
+    test_input_reverse(reverse_y)
 
-    test_input_height(height)
-    test_input_width(width)
+    test_input_extend(height)
+    test_input_extend(width)
 
-    test_input_height(space_height)
-    test_input_width(space_width)
+    test_input_extend(space_height)
+    test_input_extend(space_width)
 
     test_name_in_column(labels, design)
 
@@ -1223,14 +1181,14 @@ plot_dau <- function(design,
 
     test_string(y)
 
-    test_input_reverse_x(reverse_x)
-    test_input_reverse_y(reverse_y)
+    test_input_reverse(reverse_x)
+    test_input_reverse(reverse_y)
 
-    test_input_height(height)
-    test_input_width(width)
+    test_input_extend(height)
+    test_input_extend(width)
 
-    test_input_height(space_height)
-    test_input_width(space_width)
+    test_input_extend(space_height)
+    test_input_extend(space_width)
 
     test_name_in_column(factor_name, design)
     test_name_in_column(labels, design)
@@ -1320,14 +1278,14 @@ plot_rcdb <- function(design,
 
     test_string(y)
 
-    test_input_reverse_x(reverse_x)
-    test_input_reverse_y(reverse_y)
+    test_input_reverse(reverse_x)
+    test_input_reverse(reverse_y)
 
-    test_input_height(height)
-    test_input_width(width)
+    test_input_extend(height)
+    test_input_extend(width)
 
-    test_input_height(space_height)
-    test_input_width(space_width)
+    test_input_extend(space_height)
+    test_input_extend(space_width)
 
     test_name_in_column(factor_name, design)
     test_name_in_column(labels, design)
@@ -1422,14 +1380,14 @@ plot_design.factorial_crd <- function(design,
 
     test_string(y)
 
-    test_input_reverse_x(reverse_x)
-    test_input_reverse_y(reverse_y)
+    test_input_reverse(reverse_x)
+    test_input_reverse(reverse_y)
 
-    test_input_height(height)
-    test_input_width(width)
+    test_input_extend(height)
+    test_input_extend(width)
 
-    test_input_height(space_height)
-    test_input_width(space_width)
+    test_input_extend(space_height)
+    test_input_extend(space_width)
 
     test_name_in_column(factor_name, design)
     test_name_in_column(labels, design)
@@ -1533,14 +1491,14 @@ plot_design.factorial_lsd <- function(design,
     test_string(x)
     test_string(y)
 
-    test_input_reverse_x(reverse_x)
-    test_input_reverse_y(reverse_y)
+    test_input_reverse(reverse_x)
+    test_input_reverse(reverse_y)
 
-    test_input_height(height)
-    test_input_width(width)
+    test_input_extend(height)
+    test_input_extend(width)
 
-    test_input_height(space_height)
-    test_input_width(space_width)
+    test_input_extend(space_height)
+    test_input_extend(space_width)
 
     test_name_in_column(factor_name, design)
     test_name_in_column(labels, design)
@@ -1631,14 +1589,14 @@ plot_split_rcbd <- function(design,
 
     test_string(y)
 
-    test_input_reverse_x(reverse_x)
-    test_input_reverse_y(reverse_y)
+    test_input_reverse(reverse_x)
+    test_input_reverse(reverse_y)
 
-    test_input_height(height)
-    test_input_width(width)
+    test_input_extend(height)
+    test_input_extend(width)
 
-    test_input_height(space_height)
-    test_input_width(space_width)
+    test_input_extend(space_height)
+    test_input_extend(space_width)
 
     test_name_in_column(factor_name_1, design)
     test_name_in_column(factor_name_2, design)
@@ -1760,14 +1718,14 @@ plot_split_lsd <- function(design,
   if (design$parameters$design == "split" && design$parameters$applied ==
       "lsd") {
 
-    test_input_reverse_x(reverse_x)
-    test_input_reverse_y(reverse_y)
+    test_input_reverse(reverse_x)
+    test_input_reverse(reverse_y)
 
-    test_input_height(height)
-    test_input_width(width)
+    test_input_extend(height)
+    test_input_extend(width)
 
-    test_input_height(space_height)
-    test_input_width(space_width)
+    test_input_extend(space_height)
+    test_input_extend(space_width)
 
     test_name_in_column(factor_name_1, design)
     test_name_in_column(factor_name_2, design)
@@ -1895,12 +1853,12 @@ plot_split_crd <- function(design, nrows, ncols,
     test_input_ncols(ncols)
     test_input_nrows(nrows)
 
-    test_input_reverse_x(reverse_x)
-    test_input_reverse_y(reverse_y)
-    test_input_height(height)
-    test_input_width(width)
-    test_input_height(space_height)
-    test_input_width(space_width)
+    test_input_reverse(reverse_x)
+    test_input_reverse(reverse_y)
+    test_input_extend(height)
+    test_input_extend(width)
+    test_input_extend(space_height)
+    test_input_extend(space_width)
 
     test_name_in_column(factor_name_1, design)
     test_name_in_column(factor_name_2, design)
@@ -2100,14 +2058,14 @@ plot_youden <- function(design, x = "col", y = "row",
     test_string(x)
     test_string(y)
 
-    test_input_reverse_x(reverse_x)
-    test_input_reverse_y(reverse_y)
+    test_input_reverse(reverse_x)
+    test_input_reverse(reverse_y)
 
-    test_input_height(height)
-    test_input_width(width)
+    test_input_extend(height)
+    test_input_extend(width)
 
-    test_input_height(space_height)
-    test_input_width(space_width)
+    test_input_extend(space_height)
+    test_input_extend(space_width)
 
     test_name_in_column(factor_name, design)
     test_name_in_column(labels, design)
@@ -2659,14 +2617,14 @@ plot_fieldhub <- function(design,
     test_string(x)
     test_string(y)
 
-    test_input_reverse_x(reverse_x)
-    test_input_reverse_y(reverse_y)
+    test_input_reverse(reverse_x)
+    test_input_reverse(reverse_y)
 
-    test_input_height(height)
-    test_input_width(width)
+    test_input_extend(height)
+    test_input_extend(width)
 
-    test_input_height(space_height)
-    test_input_width(space_width)
+    test_input_extend(space_height)
+    test_input_extend(space_width)
 
     test_input_shift(shift_x)
     test_input_shift(shift_y)
@@ -2799,14 +2757,14 @@ full_control_positions <- function(design,
   test_string(x)
   test_string(y)
 
-  test_input_reverse_x(reverse_x)
-  test_input_reverse_y(reverse_y)
+  test_input_reverse(reverse_x)
+  test_input_reverse(reverse_y)
 
-  test_input_height(height)
-  test_input_width(width)
+  test_input_extend(height)
+  test_input_extend(width)
 
-  test_input_height(space_height)
-  test_input_width(space_width)
+  test_input_extend(space_height)
+  test_input_extend(space_width)
 
   test_input_shift(shift_x)
   test_input_shift(shift_y)

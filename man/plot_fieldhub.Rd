@@ -15,7 +15,9 @@ plot_fieldhub(
   space_width = 0.95,
   space_height = 0.85,
   reverse_y = FALSE,
-  reverse_x = FALSE
+  reverse_x = FALSE,
+  shift_x = 0,
+  shift_y = 0
 )
 }
 \arguments{
@@ -40,6 +42,10 @@ plot_fieldhub(
 \item{reverse_y}{boolean, should the plots of the experiment be changed in reverse order in Row direction? use reverse_y=TRUE to have same sketch as in agricolae. default:reverse_y=FALSE}
 
 \item{reverse_x}{boolean, should the plots of the experiment be changed in reverse order in column direction? default:reverse_x=FALSE}
+
+\item{shift_x}{numeric indicates the shift in units in x-axis.}
+
+\item{shift_y}{numeric indicates the shift in units for the y-axis.}
 }
 \value{
 \code{ggplot} graphic that can be modified, if wished

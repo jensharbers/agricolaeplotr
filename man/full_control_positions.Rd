@@ -44,9 +44,9 @@ full_control_positions(
 
 \item{reverse_x}{boolean, should the plots of the experiment be changed in reverse order in column direction? default:reverse_x=FALSE}
 
-\item{shift_x}{indicates the shift in units in x-axis.}
+\item{shift_x}{numeric indicates the shift in units in x-axis.}
 
-\item{shift_y}{indicates the shift in units for the y-axis.}
+\item{shift_y}{numeric indicates the shift in units for the y-axis.}
 
 \item{start_origin}{boolean. Should the design start at the origin (0|0)?}
 }
