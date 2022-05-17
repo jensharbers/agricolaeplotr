@@ -2,6 +2,7 @@
 
 S3method(summary,FieldLayout)
 export(DOE_obj)
+export(full_control_positions)
 export(make_polygons)
 export(plot_alpha)
 export(plot_bib)

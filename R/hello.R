@@ -100,6 +100,23 @@ test_input_height <- function(x) {
   }
 }
 
+#' Test if input for shift parameter is numeric
+#'
+#' Test if input is numeric for shift parameter
+#' @param x input to be tested
+#' @export
+#' @return error
+#' @examples
+#' library(agricolaeplotr)
+#' test_input_shift(0.5)
+#' test_input_shift("5.34")
+test_input_shift <- function(x) {
+
+  if (is.numeric(x) == FALSE) {
+    stop(paste0("Value is not numeric. It is from class ",
+                class(x), "."))
+  }
+}
 
 
 #' Test if input is a logical
@@ -2568,15 +2585,17 @@ theme_gil <- function(){
 #' @param design outdesign from \code{FielDHub} package with on of the following IDs: c(9,13,14,15,16)
 #' @param x Describes the x coordinates of a experiment design
 #' @param y Describes the y coordinates of a experiment design
+#' @param labels string Describes the column from that the plots are taken to display them
+#' @param factor_name string Which factor should be used for plotting, needs to be a column in outdesign$book
 #' @param width numeric value, describes the width of a plot in an experiment
 #' @param height numeric value, describes the height of a plot in an experiment
 #' @param space_width numeric value, describes the share of the space of the plots. 0=only space, 1=no space between plots in term of width
 #' @param space_height numeric value, describes the share of the space of the plots. 0=only space, 1=no space between plots in term of height
 #' @param reverse_y boolean, should the plots of the experiment be changed in reverse order in Row direction? use reverse_y=TRUE to have same sketch as in agricolae. default:reverse_y=FALSE
 #' @param reverse_x boolean, should the plots of the experiment be changed in reverse order in column direction? default:reverse_x=FALSE
-#' @param factor_name string Which factor should be used for plotting, needs to be a column in outdesign$book
-#' @param labels string Describes the column from that the plots are taken to display them
-#'
+#' @param shift_x numeric indicates the shift in units in x-axis.
+#' @param shift_y numeric indicates the shift in units for the y-axis.
+
 #' @return \code{ggplot} graphic that can be modified, if wished
 #' @export
 #' @import ggplot2
@@ -2632,8 +2651,10 @@ plot_fieldhub <- function(design,
                           space_width = 0.95,
                           space_height = 0.85,
                           reverse_y = FALSE,
-                          reverse_x = FALSE) {
-  if (design$infoDesign$idDesign %in% c(2,3,7,8,9,10,11,12,13,14,15,16)) {
+                          reverse_x = FALSE,
+                          shift_x=0,
+                          shift_y=0) {
+  if (design$infoDesign$idDesign %in% c(2,3,4,7,8,9,10,11,12,13,14,15,16)) {
     design$book <- design$fieldBook
     test_string(x)
     test_string(y)
@@ -2647,11 +2668,14 @@ plot_fieldhub <- function(design,
     test_input_height(space_height)
     test_input_width(space_width)
 
+    test_input_shift(shift_x)
+    test_input_shift(shift_y)
+
     test_name_in_column(labels, design)
 
     table <- as.data.frame(design$book)
-    table[, x]  <- as.numeric(table[, x] ) * width
-    table[, y] <- as.numeric(table[, y]) * height
+    table[, x]  <- as.numeric(table[, x] ) * width + shift_x
+    table[, y] <- as.numeric(table[, y]) * height + shift_y
     if (reverse_y == TRUE) {
       table[, y] <- abs(table[, y] - max(table[, y])) +
         min(table[, y])
@@ -2720,8 +2744,8 @@ serpentine <- function(n,times,m=1){
 #' @param reverse_x boolean, should the plots of the experiment be changed in reverse order in column direction? default:reverse_x=FALSE
 #' @param factor_name string Which factor should be used for plotting, needs to be a column in outdesign$book
 #' @param labels string Describes the column from that the plots are taken to display them
-#' @param shift_x indicates the shift in units in x-axis.
-#' @param shift_y indicates the shift in units for the y-axis.
+#' @param shift_x numeric indicates the shift in units in x-axis.
+#' @param shift_y numeric indicates the shift in units for the y-axis.
 #' @param start_origin boolean. Should the design start at the origin (0|0)?
 #'
 #' @return \code{ggplot} graphic that can be modified, if wished
@@ -2784,6 +2808,9 @@ full_control_positions <- function(design,
   test_input_height(space_height)
   test_input_width(space_width)
 
+  test_input_shift(shift_x)
+  test_input_shift(shift_y)
+
   table <- design
 
   if(start_origin == TRUE){
@@ -2815,4 +2842,3 @@ full_control_positions <- function(design,
 
   return(plt)
 }
-

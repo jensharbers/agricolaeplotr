@@ -508,6 +508,34 @@ reverse_x = FALSE)
 
 ```
 
+## full control Positions design
+
+The 'FielDHub' package also provides support to create full factorial designs, that can be plotted by the provided functions.
+
+Both plotting functions supports a shift parameter that is tested in the input section.
+```{r}
+fullFact2 <- full_factorial(setfactors = NULL, reps = 5, l = 1, type = 2,
+                            plotNumber = c(101,1001,2001),
+                            continuous = FALSE,
+                            planter = "serpentine",
+                            seed = 326,
+                            locationNames = c("Loc1"),
+                            data = data_factorial)
+
+fullFact2$infoDesign
+
+fullFact2$fieldBook$COLUMN <-  rep(1:length(unique(fullFact2$fieldBook$TRT_COMB)),times=max(fullFact2$fieldBook$REP))
+
+full_control_positions(fullFact2$fieldBook,x="REP",y="COLUMN",
+                       factor_name = "TRT_COMB ",
+                       labels="PLOT", shift_x= -1,shift_y = -1)
+
+plot_fieldhub(fullFact2,x="REP",y="COLUMN",
+              factor_name = "TRT_COMB ",
+              labels="PLOT",shift_x=3,shift_y = 5.5)
+```
+
+
 ## Export a Design to GIS applications
 It is often useful to export an DoE as a file, that can be processed somewhere else.
 
