@@ -27,10 +27,10 @@ factorial ab-design will be used as an example. Although some parameters are wor
 ## Load the package
 use the following command to load the package after installation. The two packages below agricolaeplotr are only needed for the examples.
 
-```{r message=TRUE, warning=FALSE}
-library("agricolaeplotr")
+```{r message=FALSE, warning=FALSE}
 library("ggplot2")
 library("agricolae")
+library("agricolaeplotr")
 library("rgdal")
 library("leaflet")
 ```
@@ -539,7 +539,7 @@ plot_fieldhub(fullFact,x="REP",y="COLUMN",
 ## Export a Design to GIS applications
 It is often useful to export an DoE as a file, that can be processed somewhere else.
 
-```{r warning=FALSE}
+```{r message=FALSE, warning=FALSE}
 
 trt = c(2,3,4,5,6)
 outdesign1 <-design.crd(trt,r=5,serie=2,2543,'Mersenne-Twister')
@@ -551,7 +551,7 @@ spat_df
 
 
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 
 trt<-c(3,2) # factorial 3x2
 outdesign <- design.ab(trt, r=3, serie=2,design = 'crd')
@@ -789,4 +789,36 @@ p <- full_control_positions(design,"col","row","varieties","plots",
 ```
 
 
+
+## complete ramdomized designs
+
+```{r}
+crd1 <- CRD(t = 10,
+            reps = 5,
+            plotNumber = 101,
+            seed = 1987,
+            locationName = "Fargo")
+crd1$infoDesign
+
+crd1$fieldBook$ROW <- rep(1:10,each=5)
+crd1$fieldBook$COLUMN <- serpentine(n=5,times = 10)
+
+plot_fieldhub(crd1,
+x = "ROW",
+y = "COLUMN",
+labels = "PLOT",
+factor_name = "TREATMENT",
+width = 12,
+height = 10,
+reverse_y = TRUE,
+reverse_x = FALSE)
+```
+
+# Scholar related functions
+
+In science it is common to cite used R-packages as the authors put in a lot of effort, time and money to program and maintaining them. As the citations are the actual currency, the citation function should be run at the bottom off an R script.
+
+```{r}
+citation()
+```
 

@@ -2612,7 +2612,7 @@ plot_fieldhub <- function(design,
                           reverse_x = FALSE,
                           shift_x=0,
                           shift_y=0) {
-  if (design$infoDesign$idDesign %in% c(2,3,4,7,8,9,10,11,12,13,14,15,16)) {
+  if (design$infoDesign$idDesign %in% c(1,2,3,4,7,8,9,10,11,12,13,14,15,16)) {
     design$book <- design$fieldBook
     test_string(x)
     test_string(y)
@@ -2799,4 +2799,38 @@ full_control_positions <- function(design,
   plt
 
   return(plt)
+}
+
+#' Citation
+#'
+#' Generates citations of all loaded packages
+#'
+#' @param includeURL boolean, Should the URL be returned?
+#' @param bibtex boolean, Should the citations be returned as bibtex?
+#'
+#' @return printed output to consola
+#' @export
+#'
+#' @examples
+#' library(ggplot2)
+#' library(agricolaeplotr)
+#' library(agricolae)
+#' library(raster)
+#' citations()
+citations <- function(includeURL = TRUE, bibtex=TRUE) {
+
+
+  cit.list <- c('base', names(utils::sessionInfo()$otherPkgs))
+  for(i in 1:length(cit.list)) {
+    ref <- utils::citation(cit.list[i])
+    if(includeURL == FALSE) {
+      ref$url <- NULL;
+    }
+    if (bibtex==TRUE){
+      print(utils::toBibtex(ref))}else
+      {
+        print(ref, style = 'text')
+      }
+    cat('\n')
+  }
 }
