@@ -2486,11 +2486,11 @@ make_polygons <- function(ggplot_object,
                         ggplot2::layer_data(ggplot_object,2),
                         by.x=c("x","y"), by.y=c("x","y"))
   bounds = table_object[, c(7, 6, 9, 8)]
-  bounds$xmax <- bounds$xmax + east
-  bounds$xmin <- bounds$xmin + east
+  bounds$xmax <- bounds$xmax + north
+  bounds$xmin <- bounds$xmin + north
 
-  bounds$ymax <- bounds$ymax + north
-  bounds$ymin <- bounds$ymin + north
+  bounds$ymax <- bounds$ymax + east
+  bounds$ymin <- bounds$ymin + east
 
 
   polygons_list = apply(bounds, 1, function(x) {
