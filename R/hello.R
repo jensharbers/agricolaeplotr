@@ -2526,11 +2526,13 @@ make_polygons <- function(ggplot_object,
 #' df <- data.frame(
 #' gp = factor(rep(letters[1:3], each = 10)),
 #' y = rnorm(30))
+#'
 #' p <- ggplot() +
 #' geom_point(data = df, aes(gp, y))
 #' p <- p + theme_gil();p
 theme_gil <- function(){
   theme_bw() +
+    theme(text=element_text(size = 10, angle = 0))
     theme(axis.text = element_text(colour = "black", size=9))+
     theme(axis.title = element_text(size = 10, angle = 0,hjust = 0.5))
 }
