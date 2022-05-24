@@ -2533,8 +2533,8 @@ make_polygons <- function(ggplot_object,
 theme_gil <- function(){
   theme_bw() +
     theme(text=element_text(size = 10, angle = 0))
-    theme(axis.text = element_text(colour = "black", size=9))+
-    theme(axis.title = element_text(size = 10, angle = 0,hjust = 0.5))
+    theme(axis.text = element_text(colour = "black"))+
+    theme(axis.title = element_text(hjust = 0.5))
 }
 
 
