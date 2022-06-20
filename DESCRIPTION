@@ -35,3 +35,4 @@ Depends: R (>= 3.6)
 VignetteBuilder: knitr
 Note: 'agricolae' is a package name
       'ggplot2' is a package name
+      'FielDHub' is a package name
