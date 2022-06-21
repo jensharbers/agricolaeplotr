@@ -1198,7 +1198,7 @@ plot_dau <- function(design,
     seqx <- function(x) {
       return(1:x)
     }
-    col <- sapply(freq, seqx)
+    col <- lapply(freq, seqx)
     table$col <- unlist(col)
 
 
@@ -1292,7 +1292,7 @@ plot_rcdb <- function(design,
 
     table <- as.data.frame(design$book)
 
-    table$col <- rep(1:length(unique(table[, factor_name])),
+    table$col <- rep(seq_len(length(unique(table[, factor_name]))),
                      length(unique(table[, y])))
     table[, y] <- as.numeric(table[, y])
     if (reverse_y == TRUE) {
@@ -1605,7 +1605,7 @@ plot_split_rcbd <- function(design,
 
     table <- design$book
 
-    table$row <- rep(rep(1:length(unique(table[, factor_name_1])),
+    table$row <- rep(rep(seq_len(length(unique(table[, factor_name_1]))),
                          each=length(unique(table[, factor_name_2]))),
                      times=max(as.numeric(table[, y])))
     table$row <- table$row * width
@@ -1895,7 +1895,7 @@ plot_split_crd <- function(design, nrows, ncols,
       seqx <- function(x) {
         return(1:x)
       }
-      sequence_numbers <- sapply(freq, seqx)
+      sequence_numbers <- lapply(freq, seqx)
 
       table$sequence <- unlist(sequence_numbers)
 
@@ -2301,7 +2301,7 @@ to_table <- function(object,part="net_plot",unit="m",digits=3,...){
   if(!(part  %in% c("net_plot","gross_plot","field","experiment","all"))){
     stop(paste("part parameter needs to be one of the following: net_plot, gross_plot, field, experiment. You have typed",part))
   }
-  if(part %in% c("net_plot")){
+  if(part %in% ("net_plot")){
     df1 <- data.frame(names=rep(0,8))
     df1$names <- c(paste("net plot height:", unit),
                   paste("net plot width:", unit),
@@ -2319,7 +2319,7 @@ to_table <- function(object,part="net_plot",unit="m",digits=3,...){
     df1$vals <- signif(df1$vals,digits=digits)
     return(df1)
   }
-  if(part %in% c("gross_plot")){
+  if(part %in% ("gross_plot")){
 
     df2 <- data.frame(names=rep(0,9))
 
@@ -2343,7 +2343,7 @@ to_table <- function(object,part="net_plot",unit="m",digits=3,...){
   }
 
 
-  if(part %in% c("field")){
+  if(part %in% ("field")){
 
     df3 <- data.frame(names=rep(0,9))
 
@@ -2364,7 +2364,7 @@ to_table <- function(object,part="net_plot",unit="m",digits=3,...){
     df3$vals <- signif(df3$vals,digits=digits)
     return(df3)
   }
-  if(part %in% c("experiment")){
+  if(part %in% ("experiment")){
 
 
     df4 <- data.frame(names=rep(0,8))
@@ -2390,7 +2390,7 @@ to_table <- function(object,part="net_plot",unit="m",digits=3,...){
     df4$vals <- signif(df4$vals,digits=digits)
     return(df4)
   }
-  if(part %in% c("all")){
+  if(part %in% ("all")){
     df5 <- data.frame(names=rep(0,30))
     df5$names <- c(paste("net plot height:", unit),
                    paste("net plot width:", unit),
@@ -2823,10 +2823,10 @@ citations <- function(includeURL = TRUE, bibtex=TRUE) {
 
 
   cit.list <- c('base', names(utils::sessionInfo()$otherPkgs))
-  for(i in 1:length(cit.list)) {
+  for(i in seq_len(length(cit.list))) {
     ref <- utils::citation(cit.list[i])
     if(includeURL == FALSE) {
-      ref$url <- NULL;
+      ref$url <- NULL
     }
     if (bibtex==TRUE){
       print(utils::toBibtex(ref))}else

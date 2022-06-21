@@ -471,7 +471,7 @@ ARCBD1 <- RCBD_augmented(lines = 50, checks = 3, b = 6, l = 1,
                          planter = "cartesian", 
                          plotNumber = c(1,1001),
                          seed = 23, 
-                         locationNames = c("FARGO"))
+                         locationNames = "FARGO")
 ARCBD1$infoDesign
 
 

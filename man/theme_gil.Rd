@@ -21,6 +21,7 @@ library(ggplot2)
 df <- data.frame(
 gp = factor(rep(letters[1:3], each = 10)),
 y = rnorm(30))
+
 p <- ggplot() +
 geom_point(data = df, aes(gp, y))
 p <- p + theme_gil();p
