@@ -305,8 +305,7 @@ I show an example for each supported design:
 ### partially_replicated design
 
 ```{r}
-require(FielDHub)
-SpatpREP1 <- partially_replicated(nrows = 25,
+SpatpREP1 <- FielDHub::partially_replicated(nrows = 25,
                                   ncols = 18,
                                   repGens = c(280,50,10,1,1),
                                   repUnits = c(1,2,3,20,20),
@@ -330,7 +329,7 @@ REPS <- rep(repUnits, repGens)
 treatment_list <- data.frame(list(ENTRY = 1:492, 
                                    NAME = NAME, 
                                    REPS = REPS))
-SpatpREP2 <- partially_replicated(nrows = 30,
+SpatpREP2 <- FielDHub::partially_replicated(nrows = 30,
                                    ncols = 20,
                                    planter = "serpentine",
                                    plotNumber = 101,
@@ -351,7 +350,7 @@ reverse_x = TRUE)
 ### diagonal_arrangement design
 
 ```{r}
-spatd <- diagonal_arrangement(nrows = 15, ncols = 20, lines = 270, 
+spatd <- FielDHub::diagonal_arrangement(nrows = 15, ncols = 20, lines = 270, 
                               checks = 4, 
                               plotNumber = 101, 
                               kindExpt = "SUDC", 
@@ -373,7 +372,7 @@ reverse_x = TRUE)
 ### optimized_arrangement design
 
 ```{r}
-OptimAd1 <- optimized_arrangement(nrows = 20, ncols = 20, lines = 362, 
+OptimAd1 <- FielDHub::optimized_arrangement(nrows = 20, ncols = 20, lines = 362, 
                                   amountChecks = 38, 
                                   checks = 1:5,
                                   planter = "cartesian", 
@@ -397,7 +396,7 @@ reverse_x = FALSE)
 ```{r}
 
 
-rectangularLattice1 <- rectangular_lattice(t = 20, k = 4, r = 6, l = 1, 
+rectangularLattice1 <- FielDHub::rectangular_lattice(t = 20, k = 4, r = 6, l = 1, 
                                            plotNumber = 101,
                                            locationNames = "FARGO", 
                                            seed = 126)
@@ -420,7 +419,7 @@ reverse_x = FALSE)
 ```{r}
 
 
-squareLattice1 <- square_lattice(t = 64, k = 8, r = 5, l = 2, 
+squareLattice1 <- FielDHub::square_lattice(t = 64, k = 8, r = 5, l = 2, 
                                  plotNumber = c(1001, 2001),
                                  locationNames = c("FARGO", "MINOT"), 
                                  seed = 1986)
@@ -440,7 +439,7 @@ reverse_x = FALSE)
 ```
 ### square_lattice design
 ```{r}
-squareLattice1 <- square_lattice(t = 64, k = 8, r = 5, l = 2, 
+squareLattice1 <- FielDHub::square_lattice(t = 64, k = 8, r = 5, l = 2, 
                                  plotNumber = c(1001, 2001),
                                  locationNames = c("FARGO", "MINOT"), 
                                  seed = 1986)
@@ -466,7 +465,7 @@ You may plot also these type of design, please note that a field design is produ
 
 
 ```{r}
-ARCBD1 <- RCBD_augmented(lines = 50, checks = 3, b = 6, l = 1, 
+ARCBD1 <- FielDHub::RCBD_augmented(lines = 50, checks = 3, b = 6, l = 1, 
                          planter = "cartesian", 
                          plotNumber = c(1,1001),
                          seed = 23, 
@@ -489,7 +488,7 @@ reverse_x = FALSE)
 
 ```{r}
 
-ibd1 <- incomplete_blocks(t = 12,
+ibd1 <- FielDHub::incomplete_blocks(t = 12,
                           k = 4,
                           r = 2,
                           seed = 1984)
@@ -513,7 +512,7 @@ The 'FielDHub' package also provides support to create full factorial designs, t
 
 Both plotting functions supports a shift parameter that is tested in the input section.
 ```{r}
-fullFact <- full_factorial(setfactors = c(2,2,2), reps = 3, 
+fullFact <- FielDHub::full_factorial(setfactors = c(2,2,2), reps = 3, 
                             l = 1, type = 2,
                             plotNumber = 101,
                             continuous = TRUE,
@@ -582,7 +581,7 @@ Beginning here, some designs are only partly supported, as there are sometimes n
 H <- paste("H", 1:4, sep = "")
 V <- paste("V", 1:5, sep = "")
 
-strip1 <- strip_plot(Hplots = H,
+strip1 <- FielDHub::strip_plot(Hplots = H,
                      Vplots = V,
                      b = 1,
                      l = 1,
@@ -622,7 +621,7 @@ reverse_x = FALSE)
 ###  latin_square design
 
 ```{r}
-latinSq1 <- latin_square(t = 4,
+latinSq1 <- FielDHub::latin_square(t = 4,
                          reps = 2,
                          plotNumber = 101,
                          planter = "cartesian",
@@ -658,7 +657,7 @@ reverse_x = FALSE)
 
 ```{r}
 
-rowcold1 <- row_column(t = 36, nrows = 6, r = 3, l = 1,
+rowcold1 <- FielDHub::row_column(t = 36, nrows = 6, r = 3, l = 1,
                        plotNumber= 101,
                        locationNames = "Loc1",
                        seed = 21)
@@ -685,7 +684,7 @@ reverse_x = FALSE)
 
 
 ```{r}
-rcbd1 <- RCBD(t = LETTERS[1:20], reps = 5, l = 3,
+rcbd1 <- FielDHub::RCBD(t = LETTERS[1:20], reps = 5, l = 3,
               plotNumber = c(101,1001, 2001),
               continuous = TRUE,
               planter = "serpentine",
@@ -705,7 +704,7 @@ height = 10,
 reverse_y = TRUE,
 reverse_x = FALSE)
 
-rcbd1 <- RCBD(t = LETTERS[1:20], reps = 5, l = 3,
+rcbd1 <- FielDHub::RCBD(t = LETTERS[1:20], reps = 5, l = 3,
               plotNumber = c(101,1001, 2001),
               continuous = TRUE,
               planter = "cartesian",
@@ -792,7 +791,7 @@ p <- full_control_positions(design,"col","row","varieties","plots",
 ## complete ramdomized designs
 
 ```{r}
-crd1 <- CRD(t = 10,
+crd1 <- FielDHub::CRD(t = 10,
             reps = 5,
             plotNumber = 101,
             seed = 1987,

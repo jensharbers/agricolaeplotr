@@ -1,10 +1,10 @@
 ## ----setup, eval = FALSE------------------------------------------------------
 #  install.packages("agricolaeplotr")
 
-## ----message=TRUE, warning=FALSE----------------------------------------------
-library("agricolaeplotr")
+## ----message=FALSE, warning=FALSE---------------------------------------------
 library("ggplot2")
 library("agricolae")
+library("agricolaeplotr")
 library("rgdal")
 library("leaflet")
 
@@ -176,7 +176,6 @@ REPS <- rep(repUnits, repGens)
 treatment_list <- data.frame(list(ENTRY = 1:492, 
                                    NAME = NAME, 
                                    REPS = REPS))
-
 SpatpREP2 <- partially_replicated(nrows = 30,
                                    ncols = 20,
                                    planter = "serpentine",
@@ -303,7 +302,7 @@ ARCBD1 <- RCBD_augmented(lines = 50, checks = 3, b = 6, l = 1,
                          planter = "cartesian", 
                          plotNumber = c(1,1001),
                          seed = 23, 
-                         locationNames = c("FARGO"))
+                         locationNames = "FARGO")
 ARCBD1$infoDesign
 
 
@@ -338,6 +337,27 @@ reverse_x = FALSE)
 
 
 ## -----------------------------------------------------------------------------
+fullFact <- full_factorial(setfactors = c(2,2,2), reps = 3, 
+                            l = 1, type = 2,
+                            plotNumber = 101,
+                            continuous = TRUE,
+                            planter = "serpentine",
+                            seed = 325,
+                            locationNames = "FARGO")
+
+fullFact$infoDesign
+
+fullFact$fieldBook$COLUMN <-  rep(1:length(unique(fullFact$fieldBook$TRT_COMB)),times=max(fullFact$fieldBook$REP))
+
+full_control_positions(fullFact$fieldBook,x="REP",y="COLUMN",
+                       factor_name = "TRT_COMB ",
+                       labels="PLOT", shift_x= -1,shift_y = -1)
+
+plot_fieldhub(fullFact,x="REP",y="COLUMN",
+              factor_name = "TRT_COMB ",
+              labels="PLOT",shift_x=3,shift_y = 5.5)
+
+## ----message=FALSE, warning=FALSE---------------------------------------------
 
 trt = c(2,3,4,5,6)
 outdesign1 <-design.crd(trt,r=5,serie=2,2543,'Mersenne-Twister')
@@ -345,10 +365,8 @@ plt <- plot_design_crd(outdesign1,ncols = 13,nrows = 3)
 spat_df <- make_polygons(plt)
 spat_df
 
-maptools::writeSpatialShape(spat_df, "MyAwesomeExperiment")
 
-
-## -----------------------------------------------------------------------------
+## ----message=FALSE, warning=FALSE---------------------------------------------
 
 trt<-c(3,2) # factorial 3x2
 outdesign <- design.ab(trt, r=3, serie=2,design = 'crd')
@@ -504,4 +522,63 @@ width = 12,
 height = 10,
 reverse_y = TRUE,
 reverse_x = FALSE)
+
+## -----------------------------------------------------------------------------
+varieties<-c('perricholi','yungay','maria bonita','tomasa')
+outdesign <-design.youden(varieties,r=2,serie=2,seed=23)
+p <- plot_youden(outdesign, labels = 'varieties', width=4, height=3)
+stats <- DOE_obj(p)
+r <- to_table(stats,part = "net_plot", digits = 2)
+r
+r <- to_table(stats,part = "gross_plot", digits = 2)
+r
+r <- to_table(stats,part = "field", digits = 2)
+r
+r <- to_table(stats,part = "experiment", digits = 2)
+r
+r <- to_table(stats,part = "all", digits = 2)
+r
+
+## -----------------------------------------------------------------------------
+
+varieties<-c('perricholi','yungay','maria bonita','tomasa')
+outdesign <-design.youden(varieties,r=2,serie=2,seed=23)
+design <- outdesign$book
+design
+
+p <- full_control_positions(design,"col","row","varieties","plots",
+                       width=3,height=4.5,
+                       space_width=1,space_height=1,
+                       shift_x=-0.5*3,shift_y=-0.5*4.5)
+p
+
+p <- full_control_positions(design,"col","row","varieties","plots",
+                       width=3,height=4.5,
+                       space_width=0.93,space_height=0.945,
+                       start_origin = TRUE)
+                       p
+
+## -----------------------------------------------------------------------------
+crd1 <- CRD(t = 10,
+            reps = 5,
+            plotNumber = 101,
+            seed = 1987,
+            locationName = "Fargo")
+crd1$infoDesign
+
+crd1$fieldBook$ROW <- rep(1:10,each=5)
+crd1$fieldBook$COLUMN <- serpentine(n=5,times = 10)
+
+plot_fieldhub(crd1,
+x = "ROW",
+y = "COLUMN",
+labels = "PLOT",
+factor_name = "TREATMENT",
+width = 12,
+height = 10,
+reverse_y = TRUE,
+reverse_x = FALSE)
+
+## -----------------------------------------------------------------------------
+citation()
 
