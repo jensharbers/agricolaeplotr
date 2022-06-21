@@ -330,7 +330,6 @@ REPS <- rep(repUnits, repGens)
 treatment_list <- data.frame(list(ENTRY = 1:492, 
                                    NAME = NAME, 
                                    REPS = REPS))
-
 SpatpREP2 <- partially_replicated(nrows = 30,
                                    ncols = 20,
                                    planter = "serpentine",
