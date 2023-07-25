@@ -1,3 +1,13 @@
+# agricolaeplotr 0.3.2
+
+## Updates
+
+* Updated functions in order to swap from `maptools` to `sf`.
+
+## New Features
+
+* functions `make_polygons_ggvoronoi` and `sample_locations` added.
+
 # agricolaeplotr 0.3.1
 
 ## Updates

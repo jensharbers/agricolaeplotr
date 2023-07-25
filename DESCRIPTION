@@ -22,6 +22,7 @@ Imports: ggplot2,
          utils,
          sf,
          dplyr,
+         lwgeom,
          ggvoronoi
 RoxygenNote: 7.2.3
 Language: en-US

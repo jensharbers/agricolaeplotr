@@ -1,6 +1,3 @@
-packageStartupMessage("Thank you for using MyPackage!")
-packageStartupMessage("To acknowledge our work, please cite the package:")
-packageStartupMessage("Jens Harbers, (2021). agricolaeplotr: {An} {R} package for visualising experimental designs in science and engineering, https://CRAN.R-project.org/package=agricolaeplotr, doi:10.5281/ZENODO.5502175.")
 #' checks matrix column input
 #'
 #' checks if input is suitable for matrix column indication
@@ -371,9 +368,9 @@ plot_design_crd <- function(design,
                   space_height) + theme_bw() + theme(line = element_blank()) +
       geom_text(aes_string(label = labels), colour = "black")
 
-      plt
+    plt
 
-      return(plt)
+    return(plt)
     } else {
       stop(paste("You have in multiplication of ncols:",
                  ncols, "and nrows:", nrows, "Elements.",
@@ -2468,10 +2465,10 @@ to_table <- function(object,part="net_plot",unit="m",digits=3,...){
 #'  in which EPSG projection the ggplot object should be converted to a raster object?
 #'  a projection with a metric unit is highly recommended
 #' @param projection_output string defines
-#'  in which EPSG projection the simple features onject should be exported.
+#'  in which EPSG projection the SpatialPolygonDataFrame should be exported.
 #' @importFrom raster extent crs
 #' @export
-#' @return a simple features object
+#' @return a SpatialPolygonDataframe object
 #'
 #' @examples
 #' library(agricolaeplotr)
@@ -2565,29 +2562,38 @@ theme_gi <- function(){
 #' @import ggplot2
 #' @import FielDHub
 #' @examples
+#'\dontrun{
 #' library(agricolaeplotr)
 #' library(FielDHub)
+#'H <- paste("H", 1:4, sep = "")
+#'V <- paste("V", 1:5, sep = "")
 #'
-#' NAME <- paste("G", 1:492, sep = "")
-#' repGens = c(108, 384);repUnits = c(2,1)
-#' REPS <- rep(repUnits, repGens)
-#' treatment_list <- data.frame(list(ENTRY = 1:492, NAME = NAME, REPS = REPS))
+#'strip1 <- FielDHub::strip_plot(Hplots = H,
+#'                               Vplots = V,
+#'                               b = 1,
+#'                               l = 1,
+#'                               plotNumber = 101,
+#'                               planter = "serpentine",
+#'                               locationNames = "A",
+#'                               seed = 333)
 #'
-#' SpatpREP2 <- partially_replicated(nrows = 30,
-#'                                   ncols = 20,
-#'                                   planter = "serpentine",
-#'                                   plotNumber = 101,
-#'                                   seed = 41,
-#'                                   data = treatment_list)
-#' SpatpREP2$infoDesign$idDesign
 #'
-#' plot_fieldhub(SpatpREP2,
-#' labels = "PLOT",
-#' factor_name = "PLOT",
-#' width = 12,
-#' height = 10,
-#' reverse_y = TRUE,
-#' reverse_x = TRUE)
+#'strip1$fieldBook$ROW <- as.numeric(ordered(strip1$fieldBook$VSTRIP,
+#'                        levels = unique(strip1$fieldBook$VSTRIP)))
+#'strip1$fieldBook$COLUMN <- as.numeric(ordered(strip1$fieldBook$HSTRIP,
+#'                        levels = unique(strip1$fieldBook$HSTRIP)))
+#'
+#' plot_fieldhub(strip1,
+#'               x = "ROW",
+#'               y = "COLUMN",
+#'               labels = "HSTRIP",
+#'               factor_name = "HSTRIP",
+#'               width = 12,
+#'               height = 10,
+#'               reverse_y = FALSE,
+#'               reverse_x = FALSE)
+#'
+#'}
 #'
 plot_fieldhub <- function(design,
                           x = "COLUMN",
@@ -2673,7 +2679,8 @@ serpentine <- function(n,times,m=1){
   for(i in 1:times){
     if(i %% 2 == 1){
       vec <- cbind(vec,m:n)
-    } else {
+    }
+    else{
       vec <- cbind(vec,n:m)
     }
   }
@@ -2801,7 +2808,7 @@ full_control_positions <- function(design,
 #' @param includeURL boolean, Should the URL be returned?
 #' @param bibtex boolean, Should the citations be returned as bibtex?
 #'
-#' @return printed output to consola
+#' @return printed output to console
 #' @export
 #'
 #' @examples
@@ -2820,34 +2827,142 @@ citations <- function(includeURL = TRUE, bibtex=TRUE) {
       ref$url <- NULL
     }
     if (bibtex==TRUE){
-                print(utils::toBibtex(ref))} else {
-        print(ref, style = "text")
+      print(utils::toBibtex(ref))}else
+      {
+        print(ref, style = 'text')
       }
     cat('\n')
   }
 }
+#' Extract and Transform Voronoi Polygons
+#'
+#' This function extracts Voronoi polygons from a ggplot object created using the ggvoronoi package
+#' and transforms their coordinate reference system (CRS).
+#'
+#' @param ggplot_object A ggplot object containing Voronoi polygons generated using ggvoronoi package.
+#' @param projection_input The input coordinate reference system (CRS) used in the Voronoi polygons.
+#'        Default value: 25832 (EPSG:25832, UTM Zone 32N - Europe)
+#' @param projection_output The desired output coordinate reference system (CRS) for the transformed Voronoi polygons.
+#'        Default value: 4326 (EPSG:4326, WGS 84 - Latitude/Longitude)
+#'
+#' @return A SpatialPolygonsDataFrame object containing the transformed Voronoi polygons.
+#'
+#' @details
+#' This function extracts the Voronoi polygons from the input ggplot object and converts them into a SpatialPolygonsDataFrame.
+#' The function assumes that the ggplot object was created using the ggvoronoi package with stat_voronoi(geom="path") and geom_point().
+#' Make sure to load the required libraries (ggplot2, ggvoronoi, sp) before using this function.
+#'
+#' @examples
+#'\dontrun{
+#' library(ggplot2)
+#' library(ggvoronoi)
+#' library(sf)
+#'
+#' df <- structure(list(groups = structure(1:16, .Label = c("0", "1",
+#' "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13",
+#' "14", "15"), class = "factor"),
+#' latitude = c(454958.780465603,
+#' 455004.47280591, 454885.338464729, 454891.038200793, 454911.54140957,
+#' 454947.515894516, 454845.494336779, 454950.428690276, 455001.684028287,
+#' 454936.964919935, 455017.721815154, 455084.876168519, 454884.307056065,
+#' 455053.71370209, 454988.433646113, 454933.070817933),
+#' longitude = c(5936577.41802353,
+#' 5936650.33357495, 5936684.00492433, 5936603.3723963, 5936644.3710608,
+#' 5936678.18028261, 5936661.25833358, 5936614.7618022, 5936693.37183672,
+#' 5936727.14434355, 5936609.08891642, 5936620.03577825, 5936727.23617373,
+#' 5936663.54803475, 5936737.77699043, 5936769.89451942)),
+#' row.names = c(NA,-16L), class = "data.frame")
+#'
+#' p <- ggplot(df,aes(latitude,longitude)) +
+#'      stat_voronoi(geom="path") +
+#'      geom_point()
+#' p
+#' polygons_list <- make_polygons_ggvoronoi(p,
+#'  projection_input = 25832,
+#'  projection_output = 4326)
+#'
+#' plot(polygons_list)
+#' }
+#' @import sf
+#'
+#' @seealso
+#' \code{\link{stat_voronoi}}
+#' \code{\link{geom_point}}
+#'
+#' @importFrom ggplot2 ggplot aes geom_point layer_data
+#' @importFrom ggvoronoi stat_voronoi
+#' @importFrom sf st_as_sf st_convex_hull st_transform st_cast `st_crs<-`
+#' @importFrom dplyr group_by summarise
+#'
+#' @keywords spatial
+#' @export
+make_polygons_ggvoronoi <- function(ggplot_object,
+                                    projection_input = 25832,
+                                    projection_output = 4326
+) {
+  table_object <- layer_data(ggplot_object,1)
+  bounds = table_object[, c(6,1,2)]
 
-#' create protection layers
+  i = 1
+  xys = st_as_sf(bounds, coords=c("x","y"))
+
+  polys = xys %>%
+    dplyr::group_by(.data[["id"]]) %>%
+    dplyr::summarise() %>%
+    st_cast("POLYGON") %>% `st_crs<-`(projection_input)
+
+  polys = polys %>% st_convex_hull() %>% st_transform(projection_output)
+
+  return(polys)
+}
+############ sampling locations per plot #########
+
+#' Sample Locations
 #'
-#' To prevent your experiment of being harmed by farm equipment, one may build protection walls in order to ensure machines can stop or evade before reaching the design.
-#' @param obj simple features object
-#' @param walls vector of integers, indicating distance of the experiment in meter
+#' Returns locations to sample for each plot.
 #'
-#' @return a simple features object containing protection layers
+#' This function takes an experiment design (plot layout) and returns random sample
+#' locations within each plot. The function uses the `sf` package to generate
+#' spatial polygons for the plots and then samples points within each polygon.
+#' Optionally, it can also display the sample locations as a ggplot2-based map.
+#'
+#' @param design Your experiment design of plot layouts.
+#' @param n Number of samples per plot (integer).
+#' @param plot Logical, indicating whether to visualize the sample locations as a ggplot2-based map.
+#' @param ... further options for `st_sample` and `make_polygons`
+#'
+#' @return An `sf` object containing the sample locations within each plot.
+#'
 #' @export
 #'
 #' @examples
 #' library(agricolaeplotr)
 #' library(agricolae)
-#' trt = c(2,3,4)
-#' outdesign1 <-design.crd(trt,r=5,serie=2,2543,'Mersenne-Twister')
-#' plt <- plot_design_crd(outdesign1,ncols = 13,nrows = 3)
-#' spat_df <- make_polygons(plt)
-#' protection <- create_protection_layers(spat_df)
-#' plot(protection, col=c("green","yellow","orange","red","darkred","black"))
-create_protection_layers <- function(obj,walls=c(10,5,3,2,1,0)){
-  obj <- sf::st_combine(obj["x"])
-  obj <- sf::st_buffer(obj,walls)
-  return (obj)
+#' trt <- c('A', 'B', 'C', 'D')
+#' k <- 3
+#' outdesign <- design.bib(trt, k, serie = 2, seed = 41, kinds = 'Super-Duper')
+#' plot_bib(outdesign)
+#' p <- plot_bib(outdesign)
+#' sample_locations(p, 3, TRUE)
+#'
+#' @importFrom sf st_sample
+#' @importFrom ggplot2 geom_sf ggplot
+#' @import lwgeom
+sample_locations <- function(design, n, plot = TRUE, ...) {
+  # Create spatial polygons for the design
+  doe <- make_polygons(design,...)
+
+  # Sample random points within each polygon
+  points <- sf::st_sample(doe, size = c(n, n), type = "random", exact = TRUE,...)
+
+  # Optionally, visualize the sample locations as a ggplot2-based map
+  if (plot) {
+    p <- ggplot2::ggplot(points) +
+      ggplot2::geom_sf(data = doe, aes(fill = .data[["fill"]])) +
+      ggplot2::geom_sf()
+    print(p)
+  }
+
+  return(points)
 }
 
