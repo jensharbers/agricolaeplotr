@@ -1,3 +1,7 @@
+.onAttach <- function(libname, pkgname) {
+ packageStartupMessage( "\nType 'citation(\"agricolaeplotr\")' for citing this R package in publications.")
+}
+
 #' checks matrix column input
 #'
 #' checks if input is suitable for matrix column indication
@@ -2938,6 +2942,7 @@ make_polygons_ggvoronoi <- function(ggplot_object,
 #' @examples
 #' library(agricolaeplotr)
 #' library(agricolae)
+#' library(ggplot2)
 #' trt <- c('A', 'B', 'C', 'D')
 #' k <- 3
 #' outdesign <- design.bib(trt, k, serie = 2, seed = 41, kinds = 'Super-Duper')
@@ -2965,4 +2970,3 @@ sample_locations <- function(design, n, plot = TRUE, ...) {
 
   return(points)
 }
-

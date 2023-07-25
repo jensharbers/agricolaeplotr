@@ -30,6 +30,7 @@ Optionally, it can also display the sample locations as a ggplot2-based map.
 \examples{
 library(agricolaeplotr)
 library(agricolae)
+library(ggplot2)
 trt <- c('A', 'B', 'C', 'D')
 k <- 3
 outdesign <- design.bib(trt, k, serie = 2, seed = 41, kinds = 'Super-Duper')
