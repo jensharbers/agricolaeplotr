@@ -1,5 +1,5 @@
 ---
-title: "agricolaeplotr: a package for visualization of design of experiments"
+title: "agricolaeplotr: A Package for Visualization of Design of Experiments"
 author: "Jens Harbers"
 date: "`r Sys.Date()`"
 output:
@@ -7,7 +7,7 @@ output:
     fig_width: 6 
     fig_height: 4
 vignette: >
-  %\VignetteIndexEntry{agricolaeplotr: a package for visualization of design of experiments}
+  %\VignetteIndexEntry{agricolaeplotr: A Package for Visualization of Design of Experiments}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 
@@ -31,9 +31,8 @@ use the following command to load the package after installation. The three pack
 library("ggplot2")
 library("agricolae")
 library("agricolaeplotr")
-library("rgdal")
-library("leaflet")
 library("FielDHub")
+library("raster")
 ```
 
 ## Example: factorial ab design with complete randomization
@@ -307,14 +306,14 @@ I show an example for each supported design:
 
 ```{r}
 SpatpREP1 <- FielDHub::partially_replicated(nrows = 25,
-                                  ncols = 18,
-                                  repGens = c(280,50,10,1,1),
+                                  ncols = 8,
+                                  repGens = c(30,50,10,1,1),
                                   repUnits = c(1,2,3,20,20),
                                   planter = "cartesian",
                                   plotNumber = 101,
                                   seed = 77)
 
-p <- plot_fieldhub(SpatpREP1,
+plot_fieldhub(SpatpREP1,
 labels = "PLOT",
 factor_name = "PLOT",
 width = 12,
@@ -530,23 +529,10 @@ full_control_positions(fullFact$fieldBook,x="REP",y="COLUMN",
                        labels="PLOT", shift_x= -1,shift_y = -1)
 
 plot_fieldhub(fullFact,x="REP",y="COLUMN",
-              factor_name = "TRT_COMB ",
+              factor_name = "TRT_COMB",
               labels="PLOT",shift_x=3,shift_y = 5.5)
 ```
 
-
-## Export a Design to GIS applications
-It is often useful to export an DoE as a file, that can be processed somewhere else.
-
-```{r message=FALSE, warning=FALSE}
-
-trt = c(2,3,4,5,6)
-outdesign1 <-design.crd(trt,r=5,serie=2,2543,'Mersenne-Twister')
-plt <- plot_design_crd(outdesign1,ncols = 13,nrows = 3)
-spat_df <- make_polygons(plt)
-spat_df
-
-```
 
 
 
@@ -556,21 +542,24 @@ trt<-c(3,2) # factorial 3x2
 outdesign <- design.ab(trt, r=3, serie=2,design = 'crd')
 plt <- plot_design.factorial_crd(outdesign,ncols=3,nrows=6, width = 5, height = 7.5 , reverse_x = FALSE,reverse_y = TRUE, factor_name = "B") + theme_pres() + scale_fill_viridis_d()
 
-spat_df <- make_polygons(plt,east = 3454800, north = 5938650 ,projection_output = '+init=EPSG:4326')
+spat_df <- make_polygons(plt,east = 3454206.89, 
+                         north = 5939183.21 ,
+                         projection_output = '+init=EPSG:4326')
 
-plot(spat_df, col=spat_df$fill)
+plot(spat_df["fill"],col=spat_df$fill)
 
 # this part does not work well in a vignette
+library(leaflet)
 
-# leaflet(spat_df) %>% addPolygons(
-#   fillColor = spat_df$fill,
-#   opacity=1,
-#   color="black",
-#   fillOpacity = 1) %>% addProviderTiles(provider = "OpenStreetMap.DE") # %>%
-#    setView(lng = (spat_df@bbox[1,1] + spat_df@bbox[1,2])/2,
-#            lat = (spat_df@bbox[2,1] + spat_df@bbox[2,2])/2,
-#         zoom = 28
-#       )
+spat_df <- sf:::as_Spatial(spat_df)
+
+spat_df <- sp::elide(spat_df,rotate = -90)
+                   
+ leaflet(spat_df) %>% addPolygons(
+   fillColor = spat_df$fill,
+   opacity=1,
+   color="black",
+   fillOpacity = 1) %>% addProviderTiles(provider = "OpenStreetMap.DE")
 ```
 
 Beginning here, some designs are only partly supported, as there are sometimes no definition from the authors of 'FielDHub' how to plot their designs.
@@ -818,6 +807,6 @@ reverse_x = FALSE)
 In science it is common to cite used R-packages as the authors put in a lot of effort, time and money to program and maintaining them. As the citations are the actual currency, the citation function should be run at the bottom off an R script.
 
 ```{r}
-citation()
+citation("agricolaeplotr")
 ```
 

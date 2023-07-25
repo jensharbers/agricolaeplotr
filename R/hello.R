@@ -1,3 +1,6 @@
+packageStartupMessage("Thank you for using MyPackage!")
+packageStartupMessage("To acknowledge our work, please cite the package:")
+packageStartupMessage("Jens Harbers, (2021). agricolaeplotr: {An} {R} package for visualising experimental designs in science and engineering, https://CRAN.R-project.org/package=agricolaeplotr, doi:10.5281/ZENODO.5502175.")
 #' checks matrix column input
 #'
 #' checks if input is suitable for matrix column indication
@@ -368,9 +371,9 @@ plot_design_crd <- function(design,
                   space_height) + theme_bw() + theme(line = element_blank()) +
       geom_text(aes_string(label = labels), colour = "black")
 
-    plt
+      plt
 
-    return(plt)
+      return(plt)
     } else {
       stop(paste("You have in multiplication of ncols:",
                  ncols, "and nrows:", nrows, "Elements.",
@@ -2202,8 +2205,8 @@ DOE_obj <- function(p){
 #' summary(stats, part = "experiment")
 #' # print plot summary for all information shown above in one output
 #' summary(stats, part = "all")
-###FieldLayout <- function(object,unit,part,...) UseMethod("FieldLayout")
-summary.FieldLayout <- function(object, unit="m", part="net_plot",...){
+###FieldLayout <- function(object,unit,part,...) S3method(summary, FieldLayout)
+summary <- function(object, unit="m", part="net_plot",...){
   if(!inherits(object,"FieldLayout")){
     stop("This is not the right class for this kind of summary. You need to use an object from a class \"FieldLayout\".")
   }
@@ -2465,9 +2468,10 @@ to_table <- function(object,part="net_plot",unit="m",digits=3,...){
 #'  in which EPSG projection the ggplot object should be converted to a raster object?
 #'  a projection with a metric unit is highly recommended
 #' @param projection_output string defines
-#'  in which EPSG projection the SpatialPolygonDataFrame should be exported.
+#'  in which EPSG projection the simple features onject should be exported.
+#' @importFrom raster extent crs
 #' @export
-#' @return a SpatialPolygonDataframe object
+#' @return a simple features object
 #'
 #' @examples
 #' library(agricolaeplotr)
@@ -2503,10 +2507,11 @@ make_polygons <- function(ggplot_object,
 
 
   polygons_list = do.call(rbind, polygons_list)
-
   polygons_list@data <- table_object
 
-  polygons_list <- sp::spTransform(polygons_list, sp::CRS(projection_output))
+  polygons_list <- sf::st_as_sf(polygons_list)
+  # polygons_list <- sp::spTransform(polygons_list, sp::CRS(projection_output))
+  polygons_list <- sf::st_transform(polygons_list, crs = sf::st_crs(projection_output))
   return(polygons_list)
 }
 
@@ -2529,7 +2534,7 @@ make_polygons <- function(ggplot_object,
 #' p <- ggplot() +
 #' geom_point(data = df, aes(gp, y))
 #' p <- p + theme_gi();p
-theme_gil <- function(){
+theme_gi <- function(){
   theme_bw() +
     theme(text=element_text(size = 10, angle = 0))
     theme(axis.text = element_text(colour = "black"))+
@@ -2562,22 +2567,6 @@ theme_gil <- function(){
 #' @examples
 #' library(agricolaeplotr)
 #' library(FielDHub)
-#' SpatpREP1 <- partially_replicated(nrows = 25,
-#'                                   ncols = 18,
-#'                                   repGens = c(280,50,10,1,1),
-#'                                   repUnits = c(1,2,3,20,20),
-#'                                   planter = "cartesian",
-#'                                   plotNumber = 101,
-#'                                   seed = 77)
-#' SpatpREP1$infoDesign
-#'
-#' plot_fieldhub(SpatpREP1,
-#' labels = "PLOT",
-#' factor_name = "PLOT",
-#' width = 12,
-#' height = 10,
-#' reverse_y = TRUE,
-#' reverse_x = TRUE)
 #'
 #' NAME <- paste("G", 1:492, sep = "")
 #' repGens = c(108, 384);repUnits = c(2,1)
@@ -2590,7 +2579,7 @@ theme_gil <- function(){
 #'                                   plotNumber = 101,
 #'                                   seed = 41,
 #'                                   data = treatment_list)
-#' SpatpREP2$infoDesign
+#' SpatpREP2$infoDesign$idDesign
 #'
 #' plot_fieldhub(SpatpREP2,
 #' labels = "PLOT",
@@ -2613,7 +2602,13 @@ plot_fieldhub <- function(design,
                           reverse_x = FALSE,
                           shift_x=0,
                           shift_y=0) {
-  if (design$infoDesign$idDesign %in% c(1,2,3,4,7,8,9,10,11,12,13,14,15,16)) {
+  if (!(design$infoDesign$id_design %in% c(1,2,3,4,7,8,9,10,11,12,13,14,15,16)))
+  {
+    stop(paste0("This is not the correct function for your experiment design
+                or is not supported yet."))
+
+  } else {print("Your Design ID is supported.")}
+
     design$book <- design$fieldBook
     test_string(x)
     test_string(y)
@@ -2643,22 +2638,20 @@ plot_fieldhub <- function(design,
       table[, x]  <- abs(table[, x]  - max(table[, x] )) +
         min(table[, x] )
     }
-    plt <- ggplot(table, aes_string(x = x, y = y)) +
-      geom_tile(aes_string(fill = factor_name),
+    plt <- ggplot(table, aes(.data[[x]], .data[[y]])) +
+      geom_tile(aes(fill = .data[[factor_name]]),
                 width = width * space_width, height = height *
                   space_height) + theme_bw() + theme(line = element_blank()) +
-      geom_text(aes_string(label = labels), colour = "black")# +
+      geom_text(aes(label = .data[[labels]]), colour = "black")# +
     # + facet_grid(reformulate(replication_name,location_name))
 
     plt
 
     return(plt)
 
-  } else {
-    stop(paste0("This is not the correct function for your experiment design."))
   }
 
-}
+
 
 #' Serpentine
 #'
@@ -2680,8 +2673,7 @@ serpentine <- function(n,times,m=1){
   for(i in 1:times){
     if(i %% 2 == 1){
       vec <- cbind(vec,m:n)
-    }
-    else{
+    } else {
       vec <- cbind(vec,n:m)
     }
   }
@@ -2828,10 +2820,34 @@ citations <- function(includeURL = TRUE, bibtex=TRUE) {
       ref$url <- NULL
     }
     if (bibtex==TRUE){
-      print(utils::toBibtex(ref))}else
-      {
-        print(ref, style = 'text')
+                print(utils::toBibtex(ref))} else {
+        print(ref, style = "text")
       }
     cat('\n')
   }
 }
+
+#' create protection layers
+#'
+#' To prevent your experiment of being harmed by farm equipment, one may build protection walls in order to ensure machines can stop or evade before reaching the design.
+#' @param obj simple features object
+#' @param walls vector of integers, indicating distance of the experiment in meter
+#'
+#' @return a simple features object containing protection layers
+#' @export
+#'
+#' @examples
+#' library(agricolaeplotr)
+#' library(agricolae)
+#' trt = c(2,3,4)
+#' outdesign1 <-design.crd(trt,r=5,serie=2,2543,'Mersenne-Twister')
+#' plt <- plot_design_crd(outdesign1,ncols = 13,nrows = 3)
+#' spat_df <- make_polygons(plt)
+#' protection <- create_protection_layers(spat_df)
+#' plot(protection, col=c("green","yellow","orange","red","darkred","black"))
+create_protection_layers <- function(obj,walls=c(10,5,3,2,1,0)){
+  obj <- sf::st_combine(obj["x"])
+  obj <- sf::st_buffer(obj,walls)
+  return (obj)
+}
+
