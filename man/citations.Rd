@@ -12,7 +12,7 @@ citations(includeURL = TRUE, bibtex = TRUE)
 \item{bibtex}{boolean, Should the citations be returned as bibtex?}
 }
 \value{
-printed output to consola
+printed output to console
 }
 \description{
 Generates citations of all loaded packages

@@ -5,3 +5,5 @@
 ^CRAN-RELEASE$
 ^.Rd2pdf2160*
 ^\.lastMiKTeXExceptio*
+^revdep$
+^CRAN-SUBMISSION$

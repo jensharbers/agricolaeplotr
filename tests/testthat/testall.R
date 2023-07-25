@@ -654,7 +654,7 @@ test_that("plot a split plot design rcbd  for subplots", {
                        reverse_x = TRUE, reverse_y = TRUE, factor_name_1 = "t1",
                        factor_name_2 = "t2")
   p <- p + theme_poster()
-  p
+
   expect_identical(p$labels$y, "block")
 })
 
@@ -828,8 +828,8 @@ reverse_x = TRUE)
 
 test_that("plot a plot design from FielDHub package shows COLUMN as x axis", {
   SpatpREP1 <- partially_replicated(nrows = 25,
-                                    ncols = 18,
-                                    repGens = c(280,50,10,1,1),
+                                    ncols = 8,
+                                    repGens = c(30,50,10,1,1),
                                     repUnits = c(1,2,3,20,20),
                                     planter = "cartesian",
                                     plotNumber = 101,
@@ -842,7 +842,7 @@ test_that("plot a plot design from FielDHub package shows COLUMN as x axis", {
                      height = 10,
                      reverse_y = TRUE,
                      reverse_x = TRUE)
-  p <- p + theme(legend.position = "none")
+
 
   expect_identical(p$labels$x, "COLUMN")
 

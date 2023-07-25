@@ -1,12 +1,15 @@
 citHeader("To cite agricolaeplotr in publications use:")
 
-citEntry(
-  entry    = "Manual",
-  title    = "agricolaeplotr:  a package for visualization of design of experiments",
-  author   = "Jens Harbers",
-  year     = "2021",
-  version  = "0.1.0",
-  textVersion = paste(
-
-  )
+bibentry(bibtype = "article",
+title = "{agricolaeplotr}: {An} {R} package for visualising experimental designs in science and engineering",
+author = c(person("Jens", "Harbers")),
+year = "2021",
+month = "sep",
+shorttitle = "agricolaeplotr",
+journal = "The Journal of Brief Ideas",
+doi = "10.5281/ZENODO.5502175",
+url = "https://CRAN.R-project.org/package=agricolaeplotr",
+textVersion = paste0("Jens Harbers, (", 2021, ").",
+" {An} {R} package for visualising experimental designs in science and engineering",
+" https://CRAN.R-project.org/package=agricolaeplotr", " doi:10.5281/ZENODO.5502175.")
 )

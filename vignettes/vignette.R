@@ -5,8 +5,8 @@
 library("ggplot2")
 library("agricolae")
 library("agricolaeplotr")
-library("rgdal")
-library("leaflet")
+library("FielDHub")
+library("raster")
 
 ## -----------------------------------------------------------------------------
 library(agricolae) # origin of the needed design object
@@ -152,16 +152,15 @@ plot_split_rcbd(outdesign2,width = 5,height = 5,labels = "splots",
 
 
 ## -----------------------------------------------------------------------------
-require(FielDHub)
-SpatpREP1 <- partially_replicated(nrows = 25,
-                                  ncols = 18,
-                                  repGens = c(280,50,10,1,1),
+SpatpREP1 <- FielDHub::partially_replicated(nrows = 25,
+                                  ncols = 8,
+                                  repGens = c(30,50,10,1,1),
                                   repUnits = c(1,2,3,20,20),
                                   planter = "cartesian",
                                   plotNumber = 101,
                                   seed = 77)
 
-p <- plot_fieldhub(SpatpREP1,
+plot_fieldhub(SpatpREP1,
 labels = "PLOT",
 factor_name = "PLOT",
 width = 12,
@@ -176,7 +175,7 @@ REPS <- rep(repUnits, repGens)
 treatment_list <- data.frame(list(ENTRY = 1:492, 
                                    NAME = NAME, 
                                    REPS = REPS))
-SpatpREP2 <- partially_replicated(nrows = 30,
+SpatpREP2 <- FielDHub::partially_replicated(nrows = 30,
                                    ncols = 20,
                                    planter = "serpentine",
                                    plotNumber = 101,
@@ -195,7 +194,7 @@ reverse_x = TRUE)
 
 
 ## -----------------------------------------------------------------------------
-spatd <- diagonal_arrangement(nrows = 15, ncols = 20, lines = 270, 
+spatd <- FielDHub::diagonal_arrangement(nrows = 15, ncols = 20, lines = 270, 
                               checks = 4, 
                               plotNumber = 101, 
                               kindExpt = "SUDC", 
@@ -215,7 +214,7 @@ reverse_x = TRUE)
 
 
 ## -----------------------------------------------------------------------------
-OptimAd1 <- optimized_arrangement(nrows = 20, ncols = 20, lines = 362, 
+OptimAd1 <- FielDHub::optimized_arrangement(nrows = 20, ncols = 20, lines = 362, 
                                   amountChecks = 38, 
                                   checks = 1:5,
                                   planter = "cartesian", 
@@ -238,7 +237,7 @@ reverse_x = FALSE)
 ## -----------------------------------------------------------------------------
 
 
-rectangularLattice1 <- rectangular_lattice(t = 20, k = 4, r = 6, l = 1, 
+rectangularLattice1 <- FielDHub::rectangular_lattice(t = 20, k = 4, r = 6, l = 1, 
                                            plotNumber = 101,
                                            locationNames = "FARGO", 
                                            seed = 126)
@@ -259,7 +258,7 @@ reverse_x = FALSE)
 ## -----------------------------------------------------------------------------
 
 
-squareLattice1 <- square_lattice(t = 64, k = 8, r = 5, l = 2, 
+squareLattice1 <- FielDHub::square_lattice(t = 64, k = 8, r = 5, l = 2, 
                                  plotNumber = c(1001, 2001),
                                  locationNames = c("FARGO", "MINOT"), 
                                  seed = 1986)
@@ -278,7 +277,7 @@ reverse_x = FALSE)
 
 
 ## -----------------------------------------------------------------------------
-squareLattice1 <- square_lattice(t = 64, k = 8, r = 5, l = 2, 
+squareLattice1 <- FielDHub::square_lattice(t = 64, k = 8, r = 5, l = 2, 
                                  plotNumber = c(1001, 2001),
                                  locationNames = c("FARGO", "MINOT"), 
                                  seed = 1986)
@@ -298,7 +297,7 @@ reverse_x = FALSE)
 
 
 ## -----------------------------------------------------------------------------
-ARCBD1 <- RCBD_augmented(lines = 50, checks = 3, b = 6, l = 1, 
+ARCBD1 <- FielDHub::RCBD_augmented(lines = 50, checks = 3, b = 6, l = 1, 
                          planter = "cartesian", 
                          plotNumber = c(1,1001),
                          seed = 23, 
@@ -319,7 +318,7 @@ reverse_x = FALSE)
 
 ## -----------------------------------------------------------------------------
 
-ibd1 <- incomplete_blocks(t = 12,
+ibd1 <- FielDHub::incomplete_blocks(t = 12,
                           k = 4,
                           r = 2,
                           seed = 1984)
@@ -337,7 +336,7 @@ reverse_x = FALSE)
 
 
 ## -----------------------------------------------------------------------------
-fullFact <- full_factorial(setfactors = c(2,2,2), reps = 3, 
+fullFact <- FielDHub::full_factorial(setfactors = c(2,2,2), reps = 3, 
                             l = 1, type = 2,
                             plotNumber = 101,
                             continuous = TRUE,
@@ -347,24 +346,15 @@ fullFact <- full_factorial(setfactors = c(2,2,2), reps = 3,
 
 fullFact$infoDesign
 
-fullFact$fieldBook$COLUMN <-  rep(1:length(unique(fullFact$fieldBook$TRT_COMB)),times=max(fullFact$fieldBook$REP))
+fullFact$fieldBook$COLUMN <-  rep(seq_len(length(unique(fullFact$fieldBook$TRT_COMB))),times=max(fullFact$fieldBook$REP))
 
 full_control_positions(fullFact$fieldBook,x="REP",y="COLUMN",
                        factor_name = "TRT_COMB ",
                        labels="PLOT", shift_x= -1,shift_y = -1)
 
 plot_fieldhub(fullFact,x="REP",y="COLUMN",
-              factor_name = "TRT_COMB ",
+              factor_name = "TRT_COMB",
               labels="PLOT",shift_x=3,shift_y = 5.5)
-
-## ----message=FALSE, warning=FALSE---------------------------------------------
-
-trt = c(2,3,4,5,6)
-outdesign1 <-design.crd(trt,r=5,serie=2,2543,'Mersenne-Twister')
-plt <- plot_design_crd(outdesign1,ncols = 13,nrows = 3)
-spat_df <- make_polygons(plt)
-spat_df
-
 
 ## ----message=FALSE, warning=FALSE---------------------------------------------
 
@@ -372,28 +362,31 @@ trt<-c(3,2) # factorial 3x2
 outdesign <- design.ab(trt, r=3, serie=2,design = 'crd')
 plt <- plot_design.factorial_crd(outdesign,ncols=3,nrows=6, width = 5, height = 7.5 , reverse_x = FALSE,reverse_y = TRUE, factor_name = "B") + theme_pres() + scale_fill_viridis_d()
 
-spat_df <- make_polygons(plt,east = 3454800, north = 5938650 ,projection_output = '+init=EPSG:4326')
+spat_df <- make_polygons(plt,east = 3454206.89, 
+                         north = 5939183.21 ,
+                         projection_output = '+init=EPSG:4326')
 
-plot(spat_df, col=spat_df$fill)
+plot(spat_df["fill"],col=spat_df$fill)
 
 # this part does not work well in a vignette
+library(leaflet)
 
-# leaflet(spat_df) %>% addPolygons(
-#   fillColor = spat_df$fill,
-#   opacity=1,
-#   color="black",
-#   fillOpacity = 1) %>% addProviderTiles(provider = "OpenStreetMap.DE") # %>%
-#    setView(lng = (spat_df@bbox[1,1] + spat_df@bbox[1,2])/2,
-#            lat = (spat_df@bbox[2,1] + spat_df@bbox[2,2])/2,
-#         zoom = 28
-#       )
+spat_df <- sf:::as_Spatial(spat_df)
+
+spat_df <- sp::elide(spat_df,rotate = -90)
+                   
+ leaflet(spat_df) %>% addPolygons(
+   fillColor = spat_df$fill,
+   opacity=1,
+   color="black",
+   fillOpacity = 1) %>% addProviderTiles(provider = "OpenStreetMap.DE")
 
 ## -----------------------------------------------------------------------------
 
 H <- paste("H", 1:4, sep = "")
 V <- paste("V", 1:5, sep = "")
 
-strip1 <- strip_plot(Hplots = H,
+strip1 <- FielDHub::strip_plot(Hplots = H,
                      Vplots = V,
                      b = 1,
                      l = 1,
@@ -430,7 +423,7 @@ reverse_y = FALSE,
 reverse_x = FALSE)
 
 ## -----------------------------------------------------------------------------
-latinSq1 <- latin_square(t = 4,
+latinSq1 <- FielDHub::latin_square(t = 4,
                          reps = 2,
                          plotNumber = 101,
                          planter = "cartesian",
@@ -458,7 +451,7 @@ reverse_x = FALSE)
 
 ## -----------------------------------------------------------------------------
 
-rowcold1 <- row_column(t = 36, nrows = 6, r = 3, l = 1,
+rowcold1 <- FielDHub::row_column(t = 36, nrows = 6, r = 3, l = 1,
                        plotNumber= 101,
                        locationNames = "Loc1",
                        seed = 21)
@@ -481,7 +474,7 @@ reverse_y = FALSE,
 reverse_x = FALSE)
 
 ## -----------------------------------------------------------------------------
-rcbd1 <- RCBD(t = LETTERS[1:20], reps = 5, l = 3,
+rcbd1 <- FielDHub::RCBD(t = LETTERS[1:20], reps = 5, l = 3,
               plotNumber = c(101,1001, 2001),
               continuous = TRUE,
               planter = "serpentine",
@@ -501,7 +494,7 @@ height = 10,
 reverse_y = TRUE,
 reverse_x = FALSE)
 
-rcbd1 <- RCBD(t = LETTERS[1:20], reps = 5, l = 3,
+rcbd1 <- FielDHub::RCBD(t = LETTERS[1:20], reps = 5, l = 3,
               plotNumber = c(101,1001, 2001),
               continuous = TRUE,
               planter = "cartesian",
@@ -559,7 +552,7 @@ p <- full_control_positions(design,"col","row","varieties","plots",
                        p
 
 ## -----------------------------------------------------------------------------
-crd1 <- CRD(t = 10,
+crd1 <- FielDHub::CRD(t = 10,
             reps = 5,
             plotNumber = 101,
             seed = 1987,
@@ -580,5 +573,5 @@ reverse_y = TRUE,
 reverse_x = FALSE)
 
 ## -----------------------------------------------------------------------------
-citation()
+citation("agricolaeplotr")
 

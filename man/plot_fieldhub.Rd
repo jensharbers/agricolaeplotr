@@ -54,44 +54,37 @@ plot_fieldhub(
 Plots designs from \code{FielDHub} package
 }
 \examples{
+\dontrun{
 library(agricolaeplotr)
 library(FielDHub)
-SpatpREP1 <- partially_replicated(nrows = 25,
-                                  ncols = 18,
-                                  repGens = c(280,50,10,1,1),
-                                  repUnits = c(1,2,3,20,20),
-                                  planter = "cartesian",
-                                  plotNumber = 101,
-                                  seed = 77)
-SpatpREP1$infoDesign
+H <- paste("H", 1:4, sep = "")
+V <- paste("V", 1:5, sep = "")
 
-plot_fieldhub(SpatpREP1,
-labels = "PLOT",
-factor_name = "PLOT",
-width = 12,
-height = 10,
-reverse_y = TRUE,
-reverse_x = TRUE)
+strip1 <- FielDHub::strip_plot(Hplots = H,
+                              Vplots = V,
+                              b = 1,
+                              l = 1,
+                              plotNumber = 101,
+                              planter = "serpentine",
+                              locationNames = "A",
+                              seed = 333)
 
-NAME <- paste("G", 1:492, sep = "")
-repGens = c(108, 384);repUnits = c(2,1)
-REPS <- rep(repUnits, repGens)
-treatment_list <- data.frame(list(ENTRY = 1:492, NAME = NAME, REPS = REPS))
 
-SpatpREP2 <- partially_replicated(nrows = 30,
-                                  ncols = 20,
-                                  planter = "serpentine",
-                                  plotNumber = 101,
-                                  seed = 41,
-                                  data = treatment_list)
-SpatpREP2$infoDesign
+strip1$fieldBook$ROW <- as.numeric(ordered(strip1$fieldBook$VSTRIP,
+                       levels = unique(strip1$fieldBook$VSTRIP)))
+strip1$fieldBook$COLUMN <- as.numeric(ordered(strip1$fieldBook$HSTRIP,
+                       levels = unique(strip1$fieldBook$HSTRIP)))
 
-plot_fieldhub(SpatpREP2,
-labels = "PLOT",
-factor_name = "PLOT",
-width = 12,
-height = 10,
-reverse_y = TRUE,
-reverse_x = TRUE)
+plot_fieldhub(strip1,
+              x = "ROW",
+              y = "COLUMN",
+              labels = "HSTRIP",
+              factor_name = "HSTRIP",
+              width = 12,
+              height = 10,
+              reverse_y = FALSE,
+              reverse_x = FALSE)
+
+}
 
 }

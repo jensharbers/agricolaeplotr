@@ -2510,12 +2510,11 @@ make_polygons <- function(ggplot_object,
   return(polygons_list)
 }
 
-#' theme_gil
+#' theme_gi
 #'
 #' Creates a theme for 'ggplot' based graphics to ensure
 #' to meet formal requirements for conferences of the
-#' Gesellschaft fuer Informatik in der
-#'  Land-, Forst,- und Ernaehrungswirtschaft e.V. (GIL).
+#' Gesellschaft fuer Informatik
 #'
 #' @return a 'ggplot' graph with a modified theme
 #' @export
@@ -2529,7 +2528,7 @@ make_polygons <- function(ggplot_object,
 #'
 #' p <- ggplot() +
 #' geom_point(data = df, aes(gp, y))
-#' p <- p + theme_gil();p
+#' p <- p + theme_gi();p
 theme_gil <- function(){
   theme_bw() +
     theme(text=element_text(size = 10, angle = 0))

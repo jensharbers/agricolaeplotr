@@ -25,7 +25,7 @@ As factorial experiments are omnipresent in all science and technology fields, a
 factorial ab-design will be used as an example. Although some parameters are worth for agriculture only, most other are useful for every user.
 
 ## Load the package
-use the following command to load the package after installation. The two packages below agricolaeplotr are only needed for the examples.
+use the following command to load the package after installation. The three packages below agricolaeplotr are only needed for the examples.
 
 ```{r message=FALSE, warning=FALSE}
 library("ggplot2")
@@ -33,6 +33,7 @@ library("agricolae")
 library("agricolaeplotr")
 library("rgdal")
 library("leaflet")
+library("FielDHub")
 ```
 
 ## Example: factorial ab design with complete randomization
@@ -522,7 +523,7 @@ fullFact <- FielDHub::full_factorial(setfactors = c(2,2,2), reps = 3,
 
 fullFact$infoDesign
 
-fullFact$fieldBook$COLUMN <-  rep(1:length(unique(fullFact$fieldBook$TRT_COMB)),times=max(fullFact$fieldBook$REP))
+fullFact$fieldBook$COLUMN <-  rep(seq_len(length(unique(fullFact$fieldBook$TRT_COMB))),times=max(fullFact$fieldBook$REP))
 
 full_control_positions(fullFact$fieldBook,x="REP",y="COLUMN",
                        factor_name = "TRT_COMB ",
