@@ -36,6 +36,6 @@ k <- 3
 outdesign <- design.bib(trt, k, serie = 2, seed = 41, kinds = 'Super-Duper')
 plot_bib(outdesign)
 p <- plot_bib(outdesign)
-sample_locations(p, 3, TRUE)
+sample_locations(p, 3, TRUE, projection_output = 25832)
 
 }

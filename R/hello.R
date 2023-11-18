@@ -2706,6 +2706,8 @@ serpentine <- function(n,times,m=1){
 #' @param reverse_x boolean, should the plots of the experiment be changed in reverse order in column direction? default:reverse_x=FALSE
 #' @param factor_name string Which factor should be used for plotting, needs to be a column in outdesign$book
 #' @param labels string Describes the column from that the plots are taken to display them
+#' @param way_x numeric vector indicates the shift of the nth-plot in x-axis.
+#' @param way_y numeric vector indicates the shift of the nth-plot in y-axis.
 #' @param shift_x numeric indicates the shift in units in x-axis.
 #' @param shift_y numeric indicates the shift in units for the y-axis.
 #' @param start_origin boolean. Should the design start at the origin (0|0)?
@@ -2732,6 +2734,9 @@ serpentine <- function(n,times,m=1){
 #'                        shift_x=(-0.5*3) + (-0.5*3*(1-0.13)),shift_y=-0.5*4.5 + (-0.5*4.5*(1-0.445)))
 #'                        p
 #'
+#' varieties<-LETTERS[1:12]
+#' outdesign <-design.youden(varieties,r=12,serie=2,seed=23)
+#' design <- outdesign$book
 #' p <- full_control_positions(design,"col","row","varieties","plots",
 #'                        width=3,height=4.5,
 #'                        space_width=1,space_height=1,
@@ -2743,6 +2748,17 @@ serpentine <- function(n,times,m=1){
 #'                        space_width=0.93,space_height=0.945,
 #'                        start_origin = TRUE)
 #'                        p
+#'
+#' p <- full_control_positions(design,"col","row","varieties","plots",
+#' width=3,height=4.5,
+#'space_width=0.93,space_height=0.945,way_x = c(2,6,8,10,12),way_y=c(3,8),
+#'start_origin = TRUE, reverse_y = FALSE,  reverse_x = FALSE);p
+#'
+#'p <- full_control_positions(design,"col","row","varieties","plots",
+#'                                     width=3,height=4.5,
+#'                                     space_width=0.93,space_height=0.945,way_x = c(2,4,6,8,10,12),way_y=c(3,8),
+#'                                     start_origin = FALSE, reverse_y = FALSE,  reverse_x = FALSE);p
+
 full_control_positions <- function(design,
                                    x = "col",
                                    y = "row",
@@ -2754,6 +2770,8 @@ full_control_positions <- function(design,
                                    space_height = 0.85,
                                    reverse_y = FALSE,
                                    reverse_x = FALSE,
+                                   way_x=0,
+                                   way_y=0,
                                    shift_x=0,
                                    shift_y=0,
                                    start_origin=FALSE) {
@@ -2779,13 +2797,36 @@ full_control_positions <- function(design,
     shift_x <- width * -0.5 + (width * -0.5 * (1-space_width)) ## makes zero
     shift_y <- height * -0.5 + (height * -0.5 * (1-space_height)) ## makes zero
 
-    table[, x]  <- as.numeric(table[, x] ) * width + shift_x
-    table[, y] <- as.numeric(table[, y]) * height + shift_y
+    table[, x]  <- as.numeric(table[, x] )
+
+    for (i in way_x ){
+      table[, x] <- ifelse(table[, x] > (i + (match(i,way_x) - 1)), table[, x] + 1, table[, x])
+      print(design)
+    }
+
+    table[, x]  <- table[, x] * width + shift_x
+
+    table[, y] <- as.numeric(table[, y])
+    for (i in way_y ){
+      table[, y] <- ifelse(table[, y] > (i + (match(i,way_y) - 1)), table[, y] + 1, table[, y])
+    }
+    table[, y] <- table[, y] * height + shift_y
   }
   else{
-  table[, x]  <- as.numeric(table[, x] ) * width + shift_x
-  table[, y] <- as.numeric(table[, y]) * height + shift_y
+    table[, x]  <- as.numeric(table[, x] )
+    for (i in way_x ){
+      table[, x] <- ifelse(table[, x] > (i + (match(i,way_x) - 1)), table[, x] + 1, table[, x])
+      print(design)
+    }
+    table[, x]  <- table[, x] * width + shift_x
+
+    table[, y] <- as.numeric(table[, y])
+    for (i in way_y ){
+      table[, y] <- ifelse(table[, y] > (i + (match(i,way_y) - 1)), table[, y] + 1, table[, y])
+    }
+    table[, y] <- table[, y] * height + shift_y
   }
+
   if (reverse_y == TRUE) {
     table[, y] <- abs(table[, y] - max(table[, y])) +
       min(table[, y])
@@ -2948,7 +2989,7 @@ make_polygons_ggvoronoi <- function(ggplot_object,
 #' outdesign <- design.bib(trt, k, serie = 2, seed = 41, kinds = 'Super-Duper')
 #' plot_bib(outdesign)
 #' p <- plot_bib(outdesign)
-#' sample_locations(p, 3, TRUE)
+#' sample_locations(p, 3, TRUE, projection_output = 25832)
 #'
 #' @importFrom sf st_sample
 #' @importFrom ggplot2 geom_sf ggplot
