@@ -3018,3 +3018,78 @@ sample_locations <- function(design, n, plot = TRUE, ...) {
 
   return(points)
 }
+
+
+
+
+#' Plot the longest diagonal of a field
+#'
+#' This function takes a field and plots the longest diagonal of the field. The field is divided into segments and points are sampled from these segments.
+#'
+#' @param field An object of class sf representing the field.
+#' @param n Integer, the number of sample points along the longest diagonal.
+#' @param type Type of sampling. Default is "random".
+#' @param n_segments Numeric, the number of segments to divide the longest diagonal (default is 2).
+#' @param distance_field_boundary Numeric, the distance to buffer the field for creating the boundary (default is 3.0).
+#' @param width_diagonal_path Numeric, the width to buffer the diagonal path (default is 2.0).
+#'
+#' @return A list containing four elements:
+#' \itemize{
+#' \item p: A ggplot object showing the field, the buffered field, the buffered line, and the sample points.
+#' \item buffered_line: A sf object representing the buffered line.
+#' \item my_line: A sf object representing the longest diagonal of the field.
+#' \item sample_points: A sf object representing the sampled points.
+#' }
+#'
+#' @examples
+#' my_sf <- sf::st_read('data/gfn_schlaege.shp',crs = "epsg:31467")
+#' field <- my_sf[my_sf$SCHLAG_NR == 170,]
+#' plot_longest_diagonal(field)
+#' @import ggplot2
+#' @import sf
+#' @import dplyr
+#' @import tidyr
+#' @importFrom stplanr line_segment
+#' @export
+plot_longest_diagonal <- function(field,n=8,type="random",n_segments=2,distance_field_boundary=3.0, width_diagonal_path=2){
+
+  buffered_field <- st_buffer(field,dist = -distance_field_boundary, joinStyle  = "MITRE", mitreLimit = 2,endCapStyle = "ROUND")
+  buffered_field_plot <- st_buffer(field,dist = -(distance_field_boundary + distance_field_boundary), joinStyle  = "MITRE", mitreLimit = 2,endCapStyle = "ROUND")
+
+  ggplot() +  geom_sf(data=field,fill="orange") + geom_sf(data=buffered_field_plot,fill="blue")
+
+  spat <- as_Spatial(buffered_field_plot$geometry)
+
+  field_boundary <- spat@polygons[[1]]@Polygons[[1]]@coords
+
+  d <- dist(field_boundary) %>% as.matrix() %>%
+    tibble::as_tibble() %>%
+    tibble::rownames_to_column(var = "start_node") %>%
+    gather(end_node, dist, -start_node) %>%
+    filter(dist != 0)
+
+  coords <- d[d$dist == max(d$dist),][1]
+
+  points <- data.frame(field_boundary)[coords$start_node,]
+  points <- matrix(unlist(points), ncol = 2, byrow = FALSE)
+  points <- unique(points)
+
+  my_line <- st_linestring(points)
+  my_line <- st_sfc(my_line,crs = "epsg:31467")
+
+  di <- st_as_sf(my_line)
+  seg <- stplanr::line_segment(di,n_segments=n_segments)
+  buffered_line <- st_buffer(seg,dist = width_diagonal_path, endCapStyle = "ROUND",mitreLimit=0.003,singleSide=FALSE)
+
+  sample_points <- st_line_sample(seg,n=n,type=type)
+
+  p <- ggplot() +
+    geom_sf(data=field,fill="orange") +
+    geom_sf(data=buffered_field_plot,fill="blue") +
+    geom_sf(data=buffered_line) + theme_minimal()+
+    geom_sf(data=sample_points,color="red")
+
+  p
+
+  return(list(p,buffered_line,my_line,sample_points))
+}

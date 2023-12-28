@@ -1,7 +1,7 @@
 Package: agricolaeplotr
 Type: Package
 Title: Visualization of Design of Experiments from the 'agricolae' Package
-Version: 0.3.2
+Version: 0.4.0
 Authors@R: 
     person(family="Harbers", given="Jens", email="jensharbers@gmail.com", role=c("aut","cre"),
            comment = c(ORCID = "0000-0001-6634-623X"))
@@ -22,6 +22,8 @@ Imports: ggplot2,
          utils,
          sf,
          dplyr,
+         tidyr,
+         stplanr,
          lwgeom,
          ggvoronoi
 RoxygenNote: 7.2.3

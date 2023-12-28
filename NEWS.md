@@ -1,3 +1,9 @@
+# agricolaeplotr 0.4.0
+
+## Updates
+
+* Added function `plot_longest_diagonal` to take samples on the longest diagonal on a polygon.
+
 # agricolaeplotr 0.3.2
 
 ## Updates
