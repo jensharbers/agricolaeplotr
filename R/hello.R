@@ -3047,9 +3047,11 @@ sample_locations <- function(design, n, plot = TRUE, ...) {
 #' plot_longest_diagonal(field)
 #' @import ggplot2
 #' @import sf
-#' @import dplyr
-#' @import tidyr
+#' @importFrom dplyr filter
+#' @importFrom tidyr gather
 #' @importFrom stplanr line_segment
+#' @importFrom stats dist
+#' @importFrom tibble as_tibble rownames_to_column
 #' @export
 plot_longest_diagonal <- function(field,n=8,type="random",n_segments=2,distance_field_boundary=3.0, width_diagonal_path=2){
 
@@ -3062,14 +3064,13 @@ plot_longest_diagonal <- function(field,n=8,type="random",n_segments=2,distance_
 
   field_boundary <- spat@polygons[[1]]@Polygons[[1]]@coords
 
-  d <- dist(field_boundary) %>% as.matrix() %>%
-    tibble::as_tibble() %>%
-    tibble::rownames_to_column(var = "start_node") %>%
+  d <- stats::dist(field_boundary) %>% as.matrix() %>%
+    as_tibble() %>%
+    rownames_to_column(var = "start_node") %>%
     gather(end_node, dist, -start_node) %>%
     filter(dist != 0)
 
   coords <- d[d$dist == max(d$dist),][1]
-
   points <- data.frame(field_boundary)[coords$start_node,]
   points <- matrix(unlist(points), ncol = 2, byrow = FALSE)
   points <- unique(points)
