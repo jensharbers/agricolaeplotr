@@ -39,7 +39,9 @@ A list containing four elements:
 This function takes a field and plots the longest diagonal of the field. The field is divided into segments and points are sampled from these segments.
 }
 \examples{
-my_sf <- sf::st_read('data/gfn_schlaege.shp',crs = "epsg:31467")
+library(sf)
+my_sf <- st_read(system.file("shape/gfn_schlaege.shp", package="agricolaeplotr"))
+st_crs(my_sf) <- 25832
 field <- my_sf[my_sf$SCHLAG_NR == 170,]
 plot_longest_diagonal(field)
 }

@@ -2,6 +2,7 @@
  packageStartupMessage( "\nType 'citation(\"agricolaeplotr\")' for citing this R package in publications.")
 }
 
+
 #' checks matrix column input
 #'
 #' checks if input is suitable for matrix column indication
@@ -3042,7 +3043,9 @@ sample_locations <- function(design, n, plot = TRUE, ...) {
 #' }
 #'
 #' @examples
-#' my_sf <- sf::st_read('data/gfn_schlaege.shp',crs = "epsg:31467")
+#' library(sf)
+#' my_sf <- st_read(system.file("shape/gfn_schlaege.shp", package="agricolaeplotr"))
+#' st_crs(my_sf) <- 25832
 #' field <- my_sf[my_sf$SCHLAG_NR == 170,]
 #' plot_longest_diagonal(field)
 #' @import ggplot2
@@ -3057,8 +3060,7 @@ plot_longest_diagonal <- function(field,n=8,type="random",n_segments=2,distance_
 
   buffered_field <- st_buffer(field,dist = -distance_field_boundary, joinStyle  = "MITRE", mitreLimit = 2,endCapStyle = "ROUND")
   buffered_field_plot <- st_buffer(field,dist = -(distance_field_boundary + distance_field_boundary), joinStyle  = "MITRE", mitreLimit = 2,endCapStyle = "ROUND")
-
-  ggplot() +  geom_sf(data=field,fill="orange") + geom_sf(data=buffered_field_plot,fill="blue")
+  buffered_field_plot2 <- st_buffer(field,dist = -(width_diagonal_path), joinStyle  = "MITRE", mitreLimit = 2,endCapStyle = "ROUND")
 
   spat <- as_Spatial(buffered_field_plot$geometry)
 
@@ -3076,17 +3078,17 @@ plot_longest_diagonal <- function(field,n=8,type="random",n_segments=2,distance_
   points <- unique(points)
 
   my_line <- st_linestring(points)
-  my_line <- st_sfc(my_line,crs = "epsg:31467")
+  my_line <- st_sfc(my_line,crs = st_crs(field))
 
   di <- st_as_sf(my_line)
   seg <- stplanr::line_segment(di,n_segments=n_segments)
-  buffered_line <- st_buffer(seg,dist = width_diagonal_path, endCapStyle = "ROUND",mitreLimit=0.003,singleSide=FALSE)
+  buffered_line <- st_buffer(seg,dist = width_diagonal_path, endCapStyle = "FLAT",singleSide=FALSE,mitreLimit = 0.00003)
 
   sample_points <- st_line_sample(seg,n=n,type=type)
 
   p <- ggplot() +
     geom_sf(data=field,fill="orange") +
-    geom_sf(data=buffered_field_plot,fill="blue") +
+    geom_sf(data=buffered_field_plot2,fill="blue") +
     geom_sf(data=buffered_line) + theme_minimal()+
     geom_sf(data=sample_points,color="red")
 
@@ -3094,3 +3096,6 @@ plot_longest_diagonal <- function(field,n=8,type="random",n_segments=2,distance_
 
   return(list(p,buffered_line,my_line,sample_points))
 }
+
+utils::globalVariables(c("end_node","start_node"))
+
