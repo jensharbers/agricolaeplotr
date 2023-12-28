@@ -19,6 +19,8 @@ full_control_positions(
   way_x = 0,
   way_y = 0,
   shift_x = 0,
+  dist_x = 1,
+  dist_y = 1,
   shift_y = 0,
   start_origin = FALSE
 )
@@ -52,6 +54,10 @@ full_control_positions(
 
 \item{shift_x}{numeric indicates the shift in units in x-axis.}
 
+\item{dist_x}{numeric indicates the shift in plots in x-axis.}
+
+\item{dist_y}{numeric indicates the shift in plots for the y-axis.}
+
 \item{shift_y}{numeric indicates the shift in units for the y-axis.}
 
 \item{start_origin}{boolean. Should the design start at the origin (0|0)?}
@@ -65,6 +71,7 @@ This function provides full control about the plotting. The user also may shift 
 \examples{
 library(agricolaeplotr)
 library(agricolae)
+library(ggplot2)
 varieties<-c('perricholi','yungay','maria bonita','tomasa')
 outdesign <-design.youden(varieties,r=2,serie=2,seed=23)
 design <- outdesign$book
@@ -97,11 +104,13 @@ p <- full_control_positions(design,"col","row","varieties","plots",
 
 p <- full_control_positions(design,"col","row","varieties","plots",
 width=3,height=4.5,
-space_width=0.93,space_height=0.945,way_x = c(2,6,8,10,12),way_y=c(3,8),
+space_width=0.93,space_height=0.945,way_x = c(2,6,8,10,12),way_y=c(3,8),dist_x=2,dist_y=4,
 start_origin = TRUE, reverse_y = FALSE,  reverse_x = FALSE);p
 
 p <- full_control_positions(design,"col","row","varieties","plots",
                                     width=3,height=4.5,
-                                    space_width=0.93,space_height=0.945,way_x = c(2,4,6,8,10,12),way_y=c(3,8),
-                                    start_origin = FALSE, reverse_y = FALSE,  reverse_x = FALSE);p
+                                    space_width=0.93,space_height=0.945,
+                                    way_x = c(2,4,6,8,10,12),way_y=c(3,8),
+                                    start_origin = FALSE, reverse_y = FALSE,
+                                    reverse_x = FALSE);p
 }
