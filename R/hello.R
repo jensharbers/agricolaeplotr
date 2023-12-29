@@ -3099,3 +3099,49 @@ plot_longest_diagonal <- function(field,n=8,type="random",n_segments=2,distance_
 
 utils::globalVariables(c("end_node","start_node"))
 
+
+#' Create Protective Layers for Design of Experiments (DOEs)
+#'
+#' This function generates protective layers around the polygons of an experiment.
+#' These layers can be used to plot boundaries, for example, to protect agricultural
+#' on-farm experiments from accidental harvesting.
+#'
+#' @param design An \code{sf} object containing the polygons of the experiment.
+#'               The coordinate reference system (crs) of the data needs to be in
+#'               metric distance, not degrees.
+#' @param borders A numeric vector specifying the distances (in meters) for which
+#'                protective layers should be created. The layers will be created
+#'                with decreasing distances, starting from the largest.
+#'
+#' @return An \code{sf} object representing the protective layers around the
+#'         experiment polygons.
+#'
+#' @examples
+#' library(agricolaeplotr)
+#' library(sf)
+#' library(ggplot2)
+#' example("make_polygons")
+#' polygo <- make_polygons(plt, north = 13454206.89, east = 7939183.21)
+#' polygo <- st_transform(polygo, 25832)
+#' pl <- protective_layers(polygo)
+#' # plot experiment shape
+#' ggplot(pl) + geom_sf(fill=c("black","orange","blue","red"))+ theme_minimal()
+#' # write them to kml for Google Maps
+#' # st_write(pl, "boundaries2.kml", append = FALSE)
+#'
+#' @export
+protective_layers <- function(design, borders = c(0, 3, 5, 10)) {
+
+  borders <- unique(sort(borders, decreasing = TRUE))
+  layer_list <- list()
+
+  for (i in 1:length(borders)) {
+    layer_list[[i]] <- st_union(st_buffer(design["x"], borders[i], joinStyle = "MITRE", mitreLimit = 2, endCapStyle = "ROUND"))
+  }
+
+  df <- do.call(rbind, layer_list)
+  df <- st_as_sfc(df)
+  st_crs(df) <- crs(design)
+
+  return(df)
+}
