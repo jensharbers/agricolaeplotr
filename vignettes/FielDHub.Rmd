@@ -1,0 +1,137 @@
+---
+title: "Plotting Designs from FielDHub Package"
+author: "Jens Harbers"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    fig_width: 6 
+    fig_height: 4
+vignette: >
+  %\VignetteIndexEntry{Plotting Designs from FielDHub Package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+
+  
+---
+
+
+# Usage of the package
+This chapter shows the usage of the package and the underlying functions.
+As factorial experiments are omnipresent in all science and technology fields, a
+factorial ab-design will be used as an example. Although some parameters are worth for agriculture only, most other are useful for every user.
+
+Unlike the usual presentation approach, I deliberately inserted the output of the FielDHub functions into the vignette and executed each function individually. This allows interested users to directly adopt the code.
+
+For agricolaeplotr, it is necessary to plot each location individually, while FielDHub offers the option to create multiple locations simultaneously.
+
+To illustrate the similarity of both plots, I have juxtaposed both versions.
+
+## Load the package
+use the following command to load the package after installation. The three packages below agricolaeplotr are only needed for the examples.
+
+```{r message=FALSE, warning=FALSE}
+library("agricolaeplotr")
+library("FielDHub")
+library("ggplot2")
+```
+
+# Example 1: Randomized Complete Block Design (RCBD)
+```{r message=FALSE, warning=FALSE}
+example("RCBD")
+plt <- plot(rcbd2)
+p <- full_control_positions(plt$field_book, "COLUMN", "ROW", factor_name = "TREATMENT", label = "TREATMENT")
+p
+```
+# Example 2: Latin Square Design
+```{r message=FALSE, warning=FALSE}
+latinSq1 <- latin_square(t = 4, reps = 2, plotNumber = 101, planter = "cartesian", seed = 1980)
+plt <- plot(latinSq1)
+p <- full_control_positions(plt$field_book, "COLUMN", "ROW", factor_name = "TREATMENT", label = "TREATMENT")
+p
+```
+# Example 3: Full Factorial Design
+```{r message=FALSE, warning=FALSE}
+example("full_factorial")
+plt <- plot(fullFact2, l = 1)
+p <- full_control_positions(plt$field_book[plt$field_book$LOCATION == "Loc1",], "COLUMN", "ROW", factor_name = "FACTOR_A", label = "FACTOR_A")
+p
+```
+# Example 4: Incomplete Blocks Design
+```{r message=FALSE, warning=FALSE}
+example("incomplete_blocks")
+plt <- plot(ibd2)
+p <- full_control_positions(plt$field_book, "COLUMN", "ROW", factor_name = "TREATMENT", label = "TREATMENT")
+p
+```
+# Example 5: Diagonal Arrangement Design
+```{r message=FALSE, warning=FALSE}
+example("diagonal_arrangement")
+plt <- plot(spatAB)
+p <- full_control_positions(plt$field_book, "COLUMN", "ROW", factor_name = "TREATMENT", label = "TREATMENT")
+p
+```
+# Example 6: Augmented Randomized Complete Block Design (ARCBD)
+```{r message=FALSE, warning=FALSE}
+example("RCBD_augmented")
+plt <- plot(ARCBD2)
+p <- full_control_positions(plt$field_book[plt$field_book$LOCATION == "A",], "COLUMN", "ROW", factor_name = "TREATMENT", label = "TREATMENT") + guides(fill = "none")
+p
+```
+# Example 7: Rectangular Lattice Design
+```{r message=FALSE, warning=FALSE}
+example("rectangular_lattice")
+plt <- plot(rectangularLattice2)
+p <- full_control_positions(plt$field_book[plt$field_book$LOCATION == "LOC1",], "COLUMN", "ROW", factor_name = "TREATMENT", label = "TREATMENT")
+p
+```
+# Example 8: Strip Plot Design
+```{r message=FALSE, warning=FALSE}
+example("strip_plot")
+plt <- plot(strip2)
+p <- full_control_positions(plt$field_book[plt$field_book$LOCATION == "A",], "COLUMN", "ROW", factor_name = "TRT_COMB", label = "TRT_COMB")
+p
+```
+# Example 9: Square Lattice Design
+```{r message=FALSE, warning=FALSE}
+example("square_lattice")
+plt <- plot(squareLattice2)
+p <- full_control_positions(plt$field_book[plt$field_book$LOCATION == "CASSELTON",], "COLUMN", "ROW", factor_name = "TREATMENT", label = "TREATMENT")
+p
+```
+# Example 10: Split Plot Design
+```{r message=FALSE, warning=FALSE}
+example("split_plot")
+plt <- plot(SPDExample2)
+p <- full_control_positions(plt$field_book[plt$field_book$LOCATION == "A",], "COLUMN", "ROW", factor_name = "TRT_COMB", label = "TRT_COMB")
+p
+```
+# Example 11: Split-Split Plot Design
+```{r message=FALSE, warning=FALSE}
+example("split_split_plot")
+plt <- plot(SSPD2)
+p <- full_control_positions(plt$field_book[plt$field_book$LOCATION == "A",], "COLUMN", "ROW", factor_name = "TRT_COMB", label = "TRT_COMB") + guides(fill = "none")
+p
+```
+# Example 12: Completely Randomized Design (CRD)
+```{r message=FALSE, warning=FALSE}
+example("CRD")
+plt <- plot(crd3)
+p <- full_control_positions(plt$field_book, "COLUMN", "ROW", factor_name = "TREATMENT", label = "TREATMENT") + guides(fill = "none")
+p
+```
+
+# Example 13: Sparse Allocation Design
+```{r message=FALSE, warning=FALSE}
+example("sparse_allocation")
+plt <- plot(sparse)
+p <- full_control_positions(plt$field_book[plt$field_book$LOCATION == "LOC1",], "COLUMN", "ROW", factor_name = "TREATMENT", label = "TREATMENT") + guides(fill = "none")
+p
+```
+
+# Example 14: Row-Column Design
+```{r message=FALSE, warning=FALSE}
+example("row_column")
+plt <- plot(rowcold2, l = 1)
+p <- full_control_positions(plt$field_book[plt$field_book$LOCATION == "1",], "COLUMN", "ROW", factor_name = "TREATMENT", label = "TREATMENT") + guides(fill = "none")
+p
+```
