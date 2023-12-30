@@ -20,14 +20,14 @@ This chapter shows the usage of the package and the underlying functions.
 As factorial experiments are omnipresent in all science and technology fields, a
 factorial ab-design will be used as an example. Although some parameters are worth for agriculture only, most other are useful for every user.
 
-Unlike the usual presentation approach, I deliberately inserted the output of the FielDHub functions into the vignette and executed each function individually. This allows interested users to directly adopt the code.
+Unlike the usual presentation approach, I deliberately inserted the output of the 'FielDHub' functions into the vignette and executed each function individually. This allows interested users to directly adopt the code.
 
-For agricolaeplotr, it is necessary to plot each location individually, while FielDHub offers the option to create multiple locations simultaneously.
+For 'agricolaeplotr', it is necessary to plot each location individually, while 'FielDHub' offers the option to create multiple locations simultaneously.
 
 To illustrate the similarity of both plots, I have juxtaposed both versions.
 
 ## Load the package
-use the following command to load the package after installation. The three packages below agricolaeplotr are only needed for the examples.
+use the following command to load the package after installation. The three packages below 'agricolaeplotr' are only needed for the examples.
 
 ```{r message=FALSE, warning=FALSE}
 library("agricolaeplotr")
