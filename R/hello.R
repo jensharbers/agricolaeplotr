@@ -2039,10 +2039,10 @@ theme_poster <- function() {
 #' @param height numeric value, describes the height of a plot in an experiment
 #' @param space_width numeric value, describes the share of the space of the plots. 0=only space, 1=no space between plots in term of width
 #' @param space_height numeric value, describes the share of the space of the plots. 0=only space, 1=no space between plots in term of height
-#' @param reverse_y boolean, should the plots of the experiment be changed in reverse order in Row direction? use reverse_y=TRUE to have same sketch as in agricolae. default:reverse_y=FALSE
+#' @param reverse_y boolean, should the plots of the experiment be changed in reverse order in Row direction? Use reverse_y=TRUE to have same sketch as in agricolae. default:reverse_y=FALSE
 #' @param reverse_x boolean, should the plots of the experiment be changed in reverse order in column direction? default:reverse_x=FALSE
 #' @param factor_name string Which factor should be used for plotting, needs to be a column in outdesign$book
-#' @param labels string Describes the column from that the plots are taken to display them
+#' @param labels string Describes the column from that the plots are taken to display them.
 #'
 #' @return \code{ggplot} graphic that can be modified, if wished
 #' @export
@@ -2459,7 +2459,7 @@ to_table <- function(object,part="net_plot",unit="m",digits=3,...){
 #' make_polygons
 #'
 #' This function coerces all rectangles
-#' from a 'ggplot' object to 'SpatialPolygonDataframe'.
+#' from a 'ggplot' object to 'SpatialPolygonDataFrame'.
 #' @param ggplot_object saved ggplot object, containing the
 #' coordinates of the rectangles of a 'ggplot' object of the first two layers
 #' @param north float added to the rows
@@ -2473,7 +2473,7 @@ to_table <- function(object,part="net_plot",unit="m",digits=3,...){
 #'  in which EPSG projection the SpatialPolygonDataFrame should be exported.
 #' @importFrom raster extent crs
 #' @export
-#' @return a SpatialPolygonDataframe object
+#' @return a SpatialPolygonDataFrame object
 #'
 #' @examples
 #' library(agricolaeplotr)
@@ -2896,87 +2896,7 @@ citations <- function(includeURL = TRUE, bibtex=TRUE) {
     cat('\n')
   }
 }
-#' Extract and Transform Voronoi Polygons
-#'
-#' This function extracts Voronoi polygons from a ggplot object created using the ggvoronoi package
-#' and transforms their coordinate reference system (CRS).
-#'
-#' @param ggplot_object A ggplot object containing Voronoi polygons generated using ggvoronoi package.
-#' @param projection_input The input coordinate reference system (CRS) used in the Voronoi polygons.
-#'        Default value: 25832 (EPSG:25832, UTM Zone 32N - Europe)
-#' @param projection_output The desired output coordinate reference system (CRS) for the transformed Voronoi polygons.
-#'        Default value: 4326 (EPSG:4326, WGS 84 - Latitude/Longitude)
-#'
-#' @return A SpatialPolygonsDataFrame object containing the transformed Voronoi polygons.
-#'
-#' @details
-#' This function extracts the Voronoi polygons from the input ggplot object and converts them into a SpatialPolygonsDataFrame.
-#' The function assumes that the ggplot object was created using the ggvoronoi package with stat_voronoi(geom="path") and geom_point().
-#' Make sure to load the required libraries (ggplot2, ggvoronoi, sp) before using this function.
-#'
-#' @examples
-#'\dontrun{
-#' library(ggplot2)
-#' library(ggvoronoi)
-#' library(sf)
-#'
-#' df <- structure(list(groups = structure(1:16, .Label = c("0", "1",
-#' "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13",
-#' "14", "15"), class = "factor"),
-#' latitude = c(454958.780465603,
-#' 455004.47280591, 454885.338464729, 454891.038200793, 454911.54140957,
-#' 454947.515894516, 454845.494336779, 454950.428690276, 455001.684028287,
-#' 454936.964919935, 455017.721815154, 455084.876168519, 454884.307056065,
-#' 455053.71370209, 454988.433646113, 454933.070817933),
-#' longitude = c(5936577.41802353,
-#' 5936650.33357495, 5936684.00492433, 5936603.3723963, 5936644.3710608,
-#' 5936678.18028261, 5936661.25833358, 5936614.7618022, 5936693.37183672,
-#' 5936727.14434355, 5936609.08891642, 5936620.03577825, 5936727.23617373,
-#' 5936663.54803475, 5936737.77699043, 5936769.89451942)),
-#' row.names = c(NA,-16L), class = "data.frame")
-#'
-#' p <- ggplot(df,aes(latitude,longitude)) +
-#'      stat_voronoi(geom="path") +
-#'      geom_point()
-#' p
-#' polygons_list <- make_polygons_ggvoronoi(p,
-#'  projection_input = 25832,
-#'  projection_output = 4326)
-#'
-#' plot(polygons_list)
-#' }
-#' @import sf
-#'
-#' @seealso
-#' \code{\link{stat_voronoi}}
-#' \code{\link{geom_point}}
-#'
-#' @importFrom ggplot2 ggplot aes geom_point layer_data
-#' @importFrom ggvoronoi stat_voronoi
-#' @importFrom sf st_as_sf st_convex_hull st_transform st_cast `st_crs<-`
-#' @importFrom dplyr group_by summarise
-#'
-#' @keywords spatial
-#' @export
-make_polygons_ggvoronoi <- function(ggplot_object,
-                                    projection_input = 25832,
-                                    projection_output = 4326
-) {
-  table_object <- layer_data(ggplot_object,1)
-  bounds = table_object[, c(6,1,2)]
 
-  i = 1
-  xys = st_as_sf(bounds, coords=c("x","y"))
-
-  polys = xys %>%
-    dplyr::group_by(.data[["id"]]) %>%
-    dplyr::summarise() %>%
-    st_cast("POLYGON") %>% `st_crs<-`(projection_input)
-
-  polys = polys %>% st_convex_hull() %>% st_transform(projection_output)
-
-  return(polys)
-}
 ############ sampling locations per plot #########
 
 #' Sample Locations
