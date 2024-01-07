@@ -2799,6 +2799,15 @@ full_control_positions <- function(design,
   test_input_shift(shift_x)
   test_input_shift(shift_y)
 
+  test_input_shift(way_x)
+  test_input_shift(way_y)
+
+  test_input_shift(dist_x)
+  test_input_shift(dist_y)
+
+  test_input_reverse(start_origin)
+
+
   table <- design
 
   if(start_origin == TRUE){
@@ -3131,6 +3140,8 @@ utils::globalVariables(c("end_node","start_node"))
 #'
 #' @export
 protective_layers <- function(design, borders = c(0, 3, 5, 10)) {
+
+  test_input_shift(borders)
 
   borders <- unique(sort(borders, decreasing = TRUE))
   layer_list <- list()
