@@ -26,6 +26,7 @@ Imports: ggplot2,
          tidyr,
          stplanr,
          lwgeom,
+         ggspatial,
          ggvoronoi
 RoxygenNote: 7.2.3
 Language: en-US

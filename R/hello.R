@@ -3049,6 +3049,7 @@ sample_locations <- function(design, n, plot = TRUE, ...) {
 #' \item buffered_line: A sf object representing the buffered line.
 #' \item my_line: A sf object representing the longest diagonal of the field.
 #' \item sample_points: A sf object representing the sampled points.
+#' \item length: A numeric value, representing the length of the longest line.
 #' }
 #'
 #' @examples
@@ -3064,6 +3065,7 @@ sample_locations <- function(design, n, plot = TRUE, ...) {
 #' @importFrom stplanr line_segment
 #' @importFrom stats dist
 #' @importFrom tibble as_tibble rownames_to_column
+#' @importFrom ggspatial annotation_scale annotation_north_arrow
 #' @export
 plot_longest_diagonal <- function(field,n=8,type="random",n_segments=2,distance_field_boundary=3.0, width_diagonal_path=2){
 
@@ -3103,7 +3105,31 @@ plot_longest_diagonal <- function(field,n=8,type="random",n_segments=2,distance_
 
   p
 
-  return(list(p,buffered_line,my_line,sample_points))
+  ##### ab hier mehr neues
+  len <- st_length(di)
+  print(paste("Length of line:",len,units(len)$numerator))
+
+  p <- ggplot() +
+    geom_sf(data=field,fill="orange") +
+    geom_sf(data=buffered_field_plot,fill="blue") +
+    geom_sf(data=buffered_line) + theme_minimal()+
+    geom_sf(data=sample_points,color="red")
+
+  p <- p +
+    annotation_scale(
+      location = "tl",
+      bar_cols = c("grey60", "white")
+    ) +
+    annotation_north_arrow(
+      location = "tl", which_north = "true",
+      pad_x = unit(0.4, "in"), pad_y = unit(0.4, "in"),
+      style = ggspatial::north_arrow_nautical(
+        fill = c("grey40", "white"),
+        line_col = "grey20"
+      )
+    )
+
+  return(list(p,buffered_line,my_line,sample_points,len))
 }
 
 utils::globalVariables(c("end_node","start_node"))

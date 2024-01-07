@@ -33,6 +33,7 @@ A list containing four elements:
 \item buffered_line: A sf object representing the buffered line.
 \item my_line: A sf object representing the longest diagonal of the field.
 \item sample_points: A sf object representing the sampled points.
+\item length: A numeric value, representing the length of the longest line.
 }
 }
 \description{
