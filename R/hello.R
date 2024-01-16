@@ -2913,8 +2913,8 @@ citations <- function(includeURL = TRUE, bibtex=TRUE) {
 #' @param plot Logical, indicating whether to visualize the sample locations as a ggplot2-based map.
 #' @param ... further options for `st_sample` and `make_polygons`
 #'
-#' @return
-#' @export An `sf` object containing the sample locations within each plot.
+#' @return An `sf` object containing the sample locations within each plot.
+#' @export
 #'
 #'
 #' @examples
@@ -2961,6 +2961,7 @@ sample_locations <- function(design, n, plot = TRUE, ...) {
 #' @param n_segments Numeric, the number of segments to divide the longest diagonal (default is 2).
 #' @param distance_field_boundary Numeric, the distance to buffer the field for creating the boundary (default is 3.0).
 #' @param width_diagonal_path Numeric, the width to buffer the diagonal path (default is 2.0).
+#' @export
 #'
 #' @return
 #' \itemize{
@@ -2977,7 +2978,6 @@ sample_locations <- function(design, n, plot = TRUE, ...) {
 #' st_crs(my_sf) <- 25832
 #' field <- my_sf[my_sf$SCHLAG_NR == 170,]
 #' plot_longest_diagonal(field)
-#' @export
 #' @import ggplot2
 #' @import sf
 #' @importFrom dplyr filter

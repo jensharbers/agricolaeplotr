@@ -27,7 +27,6 @@ plot_longest_diagonal(
 \item{width_diagonal_path}{Numeric, the width to buffer the diagonal path (default is 2.0).}
 }
 \value{
-A list containing four elements:
 \itemize{
 \item p: A ggplot object showing the field, the buffered field, the buffered line, and the sample points.
 \item buffered_line: A sf object representing the buffered line.
