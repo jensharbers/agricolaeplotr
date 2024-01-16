@@ -27,7 +27,7 @@ plot_youden(
 
 \item{factor_name}{string Which factor should be used for plotting, needs to be a column in outdesign$book}
 
-\item{labels}{string Describes the column from that the plots are taken to display them}
+\item{labels}{string Describes the column from that the plots are taken to display them.}
 
 \item{width}{numeric value, describes the width of a plot in an experiment}
 
@@ -37,7 +37,7 @@ plot_youden(
 
 \item{space_height}{numeric value, describes the share of the space of the plots. 0=only space, 1=no space between plots in term of height}
 
-\item{reverse_y}{boolean, should the plots of the experiment be changed in reverse order in Row direction? use reverse_y=TRUE to have same sketch as in agricolae. default:reverse_y=FALSE}
+\item{reverse_y}{boolean, should the plots of the experiment be changed in reverse order in Row direction? Use reverse_y=TRUE to have same sketch as in agricolae. default:reverse_y=FALSE}
 
 \item{reverse_x}{boolean, should the plots of the experiment be changed in reverse order in column direction? default:reverse_x=FALSE}
 }

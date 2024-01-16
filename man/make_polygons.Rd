@@ -30,11 +30,11 @@ a projection with a metric unit is highly recommended}
 in which EPSG projection the SpatialPolygonDataFrame should be exported.}
 }
 \value{
-a SpatialPolygonDataframe object
+a SpatialPolygonDataFrame object
 }
 \description{
 This function coerces all rectangles
-from a 'ggplot' object to 'SpatialPolygonDataframe'.
+from a 'ggplot' object to 'SpatialPolygonDataFrame'.
 }
 \examples{
 library(agricolaeplotr)

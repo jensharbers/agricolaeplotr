@@ -2913,9 +2913,9 @@ citations <- function(includeURL = TRUE, bibtex=TRUE) {
 #' @param plot Logical, indicating whether to visualize the sample locations as a ggplot2-based map.
 #' @param ... further options for `st_sample` and `make_polygons`
 #'
-#' @return An `sf` object containing the sample locations within each plot.
+#' @return
+#' @export An `sf` object containing the sample locations within each plot.
 #'
-#' @export
 #'
 #' @examples
 #' library(agricolaeplotr)
@@ -2930,7 +2930,6 @@ citations <- function(includeURL = TRUE, bibtex=TRUE) {
 #'
 #' @importFrom sf st_sample
 #' @importFrom ggplot2 geom_sf ggplot
-#' @import lwgeom
 sample_locations <- function(design, n, plot = TRUE, ...) {
   # Create spatial polygons for the design
   doe <- make_polygons(design,...)
@@ -2963,7 +2962,7 @@ sample_locations <- function(design, n, plot = TRUE, ...) {
 #' @param distance_field_boundary Numeric, the distance to buffer the field for creating the boundary (default is 3.0).
 #' @param width_diagonal_path Numeric, the width to buffer the diagonal path (default is 2.0).
 #'
-#' @return A list containing four elements:
+#' @return
 #' \itemize{
 #' \item p: A ggplot object showing the field, the buffered field, the buffered line, and the sample points.
 #' \item buffered_line: A sf object representing the buffered line.
@@ -2978,6 +2977,7 @@ sample_locations <- function(design, n, plot = TRUE, ...) {
 #' st_crs(my_sf) <- 25832
 #' field <- my_sf[my_sf$SCHLAG_NR == 170,]
 #' plot_longest_diagonal(field)
+#' @export
 #' @import ggplot2
 #' @import sf
 #' @importFrom dplyr filter
@@ -2986,7 +2986,6 @@ sample_locations <- function(design, n, plot = TRUE, ...) {
 #' @importFrom stats dist
 #' @importFrom tibble as_tibble rownames_to_column
 #' @importFrom ggspatial annotation_scale annotation_north_arrow
-#' @export
 plot_longest_diagonal <- function(field,n=8,type="random",n_segments=2,distance_field_boundary=3.0, width_diagonal_path=2){
 
   buffered_field <- st_buffer(field,dist = -distance_field_boundary, joinStyle  = "MITRE", mitreLimit = 2,endCapStyle = "ROUND")
@@ -3070,6 +3069,7 @@ utils::globalVariables(c("end_node","start_node"))
 #'
 #' @return An \code{sf} object representing the protective layers around the
 #'         experiment polygons.
+#' @export
 #'
 #' @examples
 #' library(agricolaeplotr)
@@ -3084,7 +3084,6 @@ utils::globalVariables(c("end_node","start_node"))
 #' # write them to kml for Google Maps
 #' # st_write(pl, "boundaries2.kml", append = FALSE)
 #'
-#' @export
 protective_layers <- function(design, borders = c(0, 3, 5, 10)) {
 
   test_input_shift(borders)
