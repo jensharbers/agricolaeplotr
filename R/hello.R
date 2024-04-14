@@ -1240,7 +1240,7 @@ plot_dau <- function(design,
 
 
 
-###### plot rcdb ######
+###### plot rcbd ######
 
 #' Plot randomized complete block designs
 #'
@@ -1249,10 +1249,12 @@ plot_dau <- function(design,
 #' @param y Describes the y coordinates of a experiment design
 #' @param factor_name Which factor should be used for plotting, needs to be a column in outdesign$book
 #' @param labels Describes the column from that the plots are taken to display them
+#' @param treatment_label Describes the column(s) from the treatments the plots are taken to display them as a label text
 #' @param width numeric value, describes the width of a plot in an experiment
 #' @param height numeric value, describes the height of a plot in an experiment
 #' @param space_width numeric value, describes the share of the space of the plots. 0=only space, 1=no space between plots in term of width
 #' @param space_height numeric value, describes the share of the space of the plots. 0=only space, 1=no space between plots in term of height
+#' @param label_width numeric value, describes the maximum width of a label
 #' @param reverse_y boolean, should the plots of the experiment be changed in reverse order in Row direction? use reverse_y=TRUE to have same sketch as in agricolae. default:reverse_y=FALSE
 #' @param reverse_x boolean, should the plots of the experiment be changed in reverse order in column direction? default:reverse_x=FALSE
 #'
@@ -1265,17 +1267,19 @@ plot_dau <- function(design,
 #' # 5 treatments and 6 blocks
 #' trt<-c('A','B','C','D','E')
 #' outdesign <-design.rcbd(trt,6,serie=2,986,'Wichmann-Hill') # seed = 986
-#' plot_rcdb(outdesign)
-#' plot_rcdb(outdesign,reverse_y = TRUE,reverse_x = TRUE)
+#' plot_rcbd(outdesign)
+#' plot_rcbd(outdesign,reverse_y = TRUE,reverse_x = TRUE)
 #'
-plot_rcdb <- function(design,
+plot_rcbd <- function(design,
                       y = "block",
                       factor_name = "trt",
                       labels = "plots",
+                      treatment_label = "trt",
                       width = 1,
                       height = 1,
                       space_width = 0.95,
                       space_height = 0.85,
+                      label_width = 10,
                       reverse_y = FALSE,
                       reverse_x = FALSE) {
   if (design$parameters$design == "rcbd") {
@@ -1310,12 +1314,13 @@ plot_rcdb <- function(design,
     }
     table$col <- table$col * width
     table[, y] <- as.numeric(table[, y]) * height
+    table[, labels] <- stringr::str_wrap(table[,treatment_label], width = label_width)
 
     plt <- ggplot(table, aes_string(x = "col", y = y)) +
       geom_tile(aes_string(fill = factor_name),
                 width = width * space_width, height = height *
                   space_height) + theme_bw() + theme(line = element_blank()) +
-      geom_text(aes_string(label = labels), colour = "black")
+      geom_label(aes_string(label = labels), colour = "black",fill= "white")
 
 
     return(plt)

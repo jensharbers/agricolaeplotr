@@ -368,7 +368,7 @@ test_that("incorrect rcbd design ", {
   k <- 2
   outdesign <- design.ab(trt, r = k, serie = 3,
                          design = "crd")
-  expect_error(plot_rcdb(outdesign))
+  expect_error(plot_rcbd(outdesign))
 })
 
 test_that("incorrect split plot design crd", {
@@ -539,7 +539,7 @@ test_that("plot a rcbd design", {
   trt <- c("A", "B", "C", "D", "E")
   outdesign <- design.rcbd(trt, 6, serie = 2,
                            986, "Wichmann-Hill")  # seed = 986
-  p <- plot_rcdb(outdesign, reverse_y = TRUE,
+  p <- plot_rcbd(outdesign, reverse_y = TRUE,
                  reverse_x = TRUE)
   p
   expect_identical(p$labels$y, "block")
