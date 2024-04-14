@@ -1259,6 +1259,7 @@ plot_dau <- function(design,
 #' @param reverse_x boolean, should the plots of the experiment be changed in reverse order in column direction? default:reverse_x=FALSE
 #'
 #' @return \code{ggplot} graphic that can be modified, if wished
+#' @importFrom stringr str_wrap
 #' @export
 #' @examples
 #' library(agricolaeplotr)
@@ -1314,7 +1315,7 @@ plot_rcbd <- function(design,
     }
     table$col <- table$col * width
     table[, y] <- as.numeric(table[, y]) * height
-    table[, labels] <- stringr::str_wrap(table[,treatment_label], width = label_width)
+    table[, labels] <- str_wrap(table[,treatment_label], width = label_width)
 
     plt <- ggplot(table, aes_string(x = "col", y = y)) +
       geom_tile(aes_string(fill = factor_name),

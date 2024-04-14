@@ -9,6 +9,7 @@ plot_rcbd(
   y = "block",
   factor_name = "trt",
   labels = "plots",
+  treatment_label = "trt",
   width = 1,
   height = 1,
   space_width = 0.95,
@@ -27,6 +28,8 @@ plot_rcbd(
 
 \item{labels}{Describes the column from that the plots are taken to display them}
 
+\item{treatment_label}{Describes the column(s) from the treatments the plots are taken to display them as a label text}
+
 \item{width}{numeric value, describes the width of a plot in an experiment}
 
 \item{height}{numeric value, describes the height of a plot in an experiment}
@@ -34,6 +37,8 @@ plot_rcbd(
 \item{space_width}{numeric value, describes the share of the space of the plots. 0=only space, 1=no space between plots in term of width}
 
 \item{space_height}{numeric value, describes the share of the space of the plots. 0=only space, 1=no space between plots in term of height}
+
+\item{label_width}{numeric value, describes the maximum width of a label}
 
 \item{reverse_y}{boolean, should the plots of the experiment be changed in reverse order in Row direction? use reverse_y=TRUE to have same sketch as in agricolae. default:reverse_y=FALSE}
 
@@ -49,7 +54,7 @@ Plot a design of an experiment with randomized complete block design (rcbd) desi
 library(agricolaeplotr)
 library(agricolae)
 # 5 treatments and 6 blocks
-trt<-c('Alajld sjfsdf','Bsdkflks jdflsdjf','Ciuaslfdsl kdsfgj134','Dsjglakj','Ejhlaf dsfjsä')
+trt<-c('A','B','C','D','E')
 outdesign <-design.rcbd(trt,6,serie=2,986,'Wichmann-Hill') # seed = 986
 plot_rcbd(outdesign)
 plot_rcbd(outdesign,reverse_y = TRUE,reverse_x = TRUE)
