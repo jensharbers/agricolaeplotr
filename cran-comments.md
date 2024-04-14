@@ -8,7 +8,7 @@
 0 errors | 0 warnings | 0 note
 
 ## Bug Fixes:
-No bugs found, If You find a bug, just ask me on github or you may mail me.
+plot_rcdb is renamed to plot_rcbd
 
 ## features:
 export ggplot plots to simple features to use them in GIS.
