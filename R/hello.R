@@ -2720,6 +2720,10 @@ serpentine <- function(n,times,m=1){
 #' @param dist_x numeric indicates the shift in plots in x-axis.
 #' @param dist_y numeric indicates the shift in plots for the y-axis.
 #' @param start_origin boolean. Should the design start at the origin (0|0)?
+#' @param shift_columns numeric indicates the shift of the given plots of a specific row by n units in x-axis.
+#' @param shift_rows numeric indicates the shift of the given plots of a specific column by n units in  y-axis.
+#' @param n_shift_columns numeric vector indicating the number of plots of shift_columns. negative number indicate shift to left, otherwise right
+#' @param n_shift_rows numeric vector indicating the number of plots of shift_rows. negative number indicate shift to left, otherwise right
 #'
 #' @return \code{ggplot} graphic that can be modified, if wished
 #' @export
@@ -2770,6 +2774,15 @@ serpentine <- function(n,times,m=1){
 #'                                     way_x = c(2,4,6,8,10,12),way_y=c(3,8),
 #'                                     start_origin = FALSE, reverse_y = FALSE,
 #'                                     reverse_x = FALSE);p
+#'p <- full_control_positions(design,"col","row","varieties","plots",
+#'                                     width=3,height=4.5,shift_columns=c(4,8),
+#'                                     shift_rows=c(3,5,9),
+#'                                     n_shift_columns=c(1,5),
+#'                                     n_shift_rows=c(1,-2,6),
+#'                                     space_width=0.93,space_height=0.945,
+#'                                     way_x = c(2,4,6,8,10,12),way_y=c(3,8),
+#'                                     start_origin = TRUE, reverse_y = FALSE,
+#'                                     reverse_x = FALSE);p
 
 full_control_positions <- function(design,
                                    x = "col",
@@ -2784,10 +2797,14 @@ full_control_positions <- function(design,
                                    reverse_x = FALSE,
                                    way_x=0,
                                    way_y=0,
+                                   shift_columns=0,
+                                   shift_rows=0,
                                    shift_x=0,
                                    dist_x=1,
                                    dist_y=1,
                                    shift_y=0,
+                                   n_shift_columns=0,
+                                   n_shift_rows=0,
                                    start_origin=FALSE) {
 
   test_string(x)
@@ -2815,38 +2832,68 @@ full_control_positions <- function(design,
 
 
   table <- design
-
+  n_vec <- rep(n_shift_columns,length=length(shift_columns))
+  m_vec <- rep(n_shift_rows,length=length(shift_rows))
   if(start_origin == TRUE){
     shift_x <- width * -0.5 + (width * -0.5 * (1-space_width)) ## makes zero
     shift_y <- height * -0.5 + (height * -0.5 * (1-space_height)) ## makes zero
 
-    table[, x]  <- as.numeric(table[, x] )
+    table[, x]  <- as.numeric(table[, x])
+    table[, y] <- as.numeric(table[, y])
+
+    l <- 1
+    for( i in shift_columns){
+      table[table[,x] == i,y] = table[table[,x] == i,y] + n_vec[l]
+      l <- l + 1
+    }
+
+
+    l <- 1
+    for( i in shift_rows){
+      table[table[,y] == i,x] = table[table[,y] == i,x] + m_vec[l]
+      l <- l + 1
+    }
 
     for (i in way_x ){
       table[, x] <- ifelse(table[, x] > (i + (match(i,way_x) - 1)), table[, x] + dist_x, table[, x])
-      print(design)
     }
 
-    table[, x]  <- table[, x] * width + shift_x
 
-    table[, y] <- as.numeric(table[, y])
     for (i in way_y ){
       table[, y] <- ifelse(table[, y] > (i + (match(i,way_y) - 1)), table[, y] + dist_y, table[, y])
     }
+
+    table[, x]  <- table[, x] * width + shift_x
     table[, y] <- table[, y] * height + shift_y
+
   }
   else{
     table[, x]  <- as.numeric(table[, x] )
-    for (i in way_x ){
-      table[, x] <- ifelse(table[, x] > (i + (match(i,way_x) - 1)), table[, x] + dist_x, table[, x])
-      print(design)
-    }
-    table[, x]  <- table[, x] * width + shift_x
-
     table[, y] <- as.numeric(table[, y])
+
+      l <- 1
+    for( i in shift_columns){
+      table[table[,x] == i,y] = table[table[,x] == i,y] + n_vec[l]
+      l <- l + 1
+    }
+
+
+      l <- 1
+    for( i in shift_rows){
+      table[table[,y] == i,x] = table[table[,y] == i,x] + m_vec[l]
+      l <- l + 1
+    }
+
+    for (i in way_x ){
+        table[, x] <- ifelse(table[, x] > (i + (match(i,way_x) - 1)), table[, x] + dist_x, table[, x])
+    }
+
+
     for (i in way_y ){
       table[, y] <- ifelse(table[, y] > (i + (match(i,way_y) - 1)), table[, y] + dist_y, table[, y])
     }
+
+    table[, x]  <- table[, x] * width + shift_x
     table[, y] <- table[, y] * height + shift_y
   }
 
