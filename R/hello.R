@@ -2800,9 +2800,9 @@ full_control_positions <- function(design,
                                    shift_columns=0,
                                    shift_rows=0,
                                    shift_x=0,
+                                   shift_y=0,
                                    dist_x=1,
                                    dist_y=1,
-                                   shift_y=0,
                                    n_shift_columns=0,
                                    n_shift_rows=0,
                                    start_origin=FALSE) {
@@ -2827,6 +2827,12 @@ full_control_positions <- function(design,
 
   test_input_shift(dist_x)
   test_input_shift(dist_y)
+
+  test_input_shift(n_shift_columns)
+  test_input_shift(n_shift_rows)
+
+  test_input_shift(shift_columns)
+  test_input_shift(shift_rows)
 
   test_input_reverse(start_origin)
 
