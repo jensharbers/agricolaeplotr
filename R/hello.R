@@ -2834,42 +2834,9 @@ full_control_positions <- function(design,
   table <- design
   n_vec <- rep(n_shift_columns,length=length(shift_columns))
   m_vec <- rep(n_shift_rows,length=length(shift_rows))
-  if(start_origin == TRUE){
-    shift_x <- width * -0.5 + (width * -0.5 * (1-space_width)) ## makes zero
-    shift_y <- height * -0.5 + (height * -0.5 * (1-space_height)) ## makes zero
 
-    table[, x]  <- as.numeric(table[, x])
-    table[, y] <- as.numeric(table[, y])
-
-    l <- 1
-    for( i in shift_columns){
-      table[table[,x] == i,y] = table[table[,x] == i,y] + n_vec[l]
-      l <- l + 1
-    }
-
-
-    l <- 1
-    for( i in shift_rows){
-      table[table[,y] == i,x] = table[table[,y] == i,x] + m_vec[l]
-      l <- l + 1
-    }
-
-    for (i in way_x ){
-      table[, x] <- ifelse(table[, x] > (i + (match(i,way_x) - 1)), table[, x] + dist_x, table[, x])
-    }
-
-
-    for (i in way_y ){
-      table[, y] <- ifelse(table[, y] > (i + (match(i,way_y) - 1)), table[, y] + dist_y, table[, y])
-    }
-
-    table[, x]  <- table[, x] * width + shift_x
-    table[, y] <- table[, y] * height + shift_y
-
-  }
-  else{
-    table[, x]  <- as.numeric(table[, x] )
-    table[, y] <- as.numeric(table[, y])
+  table[, x]  <- as.numeric(table[, x] )
+  table[, y] <- as.numeric(table[, y])
 
       l <- 1
     for( i in shift_columns){
@@ -2893,9 +2860,14 @@ full_control_positions <- function(design,
       table[, y] <- ifelse(table[, y] > (i + (match(i,way_y) - 1)), table[, y] + dist_y, table[, y])
     }
 
+      if(start_origin == TRUE){
+        shift_x <- width * -0.5 + (width * -0.5 * (1-space_width)) ## makes zero
+        shift_y <- height * -0.5 + (height * -0.5 * (1-space_height)) ## makes zero
+      }
+
     table[, x]  <- table[, x] * width + shift_x
     table[, y] <- table[, y] * height + shift_y
-  }
+
 
   if (reverse_y == TRUE) {
     table[, y] <- abs(table[, y] - max(table[, y])) +
