@@ -925,7 +925,7 @@ plot_strip <- function(design,
   # table[, y]  <- as.numeric(table[, factor_name_2]) +
   #    (max(as.numeric(table[, factor_name_2]))*as.numeric(table$block)-1) -
   #    (max(as.numeric(table[, factor_name_2])))+1
-  #  table[, y] <- sort(table[, y])
+  #   table[, y] <- sort(table[, y])
   # table[, y] <- table[,y] * height
   # table[, x] <- as.numeric(table[, factor_name_1]) * width
 
