@@ -276,11 +276,11 @@ plot_design.factorial_rcbd <- function(design,
         min(table$col)
     }
 
-    plt <- ggplot(table, aes_string(x = "col", y = y)) +
-      geom_tile(aes_string(fill = factor_name),
+    plt <- ggplot(table, aes(x = .data[["col"]], y = .data[[y]])) +
+      geom_tile(aes(fill = .data[[factor_name]]),
                 width = width * space_width, height = height *
                   space_height) + theme_bw() + theme(line = element_blank()) +
-      geom_text(aes_string(label = "plots"),
+      geom_text(aes(label = .data[["plots"]]),
                 colour = "black")
 
     return(plt)
@@ -367,11 +367,11 @@ plot_design_crd <- function(design,
       table$col <- abs(table$col - max(table$col)) +
         min(table$col)
     }
-    plt <- ggplot(table, aes_string(x = "col", y)) +
-      geom_tile(aes_string(fill = factor_name),
+    plt <- ggplot(table, aes(x = .data$col, .data[[y]])) +
+      geom_tile(aes(fill = .data[[factor_name]]),
                 width = width * space_width, height = height *
                   space_height) + theme_bw() + theme(line = element_blank()) +
-      geom_text(aes_string(label = labels), colour = "black")
+      geom_text(aes(label = .data[[labels]]), colour = "black")
 
     plt
 
@@ -461,11 +461,11 @@ plot_alpha <- function(design, x = "cols", y = "block",
       table[, y] <- abs(table[, y] - max(table[, y])) +
         min(table[, y])
     }
-    plt <- ggplot(table, aes_string(x, y)) +
-      geom_tile(aes_string(fill = factor_name),
+    plt <- ggplot(table, aes(.data[[x]], .data[[y]])) +
+      geom_tile(aes(fill = .data[[factor_name]]),
                 width = width * space_width, height = height *
                   space_height) + theme_bw() + theme(line = element_blank())+
-      geom_text(aes_string(label = labels), colour = "black")
+      geom_text(aes(label = .data[[labels]]), colour = "black")
 
     plt
 
@@ -555,11 +555,11 @@ plot_lattice_triple <- function(design,
         min(table[, y])
     }
 
-    plt <- ggplot(table, aes_string(x = "part", y)) +
-      geom_tile(aes_string(fill = factor_name),
+    plt <- ggplot(table, aes(x = .data[["part"]], .data[[y]])) +
+      geom_tile(aes(fill = .data[[factor_name]]),
                 width = width * space_width, height = height *
                   space_height) + theme_bw() + theme(line = element_blank())+
-      geom_text(aes_string(label = labels), colour = "black")
+      geom_text(aes(label = .data[[labels]]), colour = "black")
 
     plt
 
@@ -647,12 +647,12 @@ plot_lattice_simple <- function(design,
         min(table[, y])
     }
 
-    plt <- ggplot(table, aes_string(x = "part", y)) +
-      geom_tile(aes_string(fill = factor_name),
+    plt <- ggplot(table, aes(x = .data[["part"]], .data[[y]])) +
+      geom_tile(aes(fill = .data[[factor_name]]),
           width = width * space_width, height = height *
           space_height) +
       theme_bw() + theme(line = element_blank()) +
-      geom_text(aes_string(label = labels), colour = "black")
+      geom_text(aes(label = .data[[labels]]), colour = "black")
 
     plt
 
@@ -736,11 +736,11 @@ plot_latin_square <- function(design,
       table[, x]  <- abs(table[, x]  - max(table[, x] )) +
         min(table[, x] )
     }
-    plt <- ggplot(table, aes_string(x = x, y = y)) +
-      geom_tile(aes_string(fill = factor_name),
+    plt <- ggplot(table, aes(x = .data[[x]], y = .data[[y]])) +
+      geom_tile(aes(fill = .data[[factor_name]]),
                 width = width * space_width, height = height *
                   space_height) + theme_bw() + theme(line = element_blank()) +
-      geom_text(aes_string(label = labels), colour = "black")
+      geom_text(aes(label = .data[[labels]]), colour = "black")
 
     plt
 
@@ -827,12 +827,12 @@ plot_graeco <- function(design,
       table[, x]  <- abs(table[, x]  - max(table[, x] )) +
         min(table[, x] )
     }
-    plt <- ggplot(table, aes_string(x, y)) +
-      geom_tile(aes_string(fill = factor_name),
+    plt <- ggplot(table, aes(.data[[x]], .data[[y]])) +
+      geom_tile(aes(fill = .data[[factor_name]]),
                 width = width * space_width,
                 height = height *space_height) +
       theme_bw() + theme(line = element_blank()) +
-      geom_text(aes_string(label = labels), colour = "black")
+      geom_text(aes(label = .data[[labels]]), colour = "black")
 
 
     return(plt)
@@ -940,11 +940,11 @@ plot_strip <- function(design,
       table[, x]  <- abs(table[, x]  - max(table[, x] )) +
         min(table[, x] )
     }
-    plt <- ggplot(table, aes_string(x = x, y = y)) +
-      geom_tile(aes_string(fill = factor_name_1),
+    plt <- ggplot(table, aes(x = .data[[x]], y = .data[[y]])) +
+      geom_tile(aes(fill = .data[[factor_name_1]]),
                 width = width * space_width, height = height *
                   space_height) + theme_bw() + theme(line = element_blank()) +
-      geom_text(aes_string(label = labels), colour = "black")
+      geom_text(aes(label = .data[[labels]]), colour = "black")
 
 
     return(plt)
@@ -1031,11 +1031,11 @@ plot_bib <- function(design,
       table$col <- abs(table$col - max(table$col)) +
         min(table$col)
     }
-    plt <- ggplot(table, aes_string(x = "col", y = y)) +
-      geom_tile(aes_string(fill = factor_name),
+    plt <- ggplot(table, aes(x = .data[["col"]], y = .data[[y]])) +
+      geom_tile(aes(fill = .data[[factor_name]]),
                 width = width * space_width, height = height *
                   space_height) + theme_bw() + theme(line = element_blank()) +
-      geom_text(aes_string(label = labels), colour = "black")
+      geom_text(aes(label = .data[[labels]]), colour = "black")
 
 
     return(plt)
@@ -1122,11 +1122,11 @@ plot_cyclic <- function(design,
       table$part <- abs(table$part - max(table$part)) +
         min(table$part)
     }
-    plt <- ggplot(table, aes_string(x = "part", y = y)) +
-      geom_tile(aes_string(fill = factor_name),
+    plt <- ggplot(table, aes(x = .data[["part"]], y = .data[[y]])) +
+      geom_tile(aes(fill = .data[[factor_name]]),
                 width = width * space_width, height = height *
                   space_height) + theme_bw() + theme(line = element_blank()) +
-      geom_text(aes_string(label = labels), colour = "black")
+      geom_text(aes(label = .data[[labels]]), colour = "black")
 
 
     return(plt)
@@ -1219,11 +1219,11 @@ plot_dau <- function(design,
       table$col <- abs(table$col - max(table$col)) +
         min(table$col)
     }
-    plt <- ggplot(table, aes_string(x = "col", y = y)) +
-      geom_tile(aes_string(fill = factor_name),
+    plt <- ggplot(table, aes(x = .data[["col"]], y = .data[[y]])) +
+      geom_tile(aes(fill = .data[[factor_name]]),
                 width = width * space_width, height = height *
                   space_height) + theme_bw() + theme(line = element_blank()) +
-      geom_text(aes_string(label = labels), colour = "black")
+      geom_text(aes(label = .data[[labels]]), colour = "black")
 
 
     return(plt)
@@ -1318,11 +1318,11 @@ plot_rcbd <- function(design,
     table[, y] <- as.numeric(table[, y]) * height
     table[, labels] <- str_wrap(table[,treatment_label], width = label_width)
 
-    plt <- ggplot(table, aes_string(x = "col", y = y)) +
-      geom_tile(aes_string(fill = factor_name),
+    plt <- ggplot(table, aes(x = .data[["col"]], y = .data[[y]])) +
+      geom_tile(aes(fill = .data[[factor_name]]),
                 width = width * space_width, height = height *
                   space_height) + theme_bw() + theme(line = element_blank()) +
-      geom_label(aes_string(label = labels), colour = "black",fill= "white")
+      geom_label(aes(label = .data[[labels]]), colour = "black",fill= "white")
 
 
     return(plt)
@@ -1431,12 +1431,12 @@ plot_design.factorial_crd <- function(design,
       table$col <- abs(table$col - max(table$col)) +
         min(table$col)
     }
-    plt <- ggplot(table, aes_string(x = "col", y = y)) +
-      geom_tile(aes_string(fill = factor_name),
+    plt <- ggplot(table, aes(x = .data[["col"]], y = .data[[y]])) +
+      geom_tile(aes(fill = .data[[factor_name]]),
                 width = width * space_width, height = height *
                   space_height) + theme_bw() +
       theme(line = element_blank()) +
-      geom_text(aes_string(label = labels),
+      geom_text(aes(label = .data[[labels]]),
                 colour = "black")
 
     return(plt)
@@ -1525,13 +1525,12 @@ plot_design.factorial_lsd <- function(design,
       table[, x]  <- abs(table[, x]  - max(table[, x] )) +
         min(table[, x] )
     }
-    plt <- ggplot(table, aes_string(x = x,
-                                                      y = y)) +
-      geom_tile(aes_string(fill = factor_name),
+    plt <- ggplot(table, aes(x = .data[[x]], y = .data[[y]])) +
+      geom_tile(aes(fill = .data[[factor_name]]),
                   width = width * space_width, height = height *
               space_height) + theme_bw() +
       theme(line = element_blank()) +
-      geom_text(aes_string(label = labels),
+      geom_text(aes(label = .data[[labels]]),
                          colour = "black")
 
     plt
@@ -1649,11 +1648,11 @@ plot_split_rcbd <- function(design,
       divider <- length(unique(table[, factor_name_1]))
       table$sequence <- table$sequence/divider
 
-      plt2 <- ggplot(table, aes_string("sequence", y)) +
-        geom_tile(aes_string(fill = factor_name_2),
+      plt2 <- ggplot(table, aes(.data[["sequence"]], .data[[y]])) +
+        geom_tile(aes(fill = .data[[factor_name_2]]),
                   width = width/divider * space_width,
                   height = height * space_height) + theme_bw() +
-        theme(line = element_blank()) + geom_text(aes_string(label = labels),
+        theme(line = element_blank()) + geom_text(aes(label = .data[[labels]]),
                                                   colour = "black")
 
 
@@ -1661,11 +1660,11 @@ plot_split_rcbd <- function(design,
 
     } else{
 
-      plt <- ggplot(table, aes_string("row", y)) +
-        geom_tile(aes_string(fill = factor_name_1),
+      plt <- ggplot(table, aes(.data[["row"]], .data[[y]])) +
+        geom_tile(aes(fill = .data[[factor_name_1]]),
         width = width * space_width, height = height * space_height) +
         theme_bw() + theme(line = element_blank()) +
-        geom_text(aes_string(label = labels), colour = "black")
+        geom_text(aes(label = .data[[labels]]), colour = "black")
       return(plt)
     }
 
@@ -1774,22 +1773,22 @@ plot_split_lsd <- function(design,
     divider <- length(unique(table[, factor_name_1]))
     table$sequence <- table$sequence/divider
 
-    plt2 <- ggplot(table, aes_string("sequence", "row")) +
-      geom_tile(aes_string(fill = factor_name_2),
+    plt2 <- ggplot(table, aes(.data[["sequence"]], .data[["row"]])) +
+      geom_tile(aes(fill = .data[[factor_name_2]]),
                 width = width/divider * space_width,
                 height = height * space_height) + theme_bw() +
       theme(line = element_blank()) +
-      geom_text(aes_string(label = labels),colour = "black")
+      geom_text(aes(label = .data[[labels]]),colour = "black")
 
 
     return(plt2)
     } else {
-      plt <- ggplot(table, aes_string("col", "row")) +
-        geom_tile(aes_string(fill = factor_name_1),
+      plt <- ggplot(table, aes(.data[["col"]], .data[["row"]])) +
+        geom_tile(aes(fill = .data[[factor_name_1]]),
                   width = width * space_width, height = height *
                     space_height) + theme_bw() +
         theme(line = element_blank()) +
-        geom_text(aes_string(label = labels),
+        geom_text(aes(label = .data[[labels]]),
                   colour = "black")
 
       return(plt)
@@ -1936,22 +1935,22 @@ plot_split_crd <- function(design, nrows, ncols,
       divider <- length(unique(table[, factor_name_1]))
       table$sequence <- table$sequence/divider
 
-      plt2 <- ggplot(table, aes_string("sequence", "row")) +
-        geom_tile(aes_string(fill = factor_name_2),
+      plt2 <- ggplot(table, aes(.data[["sequence"]], .data[["row"]])) +
+        geom_tile(aes(fill = .data[[factor_name_2]]),
                   width = width * space_width/divider,
                   height = height * space_height) +
         theme_bw() + theme(line = element_blank()) +
-        geom_text(aes_string(label = labels),
+        geom_text(aes(label = .data[[labels]]),
                   colour = "black")
 
       return(plt2)
       } else {
-        plt <- ggplot(table, aes_string("col", "row")) +
-          geom_tile(aes_string(fill = factor_name_1),
+        plt <- ggplot(table, aes(.data[["col"]], .data[["row"]])) +
+          geom_tile(aes(fill = .data[[factor_name_1]]),
                     width = width * space_width, height = height *
                       space_height) + theme_bw() +
           theme(line = element_blank()) +
-          geom_text(aes_string(label = labels),
+          geom_text(aes(label = .data[[labels]]),
                     colour = "black")
 
         return(plt)
@@ -2097,11 +2096,11 @@ plot_youden <- function(design, x = "col", y = "row",
     }
 
 
-    plt <- ggplot(table, aes_string(x = x, y = y)) +
-      geom_tile(aes_string(fill = factor_name),
+    plt <- ggplot(table, aes(x = .data[[x]], y = .data[[y]])) +
+      geom_tile(aes(fill = .data[[factor_name]]),
                 width = width * space_width, height = height *
                   space_height) + theme_bw() + theme(line = element_blank()) +
-      geom_text(aes_string(label = labels), colour = "black")
+      geom_text(aes(label = .data[[labels]]), colour = "black")
 
 
     return(plt)
@@ -2884,11 +2883,11 @@ full_control_positions <- function(design,
     table[, x]  <- abs(table[, x]  - max(table[, x] )) +
       min(table[, x] )
   }
-  plt <- ggplot(table, aes_string(x = x, y = y)) +
-    geom_tile(aes_string(fill = factor_name),
+  plt <- ggplot(table, aes(x = .data[[x]], y = .data[[y]])) +
+    geom_tile(aes(fill = .data[[factor_name]]),
               width = width * space_width, height = height *
                 space_height) + theme_bw() + theme(line = element_blank()) +
-    geom_text(aes_string(label = labels), colour = "black")
+    geom_text(aes(label = .data[[labels]]), colour = "black")
 
   plt
 
