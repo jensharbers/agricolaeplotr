@@ -1992,15 +1992,26 @@ plot_split_crd <- function(design, nrows, ncols,
 #' plot_split_crd(outdesign2,ncols = 6,nrows=5)+
 #' theme_pres()
 theme_pres <- function() {
-  theme(text = element_text(size = 16, colour = "black"),
-        axis.text = element_text(size = 18, colour = "black"),
-        axis.title = element_text(size = 18, colour = "black"),
-        axis.line = element_line(colour = "black",
-                                 size = 1, linetype = "solid"),
-        axis.ticks = element_line(colour = "black")) +
-    theme(plot.background = element_rect(fill = "white",
-                                         color = NA),
-          panel.background = element_rect(fill = "white",color = NA))
+  my_theme <- theme(text = element_text(size = 16, colour = "black"),
+                 axis.text = element_text(size = 18, colour = "black"),
+                 axis.title = element_text(size = 18, colour = "black"),
+                 axis.line = element_line(colour = "black",
+                                          linewidth = 1, linetype = "solid"),
+                 axis.ticks = element_line(colour = "black"),
+                 plot.background = element_rect(fill = "white",
+                                                color = NA),
+                 panel.background = element_rect(fill = "white",color = NA))
+
+  if (packageVersion("ggplot2") >= "3.4.0") {
+    my_theme <- my_theme +
+      theme(axis.line = element_line(colour = "black",
+                                     linewidth = 1, linetype = "solid"))
+  } else {
+    my_theme <- my_theme +
+      theme(axis.line = element_line(colour = "black",
+                                     size = 1, linetype = "solid"))
+  }
+  my_theme
 }
 
 
@@ -2022,15 +2033,24 @@ theme_pres <- function() {
 #' plot_split_crd(outdesign2,ncols = 6,nrows=5)+
 #' theme_poster()
 theme_poster <- function() {
-  theme(text = element_text(size = 24, colour = "black"),
+  my_theme <- theme(text = element_text(size = 24, colour = "black"),
         axis.text = element_text(size = 28, colour = "black"),
         axis.title = element_text(size = 28, colour = "black"),
-        axis.line = element_line(colour = "black",
-                                 size = 1, linetype = "solid"),
         axis.ticks = element_line(colour = "black")) +
     theme(plot.background = element_rect(fill = "white",
                                          color = NA),
           panel.background = element_rect(fill = "white", color = NA))
+
+  if (packageVersion("ggplot2") >= "3.4.0") {
+    my_theme <- my_theme +
+      theme(axis.line = element_line(colour = "black",
+                                     linewidth = 1, linetype = "solid"))
+  } else {
+    my_theme <- my_theme +
+      theme(axis.line = element_line(colour = "black",
+                                     size = 1, linetype = "solid"))
+  }
+  my_theme
 }
 
 
