@@ -1979,6 +1979,7 @@ plot_split_crd <- function(design, nrows, ncols,
 #' This theme is designed to increase font size to ensure readability on outdoor used devices
 #' @return ggplot2 theme
 #' @export
+#' @importFrom utils packageVersion
 #'
 #' @examples
 #' library(agricolaeplotr)
@@ -2020,6 +2021,7 @@ theme_pres <- function() {
 #' This theme is designed to increase font size to ensure readability on poster presentations
 #' @return ggplot2 theme
 #' @export
+#' @importFrom utils packageVersion
 #'
 #' @examples
 #' library(agricolaeplotr)
