@@ -3028,10 +3028,10 @@ plot_longest_diagonal <- function(field,n=8,type="random",n_segments=2,distance_
 
   field_boundary <- spat@polygons[[1]]@Polygons[[1]]@coords
 
-  d <- stats::dist(field_boundary) %>% as.matrix() %>%
-    as_tibble() %>%
-    rownames_to_column(var = "start_node") %>%
-    gather(end_node, dist, -start_node) %>%
+  d <- stats::dist(field_boundary) |> as.matrix() |>
+    as_tibble() |>
+    rownames_to_column(var = "start_node") |>
+    gather(end_node, dist, -start_node) |>
     filter(dist != 0)
 
   coords <- d[d$dist == max(d$dist),][1]
