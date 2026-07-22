@@ -1,60 +1,138 @@
+# agricolaeplotr: Visualization Tools for Experimental Designs
 
----
-output: github_document
----
-## Installation of the package
-Use the following command to install the package from CRAN:
+[![CRAN status](https://www.r-pkg.org/badges/version/agricolaeplotr)](https://CRAN.R-project.org/package=agricolaeplotr)
+[![License: GPL-3](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-``` R
+## Overview
+
+`agricolaeplotr` provides visualization tools for experimental designs, particularly designed for agricultural research but applicable to any field experiment. The package converts design objects from `agricolae` into customizable ggplot2 visualizations, enabling researchers to preview and communicate their experimental layouts effectively.
+
+## Installation
+
+Install the stable version from CRAN:
+
+```r
 install.packages("agricolaeplotr")
-```
 
-# Usage of the Package
+Or install the development version from GitHub:
 
-This section demonstrates the usage of the package and its underlying functions. Factorial experiments are ubiquitous in all science and technology fields, and as an example, a factorial AB-design will be used. While some parameters are specifically relevant to agriculture, most others are beneficial for every user.
+# install.packages("devtools")
+devtools::install_github("yourusername/agricolaeplotr")
 
-## Load the Package
+Usage
+Basic Workflow
 
-Use the following command to load the package after installation. The two packages below 'agricolaeplotr' are only needed for the examples.
+    Generate an experimental design using agricolae
+    Visualize the design with agricolaeplotr
+    Customize the visualization using ggplot2 syntax
+    Export for reports or interactive use
 
-
-``` R
+Loading the Package
 
 library("agricolaeplotr")
+library("ggplot2")    # For plot customization
+library("agricolae")  # For generating experimental designs
 
-library("ggplot2")
+Example: Factorial AB Design
+This example demonstrates a 3×2 factorial design with complete randomization:
 
-library("agricolae")
-
-```
-
-## Example: Factorial AB Design with Complete Randomization
-
-To create a design, we first utilize the `agricolae` package. All examples provided are directly sourced from `agricolae`.
-
-After creating the object, everything is set to plot a basic graph. It is assumed that the height and width of each plot are both set to 1. In agricultural designs, it is recommended to input the measures from a plot to estimate the dimensions needed for implementing such an experiment in the field. Knowing the required dimensions in meters or other units is crucial for machinery and experiment management.
-
-Complete randomized designs lack a factor like blocks, requiring the user to input suitable numbers for columns and rows. The product of these numbers must be greater than the size of the experiment, allowing the program to place all plots.
-
-The following figure illustrates the output of a factorial design with two factors. The first factor has three levels, and the second one has two. The output is a standard ggplot2 design. This implies that users can apply all operations that ggplot2 and other packages using ggplot2 functions can offer. There are no layer restrictions or overly specialized layers preventing other transformations. Additionally, users may leverage 'plotly' to create interactive visualizations of the designs. This is particularly useful for field demonstrations involving various project stakeholders such as scientists, farmers, and funding agencies.
-
-``` R
-library(agricolae) # origin of the needed design object
-trt <- c(3, 2) # factorial 3x2
+# Generate a 3×2 factorial design with 3 replicates
+trt <- c(3, 2)  # Factor A has 3 levels, Factor B has 2 levels
 outdesign <- design.ab(trt, r = 3, serie = 2, design = 'crd')
 
-head(outdesign$book, 10)
+# Visualize the design
+plot_design.factorial_crd(outdesign, 
+                         ncols = 6, 
+                         nrows = 3, 
+                         width = 1, 
+                         height = 1)
 
-plot_design.factorial_crd(outdesign, ncols = 6, nrows = 3, width = 1, height = 1)
+Factorial design visualization
+Customization Examples
+Since agricolaeplotr returns ggplot2 objects, you can customize them:
 
+# Create the base plot
+p <- plot_design.factorial_crd(outdesign, ncols = 6, nrows = 3, width = 1, height = 1)
 
-```
-![factorial design](C:\Users\Jens Harbers\Documents\RPlot.jpeg)
+# Customize colors and labels
+p + 
+  ggtitle("3×2 Factorial Design (Complete Randomized)") +
+  scale_fill_brewer(palette = "Set1") +
+  theme_minimal() +
+  labs(x = "Plot Column", y = "Plot Row")
 
+# Add interactive features with plotly
+# library(plotly)
+# ggplotly(p)
 
-## Planned Features for Future Versions
+Other Design Types
+agricolaeplotr supports multiple experimental designs:
 
-- Introduce a Shiny interface for interactive experiment layout.
-- Incorporate additional custom field experiment tools.
-- Enable the export of experiments to the ISOBUS standard.
-- Implement the export of designs to PostgreSQL.
+    Complete Randomized Design (crd)
+    Randomized Complete Block Design (rcbd)
+    Latin Square Design (lsd)
+    Split-Plot Design (spd)
+    Strip-Plot Design (spd)
+
+Key Features
+
+    ggplot2 Integration: All plots are standard ggplot2 objects for full customization
+    Interactive Visualizations: Compatible with plotly for web-based interactive displays
+    Field Planning: Calculate total area requirements for field implementation
+    Flexible Plot Dimensions: Specify plot sizes in real-world units (meters, feet, etc.)
+    Publication-Ready: Export high-quality graphics for reports and publications
+
+Practical Applications
+For Field Experiments
+
+    Estimate total field area requirements
+    Plan machinery access and plot layout
+    Communicate experimental design to stakeholders (farmers, scientists, funders)
+
+For Teaching and Collaboration
+
+    Visualize complex designs for students
+    Create clear diagrams for grant proposals
+    Share interactive designs with collaborators
+
+Planned Features
+Future versions will include:
+
+    Interactive Shiny interface for experiment layout
+    Additional field experiment tools (e.g., plot markers, boundary rows)
+    ISOBUS standard export for precision agriculture equipment
+    PostgreSQL database integration for design storage and management
+    Support for more complex experimental designs (e.g., factorial RCBD, split-split plots)
+
+Contributing
+Contributions are welcome! Please:
+
+    Fork the repository
+    Create a feature branch (git checkout -b feature/amazing-feature)
+    Commit your changes (git commit -m 'Add some amazing feature')
+    Push to the branch (git push origin feature/amazing-feature)
+    Open a Pull Request
+
+License
+This package is licensed under GPL-3.
+Citation
+To cite agricolaeplotr in publications, use:
+
+    Harbers J (2024). agricolaeplotr: Visualization Tools for Experimental Designs. R package version 1.0.0, https://CRAN.R-project.org/package=agricolaeplotr.
+
+A BibTeX entry for LaTeX users is:
+
+@Manual{,
+  title = {agricolaeplotr: Visualization Tools for Experimental Designs},
+  author = {Jens Harbers},
+  year = {2024},
+  note = {R package version 1.0.0},
+  url = {https://CRAN.R-project.org/package=agricolaeplotr},
+}
+
+Acknowledgments
+
+    Built on top of the agricolae package
+    Inspired by the need for better experimental design visualization in agricultural research
+
+Developed by Jens Harbers. For support, please open an issue on GitHub.
