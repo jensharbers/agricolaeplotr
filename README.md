@@ -9,48 +9,62 @@
 
 ## Installation
 
-Install the stable version from CRAN:
+Install the latest release from CRAN:
 
 ```r
 install.packages("agricolaeplotr")
+```
 
 Or install the development version from GitHub:
 
+```r
 # install.packages("devtools")
 devtools::install_github("yourusername/agricolaeplotr")
+```
 
-Usage
-Basic Workflow
+---
 
-    Generate an experimental design using agricolae
-    Visualize the design with agricolaeplotr
-    Customize the visualization using ggplot2 syntax
-    Export for reports or interactive use
+## Usage
 
-Loading the Package
+### Basic Workflow
 
+1. Generate an experimental design using `agricolae`
+2. Visualize the design with `agricolaeplotr`
+3. Customize the visualization using `ggplot2` syntax
+4. Export for reports or interactive use
+
+### Loading the Package
+
+```r
 library("agricolaeplotr")
 library("ggplot2")    # For plot customization
 library("agricolae")  # For generating experimental designs
+```
 
-Example: Factorial AB Design
+### Example: Factorial AB Design
+
 This example demonstrates a 3×2 factorial design with complete randomization:
 
+```r
 # Generate a 3×2 factorial design with 3 replicates
 trt <- c(3, 2)  # Factor A has 3 levels, Factor B has 2 levels
 outdesign <- design.ab(trt, r = 3, serie = 2, design = 'crd')
 
 # Visualize the design
 plot_design.factorial_crd(outdesign, 
-                         ncols = 6, 
-                         nrows = 3, 
-                         width = 1, 
-                         height = 1)
+                           ncols = 6, 
+                           nrows = 3, 
+                           width = 1, 
+                           height = 1)
+```
 
-Factorial design visualization
-Customization Examples
-Since agricolaeplotr returns ggplot2 objects, you can customize them:
+*Factorial design visualization*
 
+### Customization Examples
+
+Since `agricolaeplotr` returns `ggplot2` objects, you can customize them freely:
+
+```r
 # Create the base plot
 p <- plot_design.factorial_crd(outdesign, ncols = 6, nrows = 3, width = 1, height = 1)
 
@@ -64,64 +78,85 @@ p +
 # Add interactive features with plotly
 # library(plotly)
 # ggplotly(p)
+```
 
-Other Design Types
-agricolaeplotr supports multiple experimental designs:
+### Other Design Types
 
-    Complete Randomized Design (crd)
-    Randomized Complete Block Design (rcbd)
-    Latin Square Design (lsd)
-    Split-Plot Design (spd)
-    Strip-Plot Design (spd)
+`agricolaeplotr` supports multiple experimental designs:
 
-Key Features
+- Complete Randomized Design (`crd`)
+- Randomized Complete Block Design (`rcbd`)
+- Latin Square Design (`lsd`)
+- Split-Plot Design (`spd`)
+- Strip-Plot Design (`spd`)
 
-    ggplot2 Integration: All plots are standard ggplot2 objects for full customization
-    Interactive Visualizations: Compatible with plotly for web-based interactive displays
-    Field Planning: Calculate total area requirements for field implementation
-    Flexible Plot Dimensions: Specify plot sizes in real-world units (meters, feet, etc.)
-    Publication-Ready: Export high-quality graphics for reports and publications
+---
 
-Practical Applications
-For Field Experiments
+## Key Features
 
-    Estimate total field area requirements
-    Plan machinery access and plot layout
-    Communicate experimental design to stakeholders (farmers, scientists, funders)
+- **ggplot2 Integration** — All plots are standard `ggplot2` objects for full customization
+- **Interactive Visualizations** — Compatible with `plotly` for web-based interactive displays
+- **Field Planning** — Calculate total area requirements for field implementation
+- **Flexible Plot Dimensions** — Specify plot sizes in real-world units (meters, feet, etc.)
+- **Publication-Ready** — Export high-quality graphics for reports and publications
 
-For Teaching and Collaboration
+---
 
-    Visualize complex designs for students
-    Create clear diagrams for grant proposals
-    Share interactive designs with collaborators
+## Practical Applications
 
-Planned Features
+### For Field Experiments
+
+- Estimate total field area requirements
+- Plan machinery access and plot layout
+- Communicate experimental design to stakeholders (farmers, scientists, funders)
+
+### For Teaching and Collaboration
+
+- Visualize complex designs for students
+- Create clear diagrams for grant proposals
+- Share interactive designs with collaborators
+
+---
+
+## Planned Features
+
 Future versions will include:
 
-    Interactive Shiny interface for experiment layout
-    Additional field experiment tools (e.g., plot markers, boundary rows)
-    ISOBUS standard export for precision agriculture equipment
-    PostgreSQL database integration for design storage and management
-    Support for more complex experimental designs (e.g., factorial RCBD, split-split plots)
+- Interactive Shiny interface for experiment layout
+- Additional field experiment tools (e.g., plot markers, boundary rows)
+- ISOBUS standard export for precision agriculture equipment
+- PostgreSQL database integration for design storage and management
+- Support for more complex experimental designs (e.g., factorial RCBD, split-split plots)
 
-Contributing
+---
+
+## Contributing
+
 Contributions are welcome! Please:
 
-    Fork the repository
-    Create a feature branch (git checkout -b feature/amazing-feature)
-    Commit your changes (git commit -m 'Add some amazing feature')
-    Push to the branch (git push origin feature/amazing-feature)
-    Open a Pull Request
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-License
+---
+
+## License
+
 This package is licensed under GPL-3.
-Citation
-To cite agricolaeplotr in publications, use:
 
-    Harbers J (2024). agricolaeplotr: Visualization Tools for Experimental Designs. R package version 1.0.0, https://CRAN.R-project.org/package=agricolaeplotr.
+---
+
+## Citation
+
+To cite `agricolaeplotr` in publications, use:
+
+> Harbers J (2024). agricolaeplotr: Visualization Tools for Experimental Designs. R package version 1.0.0, https://CRAN.R-project.org/package=agricolaeplotr.
 
 A BibTeX entry for LaTeX users is:
 
+```bibtex
 @Manual{,
   title = {agricolaeplotr: Visualization Tools for Experimental Designs},
   author = {Jens Harbers},
@@ -129,10 +164,16 @@ A BibTeX entry for LaTeX users is:
   note = {R package version 1.0.0},
   url = {https://CRAN.R-project.org/package=agricolaeplotr},
 }
+```
 
-Acknowledgments
+---
 
-    Built on top of the agricolae package
-    Inspired by the need for better experimental design visualization in agricultural research
+## Acknowledgments
 
-Developed by Jens Harbers. For support, please open an issue on GitHub.
+- Built on top of the [`agricolae`](https://cran.r-project.org/package=agricolae) package
+- Inspired by the need for better experimental design visualization in agricultural research
+
+---
+
+Developed by **Jens Harbers**. For support, please open an issue on GitHub.
+
