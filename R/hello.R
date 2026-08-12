@@ -2710,21 +2710,25 @@ serpentine <- function(n,times,m=1){
 #' @param height numeric value, describes the height of a plot in an experiment
 #' @param space_width numeric value, describes the share of the space of the plots. 0=only space, 1=no space between plots in term of width
 #' @param space_height numeric value, describes the share of the space of the plots. 0=only space, 1=no space between plots in term of height
-#' @param reverse_y boolean, should the plots of the experiment be changed in reverse order in Row direction? use reverse_y=TRUE to have same sketch as in agricolae. default:reverse_y=FALSE
+#' @param reverse_y boolean, should the plots of the experiment be changed in reverse order in row direction? use reverse_y=TRUE to have same sketch as in agricolae. default:reverse_y=FALSE
 #' @param reverse_x boolean, should the plots of the experiment be changed in reverse order in column direction? default:reverse_x=FALSE
 #' @param factor_name string Which factor should be used for plotting, needs to be a column in outdesign$book
 #' @param labels string Describes the column from that the plots are taken to display them
-#' @param way_x numeric vector indicates the shift of the nth-plot in x-axis.
-#' @param way_y numeric vector indicates the shift of the nth-plot in y-axis.
+#' @param way_x numeric vector indicates the shift of the nth-plot in x-axis. Must be sorted ascending. Default NULL (no shift).
+#' @param way_y numeric vector indicates the shift of the nth-plot in y-axis. Must be sorted ascending. Default NULL (no shift).
 #' @param shift_x numeric indicates the shift in units in x-axis.
 #' @param shift_y numeric indicates the shift in units for the y-axis.
 #' @param dist_x numeric indicates the shift in plots in x-axis.
 #' @param dist_y numeric indicates the shift in plots for the y-axis.
 #' @param start_origin boolean. Should the design start at the origin (0|0)?
-#' @param shift_columns numeric indicates the shift of the given plots of a specific row by n units in x-axis.
-#' @param shift_rows numeric indicates the shift of the given plots of a specific column by n units in  y-axis.
-#' @param n_shift_columns numeric vector indicating the number of plots of shift_columns. negative number indicate shift to left, otherwise right
-#' @param n_shift_rows numeric vector indicating the number of plots of shift_rows. negative number indicate shift to left, otherwise right
+#' @param shift_columns numeric vector of values in the \code{x} column identifying which columns of the
+#'   design should be shifted along the y-axis (i.e. all plots whose \code{x} value matches an entry of
+#'   \code{shift_columns} get their \code{y} coordinate shifted). Default NULL (no shift).
+#' @param shift_rows numeric vector of values in the \code{y} column identifying which rows of the design
+#'   should be shifted along the x-axis (i.e. all plots whose \code{y} value matches an entry of
+#'   \code{shift_rows} get their \code{x} coordinate shifted). Default NULL (no shift).
+#' @param n_shift_columns numeric vector indicating the number of plots of shift_columns. negative number indicate shift to left, otherwise right. Recycled to the length of \code{shift_columns}; must have length 1 or the same length as \code{shift_columns}.
+#' @param n_shift_rows numeric vector indicating the number of plots of shift_rows. negative number indicate shift to left, otherwise right. Recycled to the length of \code{shift_rows}; must have length 1 or the same length as \code{shift_rows}.
 #'
 #' @return \code{ggplot} graphic that can be modified, if wished
 #' @export
@@ -2786,27 +2790,27 @@ serpentine <- function(n,times,m=1){
 #'                                     reverse_x = FALSE);p
 
 full_control_positions <- function(design,
-                                   x = "col",
-                                   y = "row",
-                                   factor_name = "trt",
-                                   labels = "plots",
-                                   width = 1,
-                                   height = 1,
-                                   space_width = 0.95,
-                                   space_height = 0.85,
-                                   reverse_y = FALSE,
-                                   reverse_x = FALSE,
-                                   way_x=0,
-                                   way_y=0,
-                                   shift_columns=0,
-                                   shift_rows=0,
-                                   shift_x=0,
-                                   shift_y=0,
-                                   dist_x=1,
-                                   dist_y=1,
-                                   n_shift_columns=0,
-                                   n_shift_rows=0,
-                                   start_origin=FALSE) {
+                                    x = "col",
+                                    y = "row",
+                                    factor_name = "trt",
+                                    labels = "plots",
+                                    width = 1,
+                                    height = 1,
+                                    space_width = 0.95,
+                                    space_height = 0.85,
+                                    reverse_y = FALSE,
+                                    reverse_x = FALSE,
+                                    way_x = NULL,
+                                    way_y = NULL,
+                                    shift_columns = NULL,
+                                    shift_rows = NULL,
+                                    shift_x = 0,
+                                    shift_y = 0,
+                                    dist_x = 1,
+                                    dist_y = 1,
+                                    n_shift_columns = 0,
+                                    n_shift_rows = 0,
+                                    start_origin = FALSE) {
 
   test_string(x)
   test_string(y)
@@ -2823,74 +2827,124 @@ full_control_positions <- function(design,
   test_input_shift(shift_x)
   test_input_shift(shift_y)
 
-  test_input_shift(way_x)
-  test_input_shift(way_y)
+  if (!is.null(way_x)) test_input_shift(way_x)
+  if (!is.null(way_y)) test_input_shift(way_y)
 
   test_input_shift(dist_x)
   test_input_shift(dist_y)
 
-  test_input_shift(n_shift_columns)
-  test_input_shift(n_shift_rows)
+  if (!is.null(n_shift_columns)) test_input_shift(n_shift_columns)
+  if (!is.null(n_shift_rows)) test_input_shift(n_shift_rows)
 
-  test_input_shift(shift_columns)
-  test_input_shift(shift_rows)
+  if (!is.null(shift_columns)) test_input_shift(shift_columns)
+  if (!is.null(shift_rows)) test_input_shift(shift_rows)
 
   test_input_reverse(start_origin)
 
+  # -- basic input validation ------------------------------------------------
+  if (!is.data.frame(design)) {
+    stop("`design` must be a data.frame.")
+  }
+  required_cols <- c(x, y, factor_name, labels)
+  missing_cols <- setdiff(required_cols, colnames(design))
+  if (length(missing_cols) > 0) {
+    stop(
+      "The following columns are missing in `design`: ",
+      paste(missing_cols, collapse = ", ")
+    )
+  }
 
-  table <- design
-  n_vec <- rep(n_shift_columns,length=length(shift_columns))
-  m_vec <- rep(n_shift_rows,length=length(shift_rows))
+  if (!is.null(way_x) && is.unsorted(way_x)) {
+    stop("`way_x` must be sorted in ascending order.")
+  }
+  if (!is.null(way_y) && is.unsorted(way_y)) {
+    stop("`way_y` must be sorted in ascending order.")
+  }
 
-  table[, x]  <- as.numeric(table[, x] )
-  table[, y] <- as.numeric(table[, y])
+  if (!is.null(shift_columns) &&
+      !(length(n_shift_columns) %in% c(1, length(shift_columns)))) {
+    stop("`n_shift_columns` must have length 1 or the same length as `shift_columns`.")
+  }
+  if (!is.null(shift_rows) &&
+      !(length(n_shift_rows) %in% c(1, length(shift_rows)))) {
+    stop("`n_shift_rows` must have length 1 or the same length as `shift_rows`.")
+  }
 
-      l <- 1
-    for( i in shift_columns){
-      table[table[,x] == i,y] = table[table[,x] == i,y] + n_vec[l]
+  design_tbl <- design
+
+  n_vec <- rep(n_shift_columns, length.out = length(shift_columns))
+  m_vec <- rep(n_shift_rows, length.out = length(shift_rows))
+
+  design_tbl[, x] <- as.numeric(design_tbl[, x])
+  design_tbl[, y] <- as.numeric(design_tbl[, y])
+
+  # shift_columns: plots whose x matches an entry get their y shifted
+  if (!is.null(shift_columns)) {
+    l <- 1
+    for (i in shift_columns) {
+      design_tbl[design_tbl[, x] == i, y] <- design_tbl[design_tbl[, x] == i, y] + n_vec[l]
       l <- l + 1
     }
+  }
 
-
-      l <- 1
-    for( i in shift_rows){
-      table[table[,y] == i,x] = table[table[,y] == i,x] + m_vec[l]
+  # shift_rows: plots whose y matches an entry get their x shifted
+  if (!is.null(shift_rows)) {
+    l <- 1
+    for (i in shift_rows) {
+      design_tbl[design_tbl[, y] == i, x] <- design_tbl[design_tbl[, y] == i, x] + m_vec[l]
       l <- l + 1
     }
+  }
 
-    for (i in way_x ){
-        table[, x] <- ifelse(table[, x] > (i + (match(i,way_x) - 1)), table[, x] + dist_x, table[, x])
+  if (!is.null(way_x)) {
+    for (i in way_x) {
+      design_tbl[, x] <- ifelse(
+        design_tbl[, x] > (i + (match(i, way_x) - 1)),
+        design_tbl[, x] + dist_x,
+        design_tbl[, x]
+      )
     }
+  }
 
-
-    for (i in way_y ){
-      table[, y] <- ifelse(table[, y] > (i + (match(i,way_y) - 1)), table[, y] + dist_y, table[, y])
+  if (!is.null(way_y)) {
+    for (i in way_y) {
+      design_tbl[, y] <- ifelse(
+        design_tbl[, y] > (i + (match(i, way_y) - 1)),
+        design_tbl[, y] + dist_y,
+        design_tbl[, y]
+      )
     }
+  }
 
-      if(start_origin == TRUE){
-        shift_x <- width * -0.5 + (width * -0.5 * (1-space_width)) ## makes zero
-        shift_y <- height * -0.5 + (height * -0.5 * (1-space_height)) ## makes zero
-      }
+  if (start_origin == TRUE) {
+    shift_x <- width * -0.5 + (width * -0.5 * (1 - space_width))   ## makes zero
+    shift_y <- height * -0.5 + (height * -0.5 * (1 - space_height)) ## makes zero
+  }
 
-    table[, x]  <- table[, x] * width + shift_x
-    table[, y] <- table[, y] * height + shift_y
-
+  design_tbl[, x] <- design_tbl[, x] * width + shift_x
+  design_tbl[, y] <- design_tbl[, y] * height + shift_y
 
   if (reverse_y == TRUE) {
-    table[, y] <- abs(table[, y] - max(table[, y])) +
-      min(table[, y])
+    design_tbl[, y] <- abs(design_tbl[, y] - max(design_tbl[, y])) +
+      min(design_tbl[, y])
   }
   if (reverse_x == TRUE) {
-    table[, x]  <- abs(table[, x]  - max(table[, x] )) +
-      min(table[, x] )
+    design_tbl[, x] <- abs(design_tbl[, x] - max(design_tbl[, x])) +
+      min(design_tbl[, x])
   }
-  plt <- ggplot(table, aes_string(x = x, y = y)) +
-    geom_tile(aes_string(fill = factor_name),
-              width = width * space_width, height = height *
-                space_height) + theme_bw() + theme(line = element_blank()) +
-    geom_text(aes_string(label = labels), colour = "black")
 
-  plt
+  plt <- ggplot(design_tbl, aes(x = .data[[x]], y = .data[[y]])) +
+    geom_tile(
+      aes(fill = .data[[factor_name]]),
+      width = width * space_width,
+      height = height * space_height
+    ) +
+    theme_bw() +
+    theme(line = element_blank()) +
+    geom_text(
+      aes(label = .data[[labels]]),
+      colour = "black"
+    )
 
   return(plt)
 }
