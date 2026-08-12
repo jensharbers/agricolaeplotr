@@ -24,7 +24,7 @@ Or install the development version from GitHub:
 
 ```r
 # install.packages("devtools")
-devtools::install_github("yourusername/agricolaeplotr")
+devtools::install_github("jensharbers/agricolaeplotr")
 ```
 
 ---
