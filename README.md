@@ -1,7 +1,12 @@
 # agricolaeplotr: Visualization Tools for Experimental Designs
+<p align="center">
+  <img src="R/images/agricolaeplotr.png" alt="Hex Logo agricolaeplotr" width="250">
+</p>
 
 [![CRAN status](https://www.r-pkg.org/badges/version/agricolaeplotr)](https://CRAN.R-project.org/package=agricolaeplotr)
 [![License: GPL-3](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
+
 
 ## Overview
 
