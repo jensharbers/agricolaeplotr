@@ -1,3 +1,11 @@
+# agricolaeplotr 1.0.0
+
+## Updates
+
+* Fixed `sf` importing issue of its pipe operator
+
+# agricolaeplotr 0.6.1
+
 # agricolaeplotr 0.5.0
 
 # agricolaeplotr 0.4.0
