@@ -1,7 +1,7 @@
 Package: agricolaeplotr
 Type: Package
 Title: Visualization of Design of Experiments from the 'agricolae' Package
-Version: 0.5.0
+Version: 1.0.0
 Authors@R: 
     person(family="Harbers", given="Jens", email="jensharbers@gmail.com", role=c("aut","cre"),
            comment = c(ORCID = "0000-0001-6634-623X"))
@@ -27,7 +27,6 @@ Imports: ggplot2,
          stringr,
          stplanr,
          ggspatial
-RoxygenNote: 7.2.3
 Language: en-US
 Suggests: 
     testthat (>= 3.0.0),
@@ -40,3 +39,4 @@ URL: https://github.com/jensharbers/agricolaeplotr
 Depends: R (>= 4.0)
 VignetteBuilder: knitr
 Note: 'None'
+Config/roxygen2/version: 8.0.0
